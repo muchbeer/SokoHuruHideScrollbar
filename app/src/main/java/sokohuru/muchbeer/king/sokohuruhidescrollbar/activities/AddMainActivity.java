@@ -9,6 +9,8 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,7 +23,7 @@ import android.widget.ImageView;
 import sokohuru.muchbeer.king.sokohuruhidescrollbar.R;
 
 
-public class AddMainActivity extends ActionBarActivity {
+public class AddMainActivity extends AppCompatActivity {
 
 
     static final int NUM_ITEMS = 4;
@@ -48,12 +50,9 @@ public class AddMainActivity extends ActionBarActivity {
         button = (Button)findViewById(R.id.goto_next);
         button.setOnClickListener(btnListener);
 
-        final ActionBar ab = getSupportActionBar();
-       // ab.setHomeAsUpIndicator(R.drawable.ic_menu);
-      //  ab.setDisplayHomeAsUpEnabled(true);
-
-
-//        ab.setDisplayHomeAsUpEnabled(true);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.app_bar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     public boolean tickInvisibility() {

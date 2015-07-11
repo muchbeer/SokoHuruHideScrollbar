@@ -2,8 +2,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
-    android:background="@android:color/darker_gray"
+    android:background="@android:color/white"
     >
+
+    <include
+        android:id="@+id/app_bar"
+        layout="@layout/appbar" />
+
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="110dp"
