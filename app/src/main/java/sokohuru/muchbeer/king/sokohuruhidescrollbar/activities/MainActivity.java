@@ -93,8 +93,15 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 mDrawerLayout.openDrawer(GravityCompat.START);
-                return true;
+                 return true;
+
+            case R.id.action_settings:
+                Intent openAddFragment = new Intent(this, AddMainActivity.class);
+                startActivity(openAddFragment);
+
         }
+
+
         return super.onOptionsItemSelected(item);
     }
 
