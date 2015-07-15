@@ -19,15 +19,8 @@
         </activity>
         <activity android:name=".activities.CheeseDetailActivity" />
         <activity
-            android:name=".activities.NewItemActivity"
-            android:label="@string/title_activity_new_item" >
-        </activity>
-
-        <activity android:name=".activities.AddMainActivity"
-            android:label="Tangaza" android:parentActivityName=".activities.MainActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.MainActivity" />
+            android:name=".activities.swipeable.DetailActivityMain"
+            android:label="@string/title_activity_detail_activity_main" >
         </activity>
     </application>
 

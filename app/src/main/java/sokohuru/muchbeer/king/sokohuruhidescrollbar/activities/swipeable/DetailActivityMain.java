@@ -1,4 +1,4 @@
-package sokohuru.muchbeer.king.sokohuruhidescrollbar.activities;
+package sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.swipeable;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -7,18 +7,18 @@ import android.view.MenuItem;
 
 import sokohuru.muchbeer.king.sokohuruhidescrollbar.R;
 
-public class NewItemActivity extends ActionBarActivity {
+public class DetailActivityMain extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_item);
+        setContentView(R.layout.activity_detail_main);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_new_item, menu);
+        getMenuInflater().inflate(R.menu.menu_detail_activity_main, menu);
         return true;
     }
 

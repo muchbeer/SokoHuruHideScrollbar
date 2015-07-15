@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import sokohuru.muchbeer.king.sokohuruhidescrollbar.R;
+import sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.swipeable.MoviesFragment;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -96,9 +97,7 @@ public class MainActivity extends AppCompatActivity {
                  return true;
 
             case R.id.action_settings:
-                Intent openAddFragment = new Intent(this, AddMainActivity.class);
-                startActivity(openAddFragment);
-
+      Toast.makeText(getApplicationContext(), "Check met", Toast.LENGTH_LONG).show();
         }
 
 
@@ -107,9 +106,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupViewPager(ViewPager viewPager) {
         Adapter adapter = new Adapter(getSupportFragmentManager());
-        adapter.addFragment(new CheeseListFragment(), "Category 1");
-        adapter.addFragment(new CheeseListFragment(), "Category 2");
-        adapter.addFragment(new CheeseListFragment(), "Category 3");
+        adapter.addFragment(new MoviesFragment(), "SOKONI");
+        adapter.addFragment(new CheeseListFragment(), "WEKA BIDHAA");
+        adapter.addFragment(new CheeseListFragment(), "Category");
         viewPager.setAdapter(adapter);
     }
 

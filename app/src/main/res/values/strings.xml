@@ -35,4 +35,5 @@
     <string name="title_quick_return">Quick Return</string>
     <string name="title_activity_reveal">Reveal Animation</string>
     <string name="title_activity_new_item">NewItemActivity</string>
+    <string name="title_activity_detail_activity_main">DetailActivityMain</string>
 </resources>

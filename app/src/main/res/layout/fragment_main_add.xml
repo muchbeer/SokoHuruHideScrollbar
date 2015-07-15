@@ -15,7 +15,6 @@
         android:layout_centerHorizontal="true"
         android:layout_above="@+id/et_onetext"
         android:padding="7dp"
-        android:visibility="gone"
 
         />
 
