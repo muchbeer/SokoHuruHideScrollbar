@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import sokohuru.muchbeer.king.sokohuruhidescrollbar.R;
+import sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.swipeable.DetailActivityMain;
 import sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.swipeable.MoviesFragment;
 
 import android.os.Bundle;
@@ -97,6 +98,9 @@ public class MainActivity extends AppCompatActivity {
                  return true;
 
             case R.id.action_settings:
+
+                Intent startDetail = new Intent(this, DetailActivityMain.class);
+                startActivity(startDetail);
       Toast.makeText(getApplicationContext(), "Check met", Toast.LENGTH_LONG).show();
         }
 
