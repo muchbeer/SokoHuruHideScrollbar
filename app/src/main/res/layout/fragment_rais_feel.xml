@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/backgroundcode"
+    android:id="@+id/backtoback">
+
+    <TextView
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:paddingTop="8dp"
+        android:id="@+id/username"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:paddingLeft="16dp"
+        android:text="muchbeer"
+        android:textSize="16dp"
+        android:typeface="serif"
+        android:background="@color/whitie"
+        android:layout_gravity="center_horizontal"
+        />
+
+        <ImageView
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="280dp"
+            android:id="@+id/image"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/loa"
+            />
+        <TextView
+            android:id="@+id/title"
+            android:layout_height="50dp"
+            android:background="@color/whitie"
+            android:layout_width="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:paddingTop="5dp"
+
+            android:maxLines="2"
+            android:paddingLeft="16dp"
+            android:ellipsize="end"
+            android:text="viongozi wanaingia sehemu kupata chai kidogo afu watarudi"
+            />
+
+
+
+</LinearLayout>

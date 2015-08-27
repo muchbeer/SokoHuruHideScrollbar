@@ -71,14 +71,6 @@ public class MainActivity extends AppCompatActivity {
             setupViewPager(viewPager);
         }
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Here's a Snackbar", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
@@ -103,9 +95,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(startDetail);
       Toast.makeText(getApplicationContext(), "Check met", Toast.LENGTH_LONG).show();
         }
-
-
-        return super.onOptionsItemSelected(item);
+     return super.onOptionsItemSelected(item);
     }
 
     private void setupViewPager(ViewPager viewPager) {
