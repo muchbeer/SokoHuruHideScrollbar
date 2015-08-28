@@ -5,7 +5,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import sokohuru.muchbeer.king.sokohuruhidescrollbar.R;
+import sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.R;
+
 
 public class DetailActivityMain extends ActionBarActivity {
 

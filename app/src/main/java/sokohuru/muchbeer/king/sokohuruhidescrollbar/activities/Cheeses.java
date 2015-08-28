@@ -18,7 +18,6 @@ package sokohuru.muchbeer.king.sokohuruhidescrollbar.activities;
 
 import java.util.Random;
 
-import sokohuru.muchbeer.king.sokohuruhidescrollbar.R;
 
 public class Cheeses {
 

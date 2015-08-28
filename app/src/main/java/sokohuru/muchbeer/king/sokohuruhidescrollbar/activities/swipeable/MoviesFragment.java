@@ -6,7 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import sokohuru.muchbeer.king.sokohuruhidescrollbar.R;
+import sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.R;
 
 public class MoviesFragment extends Fragment {
 

@@ -1,16 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="sokohuru.muchbeer.king.sokohuruhidescrollbar" >
+    package="sokohuru.muchbeer.king.sokohuruhidescrollbar.activities" >
 
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
+    <permission
+        android:name="sokohuru.muchbeer.king.sokohuruhidescrollbar.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+    <!-- This app has permission to register and receive dataf message. -->
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <uses-permission android:name="sokohuru.muchbeer.king.sokohuruhidescrollbar.permission.C2D_MESSAGE" />
+
+    <!-- GCM requires a Google account. -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
 
     <application
+        android:name="sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.settings.MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/Theme.DesignDemo" >
         <activity
-            android:name=".activities.MainActivity"
+            android:name=".MainActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/app_name" >
             <intent-filter>
@@ -19,14 +31,62 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.CheeseDetailActivity" />
+
         <activity
-            android:name=".activities.swipeable.DetailActivityMain"
+            android:name="sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.ukawa.ActivityRaisDetail"
+            android:parentActivityName=".MainActivity" >
+
+            <!-- To support below API Level 14 -->
+            <meta-data
+                android:name="android.support.UI_OPTIONS"
+                android:value="splitActionBarWhenNarrow" />
+        </activity>
+        <activity android:name=".CheeseDetailActivity" />
+        <activity
+            android:name=".swipeable.DetailActivityMain"
             android:label="@string/title_activity_detail_activity_main" >
         </activity>
 
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
 
+        <receiver
+            android:name="com.pushbots.google.gcm.GCMBroadcastReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND" >
+            <intent-filter>
 
+                <!-- Receives the actual messages. -->
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <!-- Receives the registration id. -->
+                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+
+                <category android:name="sokohuru.muchbeer.king.sokohuruhidescrollbar.activities" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name="com.pushbots.push.DefaultPushHandler" />
+
+        <service android:name="com.pushbots.push.GCMIntentService" />
+
+        <!--
+      Optionally, register AnalyticsReceiver and AnalyticsService to support background
+      dispatching on non-Google Play devices
+        -->
+        <receiver
+            android:name="com.google.android.gms.analytics.AnalyticsReceiver"
+            android:enabled="true" >
+            <intent-filter>
+                <action android:name="com.google.android.gms.analytics.ANALYTICS_DISPATCH" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name="com.google.android.gms.analytics.AnalyticsService"
+            android:enabled="true"
+            android:exported="false" />
+
+<activity android:name=".ukawa.ActivityError"
+    android:label="Rais"></activity>
     </application>
 
 </manifest>

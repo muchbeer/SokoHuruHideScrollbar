@@ -27,9 +27,7 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 
-import java.util.Random;
 
-import sokohuru.muchbeer.king.sokohuruhidescrollbar.R;
 
 public class CheeseDetailActivity extends AppCompatActivity {
 

@@ -7,6 +7,11 @@
       <string name="title_activity_home">HomeActivity</string>
     <string name="title_activity_add_main">AddMainActivity</string>
 
+    <string name="error_timeout">Oops! Tatizo la mtandao, vuta chini</string>
+    <string name="error_auth_failure">Oops! Tatizo la kimtandao </string>
+    <string name="error_network">Oops! Mitambo ya soko huru kun tatizo</string>
+    <string name="error_parser">Oops! Tatizo la kupokea taarifa</string>
+
 
     <string name="cheese_ipsum">Jarlsberg lancashire edam. Dolcelatte hard cheese brie st. agur blue
     cheese caerphilly bavarian bergkase cheese and biscuits mascarpone. Cheeseburger swiss bavarian

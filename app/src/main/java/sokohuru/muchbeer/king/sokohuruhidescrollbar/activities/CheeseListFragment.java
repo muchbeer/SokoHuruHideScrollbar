@@ -37,7 +37,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import sokohuru.muchbeer.king.sokohuruhidescrollbar.R;
 
 public class CheeseListFragment extends Fragment {
 

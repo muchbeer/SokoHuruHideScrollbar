@@ -18,5 +18,7 @@
     <dimen name="cardview_toolbar_spacer">16dp</dimen>
 
     <dimen name="toolbar_double_height">112dp</dimen>
+    <dimen name="card_margin_detail">8dp</dimen>
+    <dimen name="size_word">3dp</dimen>
 
 </resources>

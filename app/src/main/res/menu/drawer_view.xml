@@ -20,29 +20,29 @@
         <item
             android:id="@+id/nav_home"
             android:icon="@drawable/ic_dashboard"
-            android:title="Home" />
+            android:title="Rais" />
         <item
             android:id="@+id/nav_messages"
             android:icon="@drawable/ic_event"
-            android:title="Messages" />
+            android:title="Wabunge" />
         <item
             android:id="@+id/nav_friends"
             android:icon="@drawable/ic_headset"
-            android:title="Friends" />
+            android:title="Video" />
         <item
             android:id="@+id/nav_discussion"
             android:icon="@drawable/ic_forum"
-            android:title="Discussion" />
+            android:title="Tuchati" />
     </group>
 
     <item android:title="Sub items">
         <menu>
             <item
                 android:icon="@drawable/ic_dashboard"
-                android:title="Sub item 1" />
+                android:title="Changia" />
             <item
                 android:icon="@drawable/ic_forum"
-                android:title="Sub item 2" />
+                android:title="Kuhusu" />
         </menu>
     </item>
 
