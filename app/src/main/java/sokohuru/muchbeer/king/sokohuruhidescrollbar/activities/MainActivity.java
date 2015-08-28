@@ -115,9 +115,55 @@ public class MainActivity extends AppCompatActivity {
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
-                        menuItem.setChecked(true);
+
+
+                        //Checking if the item is in checked state or not, if not make it in checked state
+                        if(menuItem.isChecked()) menuItem.setChecked(false);
+                        else menuItem.setChecked(true);
+
+                        //Closing drawer on item click
                         mDrawerLayout.closeDrawers();
-                        return true;
+
+                        //Check to see which item was being clicked and perform appropriate action
+                        switch (menuItem.getItemId()){
+
+
+                            //Replacing the main content with ContentFragment Which is our Inbox View;
+                            case R.id.nav_home:
+                                Toast.makeText(getApplicationContext(),"Habari kuhusu Lowassa",Toast.LENGTH_SHORT).show();
+                                FragmentRais fragment = new FragmentRais();
+                                android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                                fragmentTransaction.replace(R.id.viewpager,fragment);
+                                fragmentTransaction.commit();
+                                return true;
+
+                            // For rest of the options we just show a toast on click
+
+                            case R.id.nav_wabunge:
+                                Toast.makeText(getApplicationContext(),"Habari kuhusu Wabunge",Toast.LENGTH_SHORT).show();
+                                FragmentWabunge fragment2 = new FragmentWabunge();
+                                android.support.v4.app.FragmentTransaction fragmentTransaction2 = getSupportFragmentManager().beginTransaction();
+                                fragmentTransaction2.replace(R.id.tabs,fragment2);
+                                fragmentTransaction2.commit();
+                                return true;
+                            case R.id.nav_video:
+                                Toast.makeText(getApplicationContext(),"Angalia Video za lowassa",Toast.LENGTH_SHORT).show();
+                                return true;
+                            case R.id.nav_chat:
+                                Toast.makeText(getApplicationContext(),"Yalijori leo hii",Toast.LENGTH_SHORT).show();
+                                return true;
+                            case R.id.nav_forum:
+                                Toast.makeText(getApplicationContext(),"Wasiliana nasi kuhusu habari mototo",Toast.LENGTH_SHORT).show();
+                                return true;
+                            case R.id.nav_about:
+                                Toast.makeText(getApplicationContext(),"Ijue program yetu ya ukawa",Toast.LENGTH_SHORT).show();
+                                return true;
+
+                            default:
+                                Toast.makeText(getApplicationContext(),"Tafadhari Jaribu Tena",Toast.LENGTH_SHORT).show();
+                                return true;
+
+                        }
                     }
                 });
     }

@@ -11,7 +11,7 @@
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/avatar"
-        android:background="@drawable/loag"
+        android:background="@drawable/ukawa"
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:layout_marginRight="16dp"/>

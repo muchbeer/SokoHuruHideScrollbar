@@ -19,18 +19,18 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_home"
-            android:icon="@drawable/ic_dashboard"
+            android:icon="@drawable/ic_home_black"
             android:title="Rais" />
         <item
-            android:id="@+id/nav_messages"
+            android:id="@+id/nav_wabunge"
             android:icon="@drawable/ic_event"
             android:title="Wabunge" />
         <item
-            android:id="@+id/nav_friends"
+            android:id="@+id/nav_video"
             android:icon="@drawable/ic_headset"
             android:title="Video" />
         <item
-            android:id="@+id/nav_discussion"
+            android:id="@+id/nav_chat"
             android:icon="@drawable/ic_forum"
             android:title="Tuchati" />
     </group>
@@ -38,10 +38,14 @@
     <item android:title="Sub items">
         <menu>
             <item
-                android:icon="@drawable/ic_dashboard"
+                android:id="@+id/nav_forum"
+
+                android:icon="@drawable/ic_forum"
                 android:title="Changia" />
             <item
-                android:icon="@drawable/ic_forum"
+                android:id="@+id/nav_about"
+
+                android:icon="@drawable/ic_info"
                 android:title="Kuhusu" />
         </menu>
     </item>
