@@ -210,7 +210,7 @@ public class FragmentRais extends Fragment implements AdapterSoko.ClickListener 
                     //soko huru
                     String name = Constants.NA;
                     String postdate = Constants.NA;
-                    String contact = Constants.NA;
+                    String description = Constants.NA;
                     String location = Constants.NA;
 
                     JSONObject currentMarket = null;
@@ -241,13 +241,17 @@ public class FragmentRais extends Fragment implements AdapterSoko.ClickListener 
                     }
 
 
+                    if(currentMarket.has(Keys.EndpointBoxOffice.KEY_DESCRIPTION) && !currentMarket.isNull(Keys.EndpointBoxOffice.KEY_DESCRIPTION)) {
+
+                        description   = currentMarket.getString(Keys.EndpointBoxOffice.KEY_DESCRIPTION);
+                    }
                     data.append(name + "\n");
 
                     Soko sokoni = new Soko();
                     // sokoni.setId(id);
                     sokoni.setName(name);
                     sokoni.setImage(imaging);
-                    //   sokoni.setRating(rating);
+                      sokoni.setDescription(description);
                     sokoni.setPostdate(postdate);
                     sokoni.setTitle(title);
                     //  sokoni.setReleaseYear(releaseYear);

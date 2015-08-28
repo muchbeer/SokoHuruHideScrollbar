@@ -227,7 +227,7 @@ public class FragmentRaisDetail extends Fragment {
                 //  txtUsername.setText(username);
                 ukawaDesc.setText(description);
 
-                collapsingToolbar.setTitle(name);
+                collapsingToolbar.setTitle(place);
 
                 mImageLoader = VolleySingleton.getsInstance().getImageLoader();
 

@@ -18,6 +18,7 @@ import sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.swipeable.DetailA
 import sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.swipeable.MoviesFragment;
 import sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.ukawa.ActivityError;
 import sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.ukawa.FragmentRais;
+import sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.ukawa.FragmentWabunge;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -104,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
     private void setupViewPager(ViewPager viewPager) {
         Adapter adapter = new Adapter(getSupportFragmentManager());
         adapter.addFragment(new FragmentRais(), "LOWASSA");
-        adapter.addFragment(new CheeseListFragment(), "UBUNGE");
+        adapter.addFragment(new FragmentWabunge(), "UBUNGE");
         adapter.addFragment(new CheeseListFragment(), "Category");
         viewPager.setAdapter(adapter);
     }

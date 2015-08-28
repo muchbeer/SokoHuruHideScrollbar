@@ -41,7 +41,6 @@ public class AdapterSoko extends RecyclerView.Adapter<AdapterSoko.ViewHolderSoko
     private ArrayList<Soko> slistSokoni = new ArrayList<>();
     private static Context context;
     private static ClickListener clickListener;
-    private static ClickListenerSearch clickListenerSearch;
     private String URL_FOR_NULL = "http://sokouhuru.com/ukawa/loag.jpg";
     private CharSequence SOKOHURU = "sokouhuru";
 
@@ -77,7 +76,7 @@ public class AdapterSoko extends RecyclerView.Adapter<AdapterSoko.ViewHolderSoko
 
         holder.sokoTitle.setText(currentItem.getName());
         holder.sokoDate.setText(currentItem.getPostdate());
-//  holder.sokoMoto.setText(currentItem.getTitle());
+ holder.sokoMoto.setText(currentItem.getTitle());
 
         //Soko Huru detail
 
@@ -123,10 +122,7 @@ public void setClickListener(ClickListener clickListener) {
     this.clickListener = clickListener;
 }
 
-    public void setClickListenerSearch( ClickListenerSearch clickListenerSearch) {
-        this.clickListenerSearch = clickListenerSearch;
 
-    }
     @Override
     public int getItemCount() {
 
@@ -152,7 +148,7 @@ public void setClickListener(ClickListener clickListener) {
             sokoThumbnail = (ImageView) itemView.findViewById(R.id.image);
             sokoTitle = (TextView) itemView.findViewById(R.id.ukawaUser);
             sokoDate = (TextView) itemView.findViewById(R.id.ukawaDate);
-            sokoMoto = (TextView) itemView.findViewById(R.id.ukawaDesc);
+            sokoMoto = (TextView) itemView.findViewById(R.id.txtTitleBest);
 
 
 
@@ -171,11 +167,7 @@ public void setClickListener(ClickListener clickListener) {
             if(clickListener!=null) {
                 clickListener.itemClicked(view, getPosition());
 
-            } if(clickListenerSearch !=null) {
-
-
-               clickListenerSearch.itemClicked2(view,  getPosition());
-           }
+            }
        }
 
 
@@ -189,25 +181,5 @@ public interface ClickListener{
         public void itemClicked2(View view, int positionSearch);
     }
 
-    public ArrayList<Soko> filter(ArrayList<Soko> models, String query) {
-       // query = query.toLowerCase();
-
-        query = query.toLowerCase(Locale.getDefault());
-        slistSokoni.clear();
-        ArrayList<Soko> filteredModelList = new ArrayList<>();
-     //    ArrayList<Soko> filteredModelList = new ArrayList<>();
-        if (query.length() == 0) {
-            slistSokoni.addAll(models);
-        } else {
-            for (Soko model : models) {
-                if (model.getTitle().toLowerCase(Locale.getDefault()).contains(query)) {
-                    filteredModelList.add(model);
-                }
-            }
-        }
-        notifyDataSetChanged();
-
-        return filteredModelList;
-    }
 
 }
