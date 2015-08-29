@@ -49,13 +49,7 @@ public class ActivityRaisDetail extends ActionBarActivity{
         {
             Toast.makeText(getApplicationContext(), "Error" + e.getMessage(), Toast.LENGTH_LONG).show();
         }
-    }  @Override
-       public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.sample_actions, menu);
-        return true;
     }
-
 
 
 

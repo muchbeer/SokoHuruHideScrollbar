@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
     <permission
         android:name="sokohuru.muchbeer.king.sokohuruhidescrollbar.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
@@ -23,12 +24,17 @@
         android:theme="@style/Theme.DesignDemo" >
         <activity
             android:name=".MainActivity"
-            android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="sokohuru.muchbeer.king.sokohuruhidescrollbar.MESSAGE" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
 
@@ -41,11 +47,10 @@
                 android:name="android.support.UI_OPTIONS"
                 android:value="splitActionBarWhenNarrow" />
         </activity>
-        <activity android:name=".CheeseDetailActivity" />
-        <activity
-            android:name=".swipeable.DetailActivityMain"
-            android:label="@string/title_activity_detail_activity_main" >
-        </activity>
+
+        <activity android:name="sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.youtube.PlayerActivity"
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="landscape" />
 
         <meta-data
             android:name="com.google.android.gms.version"
@@ -61,7 +66,7 @@
                 <!-- Receives the registration id. -->
                 <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
 
-                <category android:name="sokohuru.muchbeer.king.sokohuruhidescrollbar.activities" />
+                <category android:name="sokohuru.muchbeer.king.sokohuruhidescrollbar" />
             </intent-filter>
         </receiver>
         <receiver android:name="com.pushbots.push.DefaultPushHandler" />

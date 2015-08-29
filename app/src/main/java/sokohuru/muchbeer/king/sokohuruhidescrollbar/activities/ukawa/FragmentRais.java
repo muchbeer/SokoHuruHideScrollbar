@@ -256,7 +256,7 @@ public class FragmentRais extends Fragment implements AdapterSoko.ClickListener 
                     sokoni.setTitle(title);
                     //  sokoni.setReleaseYear(releaseYear);
 
-                    listMovies.add(sokoni);
+                   listMovies.add(sokoni);
                   /*
                    Release year has someKind of problem try observe that has you move forward
                    sokoni.setReleaseYear(releaseYear);
@@ -268,7 +268,7 @@ public class FragmentRais extends Fragment implements AdapterSoko.ClickListener 
 
 
                //  L.t(getActivity(), "The date is: " +data.toString());
-                   L.T(getActivity(), "SOKONI NOW" + listMovies.toString());
+                 //  L.T(getActivity(), "SOKONI NOW" + listMovies.toString());
 
             } catch (JSONException e) {
                 L.t(getActivity(), e.toString());

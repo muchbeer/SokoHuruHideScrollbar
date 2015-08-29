@@ -29,13 +29,10 @@
             android:id="@+id/nav_video"
             android:icon="@drawable/ic_headset"
             android:title="Video" />
-        <item
-            android:id="@+id/nav_chat"
-            android:icon="@drawable/ic_forum"
-            android:title="Tuchati" />
+
     </group>
 
-    <item android:title="Sub items">
+    <item android:title="Mengineyo">
         <menu>
             <item
                 android:id="@+id/nav_forum"

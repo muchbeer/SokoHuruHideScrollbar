@@ -22,7 +22,7 @@ import sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.R;
 /**
  * Created by muchbeer on 5/19/2015.
  */
-public class MyApplication extends Application{
+public class MyApplication extends android.app.Application{
 
     public static final String TAG = MyApplication.class.getSimpleName();
     private static MyApplication sInstance;
@@ -31,12 +31,13 @@ public class MyApplication extends Application{
     private RequestQueue mRequestQueue;
 
 
+
     @Override
     public void onCreate() {
         super.onCreate();
 
         sInstance=this;
-        ;
+
     }
 
     public static MyApplication getsInstance() {
