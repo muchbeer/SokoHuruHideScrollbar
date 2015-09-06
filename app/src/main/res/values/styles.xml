@@ -19,7 +19,14 @@
         <item name="android:paddingBottom">24dp</item>
         <item name="android:orientation">vertical</item>
     </style>
-    <style name="BlackNoBarsTheme" parent="android:Theme.Black.NoTitleBar.Fullscreen"/>
-    <style name="BlackNoTitleBarTheme" parent="android:Theme.Black.NoTitleBar"/>
+
+    <style name="MyAlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <!-- Used for the buttons -->
+        <item name="colorAccent">#F44336</item>
+        <!-- Used for the title and text -->
+        <item name="android:textColorPrimary">#FFFFFF</item>
+        <!-- Used for the background -->
+        <item name="android:background">#448AFF</item>
+    </style>
 
 </resources>

@@ -30,6 +30,10 @@
             android:icon="@drawable/ic_headset"
             android:title="Video" />
 
+        <item
+            android:id="@+id/nav_chat"
+            android:icon="@drawable/ic_forum"
+            android:title="Tupashe habari" />
     </group>
 
     <item android:title="Mengineyo">
@@ -44,7 +48,15 @@
 
                 android:icon="@drawable/ic_info"
                 android:title="Kuhusu" />
+
+            <item
+                android:id="@+id/nav_exit"
+
+                android:icon="@drawable/ic_exit"
+                android:title="Jitoe" />
         </menu>
+
+
     </item>
 
 </menu>

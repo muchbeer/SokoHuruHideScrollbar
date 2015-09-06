@@ -44,4 +44,11 @@
   <color name="whitie">#FFFFFF</color>
   <color name="gray">#ff888888</color>
 
+  <color name="white">#FFFFFF</color>
+  <color name="mid_gray">#605F64</color>
+  <color name="gray_text">#7F8285</color>
+  <color name="rim_color_gray">#B0B0B0</color>
+  <color name="center_text">#D31145</color>
+  <color name="round_progress_blue">#2173B9</color>
+  <color name="chatoption">#009688</color>
 </resources>

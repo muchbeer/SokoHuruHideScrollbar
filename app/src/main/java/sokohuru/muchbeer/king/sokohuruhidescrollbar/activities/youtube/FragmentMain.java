@@ -1,19 +1,24 @@
-package sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.ukawa;
+package sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.youtube;
 
+import android.app.Fragment;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.text.format.Time;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.RotateAnimation;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -36,22 +41,23 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.security.Key;
 import java.util.ArrayList;
 
+import sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.MainActivity;
 import sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.R;
-import sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.settings.Keys.EndpointBoxOffice.*;
 import sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.settings.AdapterSoko;
 import sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.settings.Constants;
 import sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.settings.Keys;
 import sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.settings.L;
+import sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.settings.Logger;
 import sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.settings.Soko;
 import sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.settings.VolleySingleton;
+import sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.ukawa.ActivityRaisDetail;
 
 /**
- * Created by muchbeer on 8/27/2015.
+ * Created by muchbeer on 8/29/2015.
  */
-public class FragmentRais extends Fragment implements AdapterSoko.ClickListener {
+public class FragmentMain extends Fragment  implements AdapterSoko.ClickListener {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -109,8 +115,8 @@ public class FragmentRais extends Fragment implements AdapterSoko.ClickListener 
 
 
     // TODO: Rename and change types and number of parameters
-    public static FragmentRais getInstance(int position ) {
-        FragmentRais fragment = new FragmentRais();
+    public static FragmentMain getInstance(int position ) {
+        FragmentMain fragment = new FragmentMain();
         Bundle args = new Bundle();
         args.putInt(ARG_PARAM1, position);
 
@@ -124,7 +130,7 @@ public class FragmentRais extends Fragment implements AdapterSoko.ClickListener 
         outState.putParcelableArrayList(STATE_SOKO, listMovies);
     }
 
-    public FragmentRais() {
+    public FragmentMain() {
         // Required empty public constructor
     }
 
@@ -148,40 +154,40 @@ public class FragmentRais extends Fragment implements AdapterSoko.ClickListener 
     public void sendJsonRequest() {
         // showing refresh animation before making http call
         // swipeRefreshLayout.setRefreshing(true);
-     JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,
-             URL_SOKO,
-             new Response.Listener<JSONObject>() {
-                 @Override
-                 public void onResponse(JSONObject response) {
-                     listMovies = parseJSONResponse(response);
-                     adapterSoko.setSokoList(listMovies);
-                 }
-             },
-             new Response.ErrorListener() {
-                 @Override
-                 public void onErrorResponse(VolleyError error) {
-                     VolleyLog.e("Error: ", error.getMessage());
-                     //    L.t(getActivity(),error.toString());
-                     mTextError.setVisibility(View.VISIBLE);
-                     //    btnRefresh.setVisibility(View.VISIBLE);
-                     if (error instanceof TimeoutError || error instanceof NoConnectionError) {
-                         mTextError.setText(R.string.error_timeout);
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET,
+                URL_SOKO,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        listMovies = parseJSONResponse(response);
+                        adapterSoko.setSokoList(listMovies);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        VolleyLog.e("Error: ", error.getMessage());
+                        //    L.t(getActivity(),error.toString());
+                        mTextError.setVisibility(View.VISIBLE);
+                        //    btnRefresh.setVisibility(View.VISIBLE);
+                        if (error instanceof TimeoutError || error instanceof NoConnectionError) {
+                            mTextError.setText(R.string.error_timeout);
 
-                     } else if (error instanceof AuthFailureError) {
-                         mTextError.setText(R.string.error_auth_failure);
-                         //TODO
-                     } else if (error instanceof ServerError) {
-                         mTextError.setText(R.string.error_auth_failure);
-                         //TODO
-                     } else if (error instanceof NetworkError) {
-                         mTextError.setText(R.string.error_network);
-                         //TODO
-                     } else if (error instanceof ParseError) {
-                         mTextError.setText(R.string.error_parser);
-                         //TODO
-                     }
-                 }
-             });
+                        } else if (error instanceof AuthFailureError) {
+                            mTextError.setText(R.string.error_auth_failure);
+                            //TODO
+                        } else if (error instanceof ServerError) {
+                            mTextError.setText(R.string.error_auth_failure);
+                            //TODO
+                        } else if (error instanceof NetworkError) {
+                            mTextError.setText(R.string.error_network);
+                            //TODO
+                        } else if (error instanceof ParseError) {
+                            mTextError.setText(R.string.error_parser);
+                            //TODO
+                        }
+                    }
+                });
         requestQueue.add(request);
     }
 
@@ -253,12 +259,12 @@ public class FragmentRais extends Fragment implements AdapterSoko.ClickListener 
                     // sokoni.setId(id);
                     sokoni.setName(name);
                     sokoni.setImage(imaging);
-                      sokoni.setDescription(description);
+                    sokoni.setDescription(description);
                     sokoni.setPostdate(postdate);
                     sokoni.setTitle(title);
                     //  sokoni.setReleaseYear(releaseYear);
 
-                   listMovies.add(sokoni);
+                    listMovies.add(sokoni);
                   /*
                    Release year has someKind of problem try observe that has you move forward
                    sokoni.setReleaseYear(releaseYear);
@@ -269,8 +275,8 @@ public class FragmentRais extends Fragment implements AdapterSoko.ClickListener 
                 }
 
 
-               //  L.t(getActivity(), "The date is: " +data.toString());
-                 //  L.T(getActivity(), "SOKONI NOW" + listMovies.toString());
+                //  L.t(getActivity(), "The date is: " +data.toString());
+                //  L.T(getActivity(), "SOKONI NOW" + listMovies.toString());
 
             } catch (JSONException e) {
                 L.t(getActivity(), e.toString());
@@ -322,10 +328,10 @@ public class FragmentRais extends Fragment implements AdapterSoko.ClickListener 
 
         // First param is number of columns and second param is orientation i.e Vertical or Horizontal
         StaggeredGridLayoutManager gridLayoutManager =
-               new StaggeredGridLayoutManager(1,StaggeredGridLayoutManager.VERTICAL);
+                new StaggeredGridLayoutManager(1,StaggeredGridLayoutManager.VERTICAL);
 // Attach the layout manager to the recycler view
-       listSokoni.setLayoutManager(gridLayoutManager);
-    //   listSokoni.setLayoutManager(new LinearLayoutManager(getActivity()));
+        listSokoni.setLayoutManager(gridLayoutManager);
+        //   listSokoni.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         adapterSoko = new AdapterSoko(getActivity());
         adapterSoko.setClickListener(this);
@@ -365,7 +371,7 @@ public class FragmentRais extends Fragment implements AdapterSoko.ClickListener 
 
         swipeRefreshLayout.setOnRefreshListener(onRefreshListener);
 //Floating action
-      FloatingActionButton  fabBtn = (FloatingActionButton) view.findViewById(R.id.btnFloatingAction);
+        FloatingActionButton fabBtn = (FloatingActionButton) view.findViewById(R.id.btnFloatingAction);
         fabBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

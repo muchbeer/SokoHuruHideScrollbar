@@ -10,6 +10,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
 
+import com.firebase.client.Firebase;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Logger;
 import com.google.android.gms.analytics.Tracker;
@@ -35,6 +36,7 @@ public class MyApplication extends android.app.Application{
     @Override
     public void onCreate() {
         super.onCreate();
+        Firebase.setAndroidContext(this);
 
         sInstance=this;
 

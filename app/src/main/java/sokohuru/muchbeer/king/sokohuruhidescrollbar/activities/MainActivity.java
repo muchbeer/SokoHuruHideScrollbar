@@ -1,16 +1,25 @@
 package sokohuru.muchbeer.king.sokohuruhidescrollbar.activities;
 
+import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.format.Time;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 
 
+import sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.chat.FragmentChat;
+import sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.settings.Logger;
 import sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.settings.MyApplication;
+import sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.ukawa.FragmentKuhusu;
 import sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.ukawa.FragmentRais;
+import sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.ukawa.FragmentRaisDetail;
 import sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.ukawa.FragmentWabunge;
+import sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.youtube.FragmentMain;
 import sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.youtube.FragmentYoutube;
 
 import android.support.design.widget.NavigationView;
@@ -20,6 +29,9 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
+import android.view.animation.Animation;
+import android.view.animation.RotateAnimation;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
@@ -37,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
     private DrawerLayout mDrawerLayout;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,17 +58,14 @@ public class MainActivity extends AppCompatActivity {
         //Push message
         Pushbots.sharedInstance().init(this);
 
-        try
-        {
+        try {
             Tracker t = ((MyApplication) getApplication()).getTracker(
                     MyApplication.TrackerName.APP_TRACKER);
 
             t.setScreenName("President Activity");
 
             t.send(new HitBuilders.AppViewBuilder().build());
-        }
-        catch(Exception  e)
-        {
+        } catch (Exception e) {
             Toast.makeText(getApplicationContext(), "Error" + e.getMessage(), Toast.LENGTH_LONG).show();
         }
 
@@ -74,6 +84,13 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
+        FragmentMain fragment = new FragmentMain();
+        android.app.FragmentManager fm = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fm.beginTransaction();
+        fragmentTransaction.add(R.id.frame, fragment);
+
+        fragmentTransaction.commit();
+
 
     }
 
@@ -91,9 +108,8 @@ public class MainActivity extends AppCompatActivity {
                 return true;
 
         }
-     return super.onOptionsItemSelected(item);
+        return super.onOptionsItemSelected(item);
     }
-
 
 
     private void setupDrawerContent(NavigationView navigationView) {
@@ -120,6 +136,7 @@ public class MainActivity extends AppCompatActivity {
                                 FragmentRais fragment = new FragmentRais();
                                 android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
                                 fragmentTransaction.replace(R.id.frame, fragment);
+                                fragmentTransaction.addToBackStack(null);
                                 fragmentTransaction.commit();
                                 return true;
 
@@ -130,6 +147,8 @@ public class MainActivity extends AppCompatActivity {
                                 FragmentWabunge fragment2 = new FragmentWabunge();
                                 android.support.v4.app.FragmentTransaction fragmentTransaction2 = getSupportFragmentManager().beginTransaction();
                                 fragmentTransaction2.replace(R.id.frame, fragment2);
+                                fragmentTransaction2.addToBackStack(null);
+
                                 fragmentTransaction2.commit();
                                 return true;
                             case R.id.nav_video:
@@ -137,16 +156,43 @@ public class MainActivity extends AppCompatActivity {
                                 FragmentYoutube fragment3 = new FragmentYoutube();
                                 android.support.v4.app.FragmentTransaction fragmentTransaction3 = getSupportFragmentManager().beginTransaction();
                                 fragmentTransaction3.replace(R.id.frame, fragment3);
+                                fragmentTransaction3.addToBackStack(null);
+
                                 fragmentTransaction3.commit();
 
                                 return true;
 
+                            case R.id.nav_chat:
+                                Toast.makeText(getApplicationContext(), "Angalia Video za lowassa", Toast.LENGTH_SHORT).show();
+                                FragmentChat fragment4 = new FragmentChat();
+                                android.support.v4.app.FragmentTransaction fragmentTransaction4 = getSupportFragmentManager().beginTransaction();
+                                fragmentTransaction4.replace(R.id.frame, fragment4);
+
+                                fragmentTransaction4.commit();
+
+                                return true;
+
                             case R.id.nav_forum:
-                                Toast.makeText(getApplicationContext(), "Wasiliana nasi kuhusu habari mototo", Toast.LENGTH_SHORT).show();
+
+                                FragmentKuhusu fragment7 = new FragmentKuhusu();
+                                android.support.v4.app.FragmentTransaction fragmentTransaction7 = getSupportFragmentManager().beginTransaction();
+                                fragmentTransaction7.replace(R.id.frame, fragment7);
+                                fragmentTransaction7.addToBackStack(null);
+
+                                fragmentTransaction7.commit();
+
                                 return true;
+                               // Toast.makeText(getApplicationContext(), "Wasiliana nasi kuhusu habari mototo", Toast.LENGTH_SHORT).show();
+
+
                             case R.id.nav_about:
-                                Toast.makeText(getApplicationContext(), "Ijue program yetu ya ukawa", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), "Tunakuletea Picha za matukio ya uchaguzi", Toast.LENGTH_SHORT).show();
                                 return true;
+
+                            case R.id.nav_exit:
+                                android.os.Process.killProcess(android.os.Process.myPid());
+                                return true;
+
 
                             default:
                                 Toast.makeText(getApplicationContext(), "Tafadhari Jaribu Tena", Toast.LENGTH_SHORT).show();
@@ -185,10 +231,10 @@ public class MainActivity extends AppCompatActivity {
             return mFragmentTitles.get(position);
         }
     }
+
     @Override
     protected void onStart() {
         super.onStart();
-
 
 
         //Get an Analytics tracker to report app starts & uncaught exceptions etc.
@@ -202,4 +248,6 @@ public class MainActivity extends AppCompatActivity {
 //Stop the analytics tracking
         GoogleAnalytics.getInstance(this).reportActivityStop(this);
     }
+
+
 }

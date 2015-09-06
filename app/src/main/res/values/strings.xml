@@ -60,7 +60,6 @@
     <string name="youtube_currently_installed">YouTube version installed on this device: <xliff:g id="youtube_version">%1$s</xliff:g>.</string>
     <string name="youtube_not_installed">YouTube is not installed on this device.</string>
 
-    <string name="fullscreen_tutorial">This is a demo which shows how to handle fullscreen behaviour. This activity has differents layouts for portrait, landscape and fullscreen. The user can enter fullscreen either by using the player controller or programmatically by the programmer (here using a button). If your activity does not have a landscape layout, you can choose to automatically enter fullscreen when the device is rotated to landscape orientation.</string>
     <string name="enter_fullscreen">Enter Fullscreen</string>
     <string name="landscape_fullscreen">Always fullscreen in landscape</string>
 
@@ -68,4 +67,15 @@
     <string name="error_thumbnail_view">There was an error initializing the YouTubeThumbnailView (%1$s)</string>
     <string name="error_player">There was an error initializing the YouTubePlayer (%1$s)</string>
     <string name="failed">Kuna tatizo la mtandao, jaribu tena</string>
+
+    <string name="content_description">Content Description</string>
+    <string name="countdown_note">Fanya uhamuzi mzuri kumchagua Lowassa mtetezi wa walio wanyonge, Tuko pamoja nawe.\n\nProgram hii ya ukawa
+		ni kumsupport Mgombea wa Urais kupitia CHADEMA pamoja na wabunge na madiwani wa UKAWA. Tunadhamini sana mchango wako
+		use it in your app.</string>
+    <string name="days">siku</string>
+    <string name="hours">masaa</string>
+    <string name="minutes">dakika</string>
+    <string name="seconds">sek</string>
+    <string name="title_activity_countdown_timer">CountdownTimerActivity</string>
+    <string name="habari">Kama unahabari moto moto unataka Watanzania wajue kuhusu Rais au mbunge wa ukawa, kwa kupitia app yetu Tafadhari piga simu: +255757022731/+255655022731</string>
 </resources>

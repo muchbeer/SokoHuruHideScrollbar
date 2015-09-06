@@ -13,6 +13,9 @@
     <dimen name="fab_elevation_press">12dp</dimen>
     <dimen name="fab_size">56dp</dimen>
 
+    <dimen name="fab_margin_right">0dp</dimen>
+    <dimen name="fab_margin_bottom">0dp</dimen>
+
     <dimen name="statusbar_size">24dp</dimen>
 
     <dimen name="cardview_toolbar_spacer">16dp</dimen>
@@ -20,5 +23,18 @@
     <dimen name="toolbar_double_height">112dp</dimen>
     <dimen name="card_margin_detail">8dp</dimen>
     <dimen name="size_word">3dp</dimen>
+
+    <!-- DP -->
+    <dimen name="one_dp">1dp</dimen>
+    <dimen name="six_dp">6dp</dimen>
+    <dimen name="fifteen_dp">15dp</dimen>
+    <dimen name="twenty_dp">20dp</dimen>
+    <dimen name="twenty_two_dp">22dp</dimen>
+
+    <!-- SP -->
+    <dimen name="sixteen_sp">16sp</dimen>
+    <dimen name="twenty_sp">20sp</dimen>
+    <dimen name="twenty_four_sp">24sp</dimen>
+    <dimen name="margin_large">16dp</dimen>
 
 </resources>

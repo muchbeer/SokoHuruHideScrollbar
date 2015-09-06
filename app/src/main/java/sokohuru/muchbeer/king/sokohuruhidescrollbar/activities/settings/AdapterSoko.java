@@ -74,9 +74,9 @@ public class AdapterSoko extends RecyclerView.Adapter<AdapterSoko.ViewHolderSoko
     public void onBindViewHolder(final ViewHolderSokoni holder, int position) {
         Soko currentItem = slistSokoni.get(position);
 
-        holder.sokoTitle.setText("Imeandikwa: " + currentItem.getName());
+        holder.sokoTitle.setText( currentItem.getName());
         holder.sokoDate.setText(currentItem.getPostdate());
- holder.sokoMoto.setText(currentItem.getTitle() + "  habari kamili..");
+ holder.sokoMoto.setText(currentItem.getTitle());
 
         //Soko Huru detail
 
