@@ -36,5 +36,6 @@
     <dimen name="twenty_sp">20sp</dimen>
     <dimen name="twenty_four_sp">24sp</dimen>
     <dimen name="margin_large">16dp</dimen>
+    <dimen name="launchscreen_icon_bottom">32dp</dimen>
 
 </resources>

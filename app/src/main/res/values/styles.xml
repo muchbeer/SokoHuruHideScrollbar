@@ -29,4 +29,9 @@
         <item name="android:background">#448AFF</item>
     </style>
 
+    <style name="Theme.App.MainActivity" parent="Base.Theme.DesignDemo">
+        <item name="android:windowBackground">@drawable/myscreen</item>
+
+    </style>
+
 </resources>

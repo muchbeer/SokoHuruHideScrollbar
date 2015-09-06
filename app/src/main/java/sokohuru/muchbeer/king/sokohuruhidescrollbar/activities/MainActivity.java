@@ -1,6 +1,10 @@
 package sokohuru.muchbeer.king.sokohuruhidescrollbar.activities;
 
+import android.annotation.TargetApi;
 import android.app.FragmentTransaction;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v7.app.AlertDialog;
@@ -49,9 +53,14 @@ public class MainActivity extends AppCompatActivity {
 
     private DrawerLayout mDrawerLayout;
 
-
+    // Splash screen timer
+    private static int SPLASH_TIME_OUT = 3000;
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        // Make sure this is before calling super.onCreate
+       setTheme(R.style.Base_Theme_DesignDemo);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -91,7 +100,17 @@ public class MainActivity extends AppCompatActivity {
 
         fragmentTransaction.commit();
 
+        /*
 
+        boolean showLaunchScreen;
+        if (showLaunchScreen) {
+// run an animation, and when it's done,
+// set the real window background
+            getWindow().setBackgroundDrawable(
+                    new ColorDrawable(Color.WHITE));
+        }
+
+        */
     }
 
     @Override
