@@ -1,5 +1,13 @@
 <resources>
 
+    <!-- Base application theme. -->
+    <style name="Theme" parent="Theme.AppCompat.Light.DarkActionBar">
+
+        <!-- customize the color palette -->
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
+        <item name="colorAccent">@color/accent</item>
+    </style>
 
     <style name="Theme.DesignDemo" parent="Base.Theme.DesignDemo">
     </style>
@@ -26,11 +34,11 @@
         <!-- Used for the title and text -->
         <item name="android:textColorPrimary">#FFFFFF</item>
         <!-- Used for the background -->
-        <item name="android:background">#448AFF</item>
+        <item name="android:background">#607D8B</item>
     </style>
 
     <style name="Theme.App.MainActivity" parent="Base.Theme.DesignDemo">
-        <item name="android:windowBackground">@drawable/myscreen</item>
+        <item name="android:color">#FFFFFF</item>
 
     </style>
 
