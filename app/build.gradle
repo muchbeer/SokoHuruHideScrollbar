@@ -43,20 +43,21 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:22.2.0'
     compile 'com.android.support:palette-v7:22.2.0'
 
-    compile 'com.google.android.gms:play-services-analytics:7.5.0'
+
 
     compile 'com.android.support:support-v4:22.2.1'
-    compile ('com.google.apis:google-api-services-youtube:v3-rev144-1.20.0') {
-        exclude module: 'httpclient' //by artifact name
-        exclude group: 'org.apache.httpcomponents' //by group
-        exclude group: 'org.apache.httpcomponents', module: 'httpclient' //by both name and group
-    }
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.firebase:firebase-client-android:2.3.1+'
 
+    compile 'com.google.firebase:firebase-core:9.2.0'
+    compile 'com.google.firebase:firebase-database:9.2.0'
+    compile 'com.google.firebase:firebase-storage:9.2.0'
+    compile 'com.google.firebase:firebase-crash:9.2.0'
+    compile 'com.google.firebase:firebase-messaging:9.2.0'
 
 }
 
-
+// ADD THIS AT THE BOTTOM
+apply plugin: 'com.google.gms.google-services'
 
 

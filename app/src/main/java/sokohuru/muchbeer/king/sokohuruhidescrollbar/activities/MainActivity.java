@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
             View rootView = inflater.inflate(R.layout.fragment_main_new, container, false);
 
             // Get a reference to the ListView, and attach this adapter to it.
-            ListView listView = (ListView) rootView.findViewById(R.id.listview_forecast);
+            ListView listView = (ListView) rootView.findViewById(R.id.listview_ukawa);
             listView.setAdapter(forecastAdapter);
 
             return rootView;

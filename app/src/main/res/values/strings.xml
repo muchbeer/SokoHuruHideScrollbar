@@ -1,10 +1,10 @@
 <resources xmlns:xliff="http://schemas.android.com/apk/res-auto">
     <string name="app_name">Ukawa</string>
-      <string name="first">First</string>
+    <string name="first">First</string>
     <string name="previous">Previous</string>
     <string name="next">Next</string>
     <string name="last">Last</string>
-      <string name="title_activity_home">HomeActivity</string>
+    <string name="title_activity_home">HomeActivity</string>
     <string name="title_activity_add_main">AddMainActivity</string>
 
     <string name="error_timeout">Oops! Tatizo la mtandao, vuta chini</string>
@@ -52,7 +52,6 @@
 
     <string name="playerview_text">This is a YouTubePlayerView!</string>
     <string name="playerfragment_text">This is a YouTubePlayerFragment!</string>
-
 
 
     <string name="intent_select">Please select an action:</string>
