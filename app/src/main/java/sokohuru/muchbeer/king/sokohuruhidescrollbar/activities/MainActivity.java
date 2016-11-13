@@ -10,6 +10,9 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -37,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
      * A placeholder fragment containing a simple view.
      */
     public static class PlaceholderFragment extends Fragment {
+
+        private static final String FIREBASE_URL = "https://ukawa-b0f1e.firebaseio.com/News";
 
         public PlaceholderFragment() {
         }
@@ -66,6 +71,9 @@ public class MainActivity extends AppCompatActivity {
                             R.layout.list_item_ukawa, // The name of the layout ID.
                             R.id.list_item_ukawa_textview, // The ID of the textview to populate.
                             weekForecast);
+
+            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReferenceFromUrl(FIREBASE_URL);
+
 
             View rootView = inflater.inflate(R.layout.fragment_main_new, container, false);
 
