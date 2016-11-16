@@ -1,8 +1,10 @@
 package sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.main;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,9 +20,12 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.R;
 
@@ -32,11 +37,18 @@ import static android.R.attr.data;
 
 public class UkawaNewsFragment extends Fragment {
 
+
+    private static final String LOG_TAG = "CONNECT URL";
     TextView txtDisplay;
     private Firebase displayData;
-    String value, name, age, location;
+    String value, name, age, location, mkoa;
     private ListView displayListView;
     private ArrayList<String> ukawaNews = new ArrayList<>();
+
+
+    final String UKAWA_BASE_URL =
+            "https://ukawa-b0f1e.firebaseio.com/?location=date/";
+
 
     public UkawaNewsFragment() {
     }
@@ -64,8 +76,19 @@ public class UkawaNewsFragment extends Fragment {
         // The ArrayAdapter will take data from a source (like our dummy forecast) and
         // use it to populate the ListView it's attached to.
 
+     //   displayData = new Firebase(UKAWA_BASE_URL);
+//File.separator
+        mkoa = "place";
+
+      displayData = new Firebase(getLocation(mkoa));
+
+   // displayData = new Firebase("https://ukawa-b0f1e.firebaseio.com/?location=date/News");
+
+      //  displayData = new Firebase("https://ukawa-b0f1e.firebaseio.com/?location=date/?kinyerezi=place");
+     //   https://ukawa-b0f1e.firebaseio.com/Ukawa/News/?location=mkoa
         //set Firebase variables
-        displayData = new Firebase("https://ukawa-b0f1e.firebaseio.com/News");
+       // displayData = new Firebase("https://ukawa-b0f1e.firebaseio.com/News");
+        Log.v("FORWARD SLASH", "/");
 
         final ArrayAdapter<String> newsAdapter =
                 new ArrayAdapter<String>(
@@ -91,8 +114,18 @@ public class UkawaNewsFragment extends Fragment {
         displayData.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                value = dataSnapshot.getValue(String.class);
-                ukawaNews.add(value);
+
+               //  Map<String, String> map = dataSnapshot.getValue(Map.class);
+               // value = map.get("name");
+                Map<String, Object> newPost = (Map<String, Object>) dataSnapshot.getValue();
+
+                // String name = map.get("Name");
+              //  value = dataSnapshot.child("News").getKey();
+             //   value = dataSnapshot.getValue(String.class);
+
+                value = newPost.get("name").toString();
+                age = newPost.get("age").toString();
+                ukawaNews.add("Name:>  " + value+ "  age:> " +age);
                 newsAdapter.notifyDataSetChanged();
                 //  Log.v("SUCCESS", value);
             }
@@ -135,5 +168,35 @@ public class UkawaNewsFragment extends Fragment {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public String getLocation(String location) {
+
+        // Construct the URL for the OpenWeatherMap query
+        // Possible parameters are avaiable at OWM's forecast API page, at
+        // http://openweathermap.org/API#forecast
+        //  final String FORECAST_BASE_URL = "http://api.openweathermap.org/data/2.5/forecast/daily?";
+        final String QUERY_LOCATION_PARAM = "kinyerezi";
+        //   final String CHANGE_URL_STRING = "mode";
+        //  final String UNITS_PARAM = "units";
+        //  final String DAYS_PARAM = "cnt";
+
+        Uri builtUri = Uri.parse(UKAWA_BASE_URL).buildUpon()
+                .appendQueryParameter(QUERY_LOCATION_PARAM, location)
+                .build();
+
+        try {
+            URL url = new URL(builtUri.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        String changeUrlToString = builtUri.toString();
+
+        Log.v(LOG_TAG, "Built URI " + builtUri.toString());
+
+        // Create the request to OpenWeatherMap, and open the connection
+
+        return changeUrlToString;
     }
 }

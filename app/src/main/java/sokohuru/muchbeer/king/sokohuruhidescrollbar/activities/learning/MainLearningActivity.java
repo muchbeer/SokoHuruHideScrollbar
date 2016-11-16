@@ -22,7 +22,7 @@ public class MainLearningActivity extends AppCompatActivity {
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.learning.UkawaNewsFragment())
+                    .add(R.id.container, new sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.learning.UkawaNewsFragment2())
                     .commit();
         }
 
