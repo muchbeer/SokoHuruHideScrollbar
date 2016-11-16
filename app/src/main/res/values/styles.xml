@@ -4,10 +4,23 @@
     <style name="Theme" parent="Theme.AppCompat.Light.DarkActionBar">
 
         <!-- customize the color palette -->
-        <item name="colorPrimary">@color/primary</item>
-        <item name="colorPrimaryDark">@color/primary_dark</item>
-        <item name="colorAccent">@color/accent</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
     </style>
+
+    <style name="MyMaterialTheme" parent="MyMaterialTheme.Base">
+
+    </style>
+
+    <style name="MyMaterialTheme.Base" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
 
     <style name="Theme.DesignDemo" parent="Base.Theme.DesignDemo">
     </style>
@@ -17,7 +30,7 @@
         <item name="colorPrimaryDark">#D32F2F</item>
         <item name="colorAccent">#448AFF</item>
         <item name="windowActionBar">false</item>
-        <item name="android:windowBackground">@color/window_background</item>
+
     </style>
 
     <style name="Widget.CardContent" parent="android:Widget">

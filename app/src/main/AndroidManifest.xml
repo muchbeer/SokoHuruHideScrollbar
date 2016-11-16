@@ -9,14 +9,13 @@
         android:protectionLevel="signature" />
     />
     <application
+        android:name=".main.FireApp"
         android:allowBackup="true"
         android:icon="@mipmap/chadema"
         android:label="@string/app_name"
-        android:name=".main.FireApp"
-        android:theme="@style/Theme.App.MainActivity"
-        >
+        android:theme="@style/MyMaterialTheme">
         <activity
-            android:name=".main.MainFire"
+            android:name=".main.MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait">
             <intent-filter>

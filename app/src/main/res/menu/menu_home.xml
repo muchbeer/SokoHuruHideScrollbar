@@ -1,10 +1,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="toast.muchbeer.king.swipingfragmentbest.HomeActivity">
+    tools:context="sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.learning.MainLearningActivity">
     <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:title="@string/action_settings"
+        android:id="@+id/action_refresh"
+
+        android:title="@string/action_refresh"
         app:showAsAction="never" />
 </menu>

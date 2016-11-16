@@ -22,9 +22,7 @@
     <!-- TODO: Remove or change this placeholder text -->
 
     <string name="action_search">Tafuta jimbo</string>
+    <string name="action_refresh">Refresh</string>
 
 
-
-
-
- </resources>
+</resources>

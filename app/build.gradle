@@ -44,14 +44,14 @@ dependencies {
     compile 'com.android.support:palette-v7:22.2.0'
     compile 'com.android.support:support-v4:22.2.1'
     compile 'com.squareup.picasso:picasso:2.5.2'
-    compile 'com.firebase:firebase-client-android:2.3.1+'
+    compile 'com.firebase:firebase-client-android:2.3.1'
     compile 'com.google.firebase:firebase-core:9.2.1'
     compile 'com.google.firebase:firebase-database:9.2.1'
     compile 'com.google.firebase:firebase-storage:9.2.1'
     compile 'com.google.firebase:firebase-crash:9.2.1'
     compile 'com.google.firebase:firebase-messaging:9.2.1'
     // Single target that includes all FirebaseUI libraries above
-  //  compile 'com.firebaseui:firebase-ui:0.4.4'
+  // compile 'com.firebaseui:firebase-ui:0.4.+'
     // FirebaseUI Database only
     //compile 'com.firebaseui:firebase-ui:0.4.3'
   //  compile "com.google.firebase:firebase-auth:${project.ext.firebase_version}"

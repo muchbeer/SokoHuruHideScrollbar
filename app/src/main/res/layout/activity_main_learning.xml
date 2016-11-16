@@ -4,11 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.main.MainActivity"
+    tools:context="sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.learning.MainLearningActivity"
     tools:ignore="MergeRootFrame">
 
     <include
         android:id="@+id/toolbar"
-        layout="@layout/toolbar"
-        />
-</LinearLayout>
+        layout="@layout/toolbar" />
+
+    </LinearLayout>
