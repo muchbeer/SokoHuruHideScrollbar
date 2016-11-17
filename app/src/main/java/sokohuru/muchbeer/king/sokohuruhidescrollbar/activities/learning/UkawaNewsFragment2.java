@@ -12,6 +12,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -56,6 +57,10 @@ public class UkawaNewsFragment2 extends Fragment {
     private ListView displayListView;
     private ArrayList<String> ukawaNews = new ArrayList<>();
 
+    ArrayList<String> addValueToArray = new ArrayList<String>();
+    String[] valueToResult, taketoMainThread;
+
+    private ArrayAdapter<String> ukawaAdapter;
 
     final String UKAWA_BASE_URL =
             "https://ukawa-b0f1e.firebaseio.com/?location=date/";
@@ -86,7 +91,7 @@ public class UkawaNewsFragment2 extends Fragment {
         if (id == R.id.action_refresh) {
             UkawaNewsFragment2.FetchUkawaTask weatherTask = new UkawaNewsFragment2.FetchUkawaTask();
             weatherTask.execute("place");
-            Toast.makeText(getActivity(), "Now I can reach the menu", Toast.LENGTH_LONG).show();
+           // Toast.makeText(getActivity(), "Now I can reach the menu", Toast.LENGTH_LONG).show();
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -98,31 +103,36 @@ public class UkawaNewsFragment2 extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_main_new, container, false);
 
-     //   displayData = new Firebase(UKAWA_BASE_URL);
+// Create some dummy data for the ListView.  Here's a sample weekly forecast
+        String[] data = {
+                "Mon 6/23?- Sunny - 31/17",
+                "Tue 6/24 - Foggy - 21/8",
+                "Wed 6/25 - Cloudy - 22/17",
+                "Thurs 6/26 - Rainy - 18/11",
+                "Fri 6/27 - Foggy - 21/10",
+                "Sat 6/28 - TRAPPED IN WEATHERSTATION - 23/18",
+                "Sun 6/29 - Sunny - 20/7"
+        };
+        List<String> weekForecast = new ArrayList<String>(Arrays.asList(data));
 
-              //  displayData = new Firebase(getLocation(mkoa));
-
-        UkawaNewsFragment2.FetchUkawaTask weatherTask = new UkawaNewsFragment2.FetchUkawaTask();
-        weatherTask.execute("place");
-      //  displayData = new Firebase("https://ukawa-b0f1e.firebaseio.com/?location=date/News");
-
-        //set Firebase variables
-        // displayData = new Firebase("https://ukawa-b0f1e.firebaseio.com/News");
-
-        final ArrayAdapter<String> newsAdapter =
+        ukawaAdapter =
                 new ArrayAdapter<String>(
                         getActivity(), // The current context (this activity)
                         R.layout.list_item_ukawa, // The name of the layout ID.
                         R.id.list_item_ukawa_textview, // The ID of the textview to populate.
-                        ukawaNews);
-
-
+                        weekForecast);
 
         // Get a reference to the ListView, and attach this adapter to it.
-     //   ListView listView = (ListView) rootView.findViewById(R.id.listview_ukawa);
-     //   listView.setAdapter(newsAdapter);
+        ListView listView = (ListView) rootView.findViewById(R.id.listview_ukawa);
+        listView.setAdapter(ukawaAdapter);
 
-
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String ukawaNews = ukawaAdapter.getItem(position);
+                Toast.makeText(getActivity(), ukawaNews, Toast.LENGTH_SHORT).show();
+            }
+        });
         return rootView;
     }
 
@@ -192,6 +202,21 @@ public class UkawaNewsFragment2 extends Fragment {
                   //  newsAdapter.notifyDataSetChanged();
                     Log.v("SUCCESS", "This is to show I know things: " + value);
 
+                    addValueToArray.add(value);
+                  valueToResult = new String[addValueToArray.size()];
+
+                    addValueToArray.toArray(valueToResult);
+                //    a.toArray(myArray);
+
+
+                    for(String addValue : addValueToArray) {
+                        Log.v("ON_BACKGROUND: ", addValue);
+                       // valueToResult = addValue;
+                    }
+
+
+
+
                 }
 
                 @Override
@@ -214,11 +239,37 @@ public class UkawaNewsFragment2 extends Fragment {
 
                 }
             });
+
+
+
             //Paste the damn
            // Log.v(LOG_TAG, "Forecast string: " + value);
 
             // This will only happen if there was an error getting or parsing the forecast.
-            return null;
+
+            return valueToResult;
         }
+
+
+        @Override
+        protected void onPostExecute(String[] result) {
+           // result = value;
+//            result[0] = value;
+          //  Toast.makeText(getActivity(), "POSTEXECUTE: "+ valueToResult[1], Toast.LENGTH_LONG).show();
+
+//            Log.v("POST EXECUTE", valueToResult[1]);
+            if (result != null) {
+                Toast.makeText(getActivity(), "You have pass onPostExecute: ", Toast.LENGTH_LONG).show();
+
+                Log.v("onPostExecute", result[0]);
+                ukawaAdapter.clear();
+                for(String displayNew : result) {
+                    ukawaAdapter.add(displayNew);
+                }
+                // New data is back from the server.  Hooray!
+            }
+        }
+
+
     }
 }
