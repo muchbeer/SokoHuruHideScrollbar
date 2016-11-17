@@ -29,7 +29,23 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <activity android:name=".learning.DetailActivity"
+            android:label="Taarifa"
+            android:parentActivityName=".learning.MainLearningActivity" >
+            >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".learning.MainLearningActivity" />
+        </activity>
 
+        <activity
+            android:name=".learning.SettingsActivity"
+            android:label="@string/select_location"
+            android:parentActivityName=".learning.MainLearningActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".learning.MainLearningActivity" />
+        </activity>
     </application>
 
 </manifest>

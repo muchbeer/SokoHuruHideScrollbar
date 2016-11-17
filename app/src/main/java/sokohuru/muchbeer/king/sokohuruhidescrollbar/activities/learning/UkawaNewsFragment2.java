@@ -1,8 +1,11 @@
 package sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.learning;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -89,12 +92,26 @@ public class UkawaNewsFragment2 extends Fragment {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_refresh) {
-            UkawaNewsFragment2.FetchUkawaTask weatherTask = new UkawaNewsFragment2.FetchUkawaTask();
-            weatherTask.execute("place");
+           updateNews();
            // Toast.makeText(getActivity(), "Now I can reach the menu", Toast.LENGTH_LONG).show();
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void updateNews() {
+        UkawaNewsFragment2.FetchUkawaTask weatherTask = new UkawaNewsFragment2.FetchUkawaTask();
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String location = prefs.getString(getString(R.string.pref_location_key),
+                getString(R.string.pref_location_default));
+        weatherTask.execute(location);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        updateNews();
     }
 
     @Nullable
@@ -131,6 +148,10 @@ public class UkawaNewsFragment2 extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String ukawaNews = ukawaAdapter.getItem(position);
                 Toast.makeText(getActivity(), ukawaNews, Toast.LENGTH_SHORT).show();
+
+                Intent intent = new Intent(getActivity(), DetailActivity.class)
+                        .putExtra(Intent.EXTRA_TEXT, ukawaNews);
+                startActivity(intent);
             }
         });
         return rootView;
@@ -142,16 +163,9 @@ public class UkawaNewsFragment2 extends Fragment {
 
   private String getUkawaDataFromJson(String[] path_url_location)
                 {
-     //       JSONObject forecastJson = new JSONObject(forecastJsonStr);
 
-      // Construct the URL for the OpenWeatherMap query
-      // Possible parameters are avaiable at OWM's forecast API page, at
-      // http://openweathermap.org/API#forecast
-      //  final String FORECAST_BASE_URL = "http://api.openweathermap.org/data/2.5/forecast/daily?";
       final String QUERY_LOCATION_PARAM = "kinyerezi";
-      //   final String CHANGE_URL_STRING = "mode";
-      //  final String UNITS_PARAM = "units";
-      //  final String DAYS_PARAM = "cnt";
+
 
       Uri builtUri = Uri.parse(UKAWA_BASE_URL).buildUpon()
               .appendQueryParameter(QUERY_LOCATION_PARAM, path_url_location[0])
@@ -196,8 +210,8 @@ public class UkawaNewsFragment2 extends Fragment {
                     //  value = dataSnapshot.child("News").getKey();
                     //   value = dataSnapshot.getValue(String.class);
 
-                    value = newPost.get("name").toString();
-                    age = newPost.get("age").toString();
+                    value = newPost.get("title").toString();
+                    age = newPost.get("location").toString();
                   //  ukawaNews.add("Name:>  " + value+ "  age:> " +age);
                   //  newsAdapter.notifyDataSetChanged();
                     Log.v("SUCCESS", "This is to show I know things: " + value);
@@ -213,9 +227,6 @@ public class UkawaNewsFragment2 extends Fragment {
                         Log.v("ON_BACKGROUND: ", addValue);
                        // valueToResult = addValue;
                     }
-
-
-
 
                 }
 
@@ -241,25 +252,15 @@ public class UkawaNewsFragment2 extends Fragment {
             });
 
 
-
-            //Paste the damn
-           // Log.v(LOG_TAG, "Forecast string: " + value);
-
-            // This will only happen if there was an error getting or parsing the forecast.
-
             return valueToResult;
         }
 
 
         @Override
         protected void onPostExecute(String[] result) {
-           // result = value;
-//            result[0] = value;
-          //  Toast.makeText(getActivity(), "POSTEXECUTE: "+ valueToResult[1], Toast.LENGTH_LONG).show();
 
-//            Log.v("POST EXECUTE", valueToResult[1]);
             if (result != null) {
-                Toast.makeText(getActivity(), "You have pass onPostExecute: ", Toast.LENGTH_LONG).show();
+               // Toast.makeText(getActivity(), "You have pass onPostExecute: ", Toast.LENGTH_LONG).show();
 
                 Log.v("onPostExecute", result[0]);
                 ukawaAdapter.clear();
