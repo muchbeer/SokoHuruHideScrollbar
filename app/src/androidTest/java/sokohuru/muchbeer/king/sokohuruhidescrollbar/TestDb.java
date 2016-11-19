@@ -7,6 +7,9 @@ import android.test.AndroidTestCase;
 import android.test.InstrumentationTestCase;
 import android.util.Log;
 
+import java.util.Map;
+import java.util.Set;
+
 import sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.data.UkawaDbHelper;
 
 import sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.data.UkawaContract.UkawaEntry;
@@ -22,6 +25,21 @@ import static sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.R.drawable
 public class TestDb extends AndroidTestCase {
 
     public static final String LOG_TAG = TestDb.class.getSimpleName();
+    // Test data we're going to insert into the DB to see if it works.
+    int locationId = 2;
+   public static final String testLocationSetting = "dodoma";
+    public static final String testCityName = "Dodoma";
+    public static final String testMbunge = "John Mnyika";
+    public static final String testDiwani = "Katala";
+
+    //Ukawa News
+    public static final String ukawaDateText = "20141212";
+    public static final String ukawaTitleText = "Mnyika";
+    public static final String ukawaDescText = "Uyu mbunge ni msumbufu sana";
+    public static final String ukawaCommentsText = "Anfaa kufanya ivo";
+    public static final  String ukawaLikeViewText="like";
+    public static final String ukawaNewsReporterText="George";
+    public static final String ukawaImageText="httpsukawatz";
 
 
     public void testCreateDb() throws Throwable {
@@ -34,37 +52,18 @@ public class TestDb extends AndroidTestCase {
 
     public void testInsertReadDb() {
 
-        // Test data we're going to insert into the DB to see if it works.
-        int locationId = 2;
-        String testLocationSetting = "dodoma";
-        String testCityName = "Dodoma";
-        String testMbunge = "John Mnyika";
-        String testDiwani = "Katala";
 
-        //Ukawa News
-        String ukawaDateText = "20141212";
-        String ukawaTitleText = "Mnyika";
-        String ukawaDescText = "Uyu mbunge ni msumbufu sana";
-        String ukawaCommentsText = "Anfaa kufanya ivo";
-        String ukawaLikeViewText="like";
-        String ukawaNewsReporterText="George";
-        String ukawaImageText="httpsukawatz";
-        int ukawaLocKey = 2;
 
         // If there's an error in those massive SQL table creation Strings,
         // errors will be thrown here when you try to get a writable database.
         UkawaDbHelper dbHelper = new UkawaDbHelper(mContext);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-        // Create a new map of values, where column names are the keys
-        ContentValues values = new ContentValues();
-        values.put(LocationEntry.COLUMN_LOCATION_SETTING, testLocationSetting);
-        values.put(LocationEntry.COLUMN_CITY_NAME, testCityName);
-        values.put(LocationEntry.COLUMN_MBUNGE, testMbunge);
-        values.put(LocationEntry.COLUMN_DIWANI, testDiwani);
+
+        ContentValues testLocationValues = createNorthPoleLocationValues();
 
         long locationRowId;
-        locationRowId = db.insert(LocationEntry.TABLE_NAME, null, values);
+        locationRowId = db.insert(LocationEntry.TABLE_NAME, null, testLocationValues);
 
         // Verify we got a row back.
         assertTrue(locationRowId != -1);
@@ -83,7 +82,7 @@ public class TestDb extends AndroidTestCase {
         };
 
         // A cursor is your primary interface to the query results.
-        Cursor cursor = db.query(
+        Cursor cursorLocation = db.query(
                 LocationEntry.TABLE_NAME,  // Table to Query
                 columns,
                 null, // Columns for the "where" clause
@@ -92,49 +91,14 @@ public class TestDb extends AndroidTestCase {
                 null, // columns to filter by row groups
                 null // sort order
         );
+//simplified form
+        validateCursor(cursorLocation, testLocationValues);
 
-        // If possible, move to the first row of the query results.
-        if (cursor.moveToFirst()) {
-            // Get the value in each column by finding the appropriate column index.
-            int locationIndex = cursor.getColumnIndex(LocationEntry.COLUMN_LOCATION_SETTING);
-            String locationSetting = cursor.getString(locationIndex);
-
-            int nameIndex = cursor.getColumnIndex((LocationEntry.COLUMN_CITY_NAME));
-            String nameCity = cursor.getString(nameIndex);
-
-            int mbungeIndex = cursor.getColumnIndex((LocationEntry.COLUMN_MBUNGE));
-            String saveMbunge = cursor.getString(mbungeIndex);
-
-            int diwaniIndex = cursor.getColumnIndex((LocationEntry.COLUMN_DIWANI));
-            String saveDiwani = cursor.getString(diwaniIndex);
-
-            // Hooray, data was returned!  Assert that it's the right data, and that the database
-            // creation code is working as intended.
-            // Then take a break.  We both know that wasn't easy.
-            assertEquals(testCityName, nameCity);
-            assertEquals(testLocationSetting, locationSetting);
-            assertEquals(testMbunge, saveMbunge);
-            assertEquals(testDiwani, saveDiwani);
 
             // Fantastic.  Now that we have a location, add some weather!
-        } else {
-            // That's weird, it works on MY machine...
-            fail("No values returned :(");
-        }
+        ContentValues ukawaNewValues = createUkawaValues(locationRowId);
 
-        // Fantastic.  Now that we have a location, add some weather!
-        ContentValues ukawaValues = new ContentValues();
-        ukawaValues.put(UkawaEntry.COLUMN_LOC_KEY, locationRowId);
-        ukawaValues.put(UkawaEntry.COLUMN_DATETEXT, ukawaDateText);
-
-        ukawaValues.put(UkawaEntry.COLUMN_TITLE, ukawaTitleText);
-        ukawaValues.put(UkawaEntry.COLUMN_DESC, ukawaDescText);
-        ukawaValues.put(UkawaEntry.COLUMN_COMMENTS, ukawaCommentsText);
-        ukawaValues.put(UkawaEntry.COLUMN_LIKE_VIEW, ukawaLikeViewText);
-        ukawaValues.put(UkawaEntry.COLUMN_NEWS_REPORTER, ukawaNewsReporterText);
-        ukawaValues.put(UkawaEntry.COLUMN_IMAGE, ukawaImageText);
-
-        long ukawaRowId = db.insert(UkawaEntry.TABLE_NAME, null, ukawaValues);
+        long ukawaRowId = db.insert(UkawaEntry.TABLE_NAME, null, ukawaNewValues);
         assertTrue(ukawaRowId != -1);
         Log.d("UKAWA ROW ID", "New row id: " + locationRowId);
 
@@ -165,43 +129,50 @@ public class TestDb extends AndroidTestCase {
                 null  // sort order
         );
 
-        if (!ukawaCursor.moveToFirst()) {
-            fail("No weather data returned!");
-        }
+//ukawaSimplified value
+        validateCursor(ukawaCursor, ukawaNewValues);
 
-        int locationIndex = cursor.getColumnIndex(LocationEntry.COLUMN_LOCATION_SETTING);
-        String locationSetting = cursor.getString(locationIndex);
+           dbHelper.close();
+    }
+    static ContentValues createUkawaValues(long locationRowId) {
+        // Fantastic.  Now that we have a location, add some weather!
+        ContentValues ukawaValues = new ContentValues();
+        ukawaValues.put(UkawaEntry.COLUMN_LOC_KEY, locationRowId);
+        ukawaValues.put(UkawaEntry.COLUMN_DATETEXT, ukawaDateText);
 
+        ukawaValues.put(UkawaEntry.COLUMN_TITLE, ukawaTitleText);
+        ukawaValues.put(UkawaEntry.COLUMN_DESC, ukawaDescText);
+        ukawaValues.put(UkawaEntry.COLUMN_COMMENTS, ukawaCommentsText);
+        ukawaValues.put(UkawaEntry.COLUMN_LIKE_VIEW, ukawaLikeViewText);
+        ukawaValues.put(UkawaEntry.COLUMN_NEWS_REPORTER, ukawaNewsReporterText);
+        ukawaValues.put(UkawaEntry.COLUMN_IMAGE, ukawaImageText);
 
-        assertEquals(locationRowId, ukawaCursor.getInt(
-                ukawaCursor.getColumnIndex(UkawaEntry.COLUMN_LOC_KEY)));
-        
-        assertEquals(ukawaDateText, ukawaCursor.getString(
-                ukawaCursor.getColumnIndex(UkawaEntry.COLUMN_DATETEXT)));
-
-        assertEquals(ukawaTitleText, ukawaCursor.getString(
-                ukawaCursor.getColumnIndex(UkawaEntry.COLUMN_TITLE)));
-
-        assertEquals(ukawaDescText, ukawaCursor.getString(
-                ukawaCursor.getColumnIndex(UkawaEntry.COLUMN_DESC)));
-
-        assertEquals(ukawaNewsReporterText, ukawaCursor.getString(
-                ukawaCursor.getColumnIndex(UkawaEntry.COLUMN_NEWS_REPORTER)));
-
-
-        assertEquals(ukawaImageText, ukawaCursor.getString(
-                ukawaCursor.getColumnIndex(UkawaEntry.COLUMN_IMAGE)));
-
-
-        assertEquals(ukawaCommentsText, ukawaCursor.getString(
-                ukawaCursor.getColumnIndex(UkawaEntry.COLUMN_COMMENTS)));
-
-        assertEquals(ukawaLikeViewText, ukawaCursor.getString(
-                ukawaCursor.getColumnIndex(UkawaEntry.COLUMN_LIKE_VIEW)));
-
-
-        ukawaCursor.close();
-        dbHelper.close();
+        return ukawaValues;
     }
 
+    static ContentValues createNorthPoleLocationValues() {
+        // Create a new map of values, where column names are the keys
+        ContentValues values = new ContentValues();
+        values.put(LocationEntry.COLUMN_LOCATION_SETTING, testLocationSetting);
+        values.put(LocationEntry.COLUMN_CITY_NAME, testCityName);
+        values.put(LocationEntry.COLUMN_MBUNGE, testMbunge);
+        values.put(LocationEntry.COLUMN_DIWANI, testDiwani);
+
+        return values;
+    }
+
+    static void validateCursor(Cursor valueCursor, ContentValues expectedValues) {
+
+        assertTrue(valueCursor.moveToFirst());
+
+        Set<Map.Entry<String, Object>> valueSet = expectedValues.valueSet();
+        for (Map.Entry<String, Object> entry : valueSet) {
+            String columnName = entry.getKey();
+            int idx = valueCursor.getColumnIndex(columnName);
+            assertFalse(idx == -1);
+            String expectedValue = entry.getValue().toString();
+            assertEquals(expectedValue, valueCursor.getString(idx));
+        }
+        valueCursor.close();
+    }
 }
