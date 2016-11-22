@@ -72,13 +72,12 @@ public class TestProvider extends AndroidTestCase {
         // A cursor is your primary interface to the query results.
        // Cursor cursorLocation = mContext.getContentResolver().query(
 
-        Cursor cursorLocation =db.query(
-                LocationEntry.TABLE_NAME,  // Table to Query
+        Cursor cursorLocation =mContext.getContentResolver().query(
+                LocationEntry.CONTENT_URI,  // Table to Query
                 columns,
                 null, // Columns for the "where" clause
                 null, // Values for the "where" clause
-                null,
-                null,
+
                 null// columns to group by
 
         );
@@ -86,7 +85,7 @@ public class TestProvider extends AndroidTestCase {
         validateCursor(cursorLocation, testLocationValues);
 
         // Now see if we can successfully query if we include the row id
-        /*
+
         cursorLocation = mContext.getContentResolver().query(
                 LocationEntry.buildLocationUri(locationRowId),
                 null, // leaving "columns" null just returns all the columns.
@@ -95,7 +94,7 @@ public class TestProvider extends AndroidTestCase {
                 null  // sort order
         );
 
-*/
+
      //   validateCursor(cursorLocation, testLocationValues);
             // Fantastic.  Now that we have a location, add some ukawa!
         ContentValues ukawaNewValues = TestDb.createUkawaValues(locationRowId);
@@ -123,14 +122,14 @@ public class TestProvider extends AndroidTestCase {
         };
 
        // Cursor ukawaCursor = mContext.getContentResolver().query(
-        Cursor ukawaCursor = db.query(
-                UkawaEntry.TABLE_NAME,  // Table to Query
+        Cursor ukawaCursor = mContext.getContentResolver().query(
+                UkawaEntry.CONTENT_URI,  // Table to Query
                 columnUkawa, // leaving "columns" null just returns all the columns.
                 null, // cols for "where" clause
                 null, // values for "where" clause
-                null,
-                null,
-                null// columns to group by
+                null
+
+                // columns to group by
 
         );
 

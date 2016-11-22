@@ -1,6 +1,7 @@
 package sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.data;
 
 import android.content.ContentProvider;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
@@ -91,12 +92,28 @@ public class UkawaProvider extends ContentProvider {
             }
             // "location/*"
             case LOCATION_ID: {
-                retCursor = null;
+                retCursor = ukawaOpenHelper.getReadableDatabase().query(
+                        UkawaContract.LocationEntry.TABLE_NAME,
+                        projection,
+                        UkawaContract.LocationEntry._ID + "= '" + ContentUris.parseId(uri) +" '",
+                        null,
+                        null,
+                        null,
+                        sortOrder
+                );
                 break;
             }
             // "location"
             case LOCATION: {
-                retCursor = null;
+                retCursor = ukawaOpenHelper.getReadableDatabase().query(
+                        UkawaContract.LocationEntry.TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder
+                );
                 break;
             }
 
