@@ -46,6 +46,11 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".learning.MainLearningActivity" />
         </activity>
+
+        <provider
+            android:authorities="sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.data.UkawaProvider"
+            android:name=".data.UkawaProvider" />
     </application>
+
 
 </manifest>
