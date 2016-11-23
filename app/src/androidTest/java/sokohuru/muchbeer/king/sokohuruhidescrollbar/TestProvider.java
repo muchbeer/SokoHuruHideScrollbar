@@ -169,6 +169,7 @@ public class TestProvider extends AndroidTestCase {
             // Add the location values in with the weather data so that we can make
             // sure that the join worked and we actually get all the values back
 // Get the joined Weather and Location data
+            //it work perfectly
             ukawaCursor = mContext.getContentResolver().query(
                     UkawaEntry.buildUkawaLocationWithDate(TestDb.testCityName, TestDb.ukawaDateText),
                     null,
