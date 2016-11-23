@@ -1,8 +1,12 @@
 package sokohuru.muchbeer.king.sokohuruhidescrollbar;
 
+import android.annotation.TargetApi;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
+import android.os.Build;
 import android.test.AndroidTestCase;
 import android.util.Log;
 
@@ -53,6 +57,9 @@ public class TestProvider extends AndroidTestCase {
         long locationRowId;
         locationRowId = db.insert(LocationEntry.TABLE_NAME, null, testLocationValues);
 
+     //   Uri locationUri = mContext.getContentResolver().insert(LocationEntry.CONTENT_URI, testLocationValues);
+      //  long locationRowId = ContentUris.parseId(locationUri);
+
         // Verify we got a row back.
         assertTrue(locationRowId != -1);
         Log.d(LOG_TAG, "New row id: " + locationRowId);
@@ -82,10 +89,14 @@ public class TestProvider extends AndroidTestCase {
 
         );
 //simplified form
-        validateCursor(cursorLocation, testLocationValues);
+
+        if(cursorLocation.moveToFirst()) {
+            validateCursor(cursorLocation, testLocationValues);
+
+        }
 
         // Now see if we can successfully query if we include the row id
-
+//This is done by returning basically a very single item from our entire table location
         cursorLocation = mContext.getContentResolver().query(
                 LocationEntry.buildLocationUri(locationRowId),
                 null, // leaving "columns" null just returns all the columns.
@@ -95,48 +106,135 @@ public class TestProvider extends AndroidTestCase {
         );
 
 
-     //   validateCursor(cursorLocation, testLocationValues);
+        if(cursorLocation.moveToFirst()) {
+            validateCursor(cursorLocation, testLocationValues);
+
+            //I have paste inside the ukawaNew content value
             // Fantastic.  Now that we have a location, add some ukawa!
-        ContentValues ukawaNewValues = TestDb.createUkawaValues(locationRowId);
+            ContentValues ukawaNewValues = TestDb.createUkawaValues(locationRowId);
 
-        long ukawaRowId = db.insert(UkawaEntry.TABLE_NAME, null, ukawaNewValues);
-        assertTrue(ukawaRowId != -1);
-        Log.d("UKAWA ROW ID", "New row id: " + ukawaRowId);
+            long ukawaRowId = db.insert(UkawaEntry.TABLE_NAME, null, ukawaNewValues);
 
-        // A cursor is your primary interface to the query results.
+        /*
+        Uri ukawaRowIdUri = mContext.getContentResolver()
+                .insert(UkawaEntry.CONTENT_URI, ukawaNewValues);
 
-        // Data's inserted.  IN THEORY.  Now pull some out to stare at it and verify it made
-        // the round trip.
+        long ukawaRowId = ContentUris.parseId(ukawaRowIdUri);
+         */
 
-        // Specify which columns you want.
-        String[] columnUkawa = {
-                UkawaEntry._ID,
-                UkawaEntry.COLUMN_DATETEXT,
-                UkawaEntry.COLUMN_TITLE,
-                UkawaEntry.COLUMN_DESC,
-                UkawaEntry.COLUMN_COMMENTS,
-                UkawaEntry.COLUMN_LIKE_VIEW,
-                UkawaEntry.COLUMN_IMAGE,
-                UkawaEntry.COLUMN_LOC_KEY,
-                UkawaEntry.COLUMN_NEWS_REPORTER
-        };
+            assertTrue(ukawaRowId != -1);
+            Log.d("UKAWA ROW ID", "New row id: " + ukawaRowId);
 
-       // Cursor ukawaCursor = mContext.getContentResolver().query(
-        Cursor ukawaCursor = mContext.getContentResolver().query(
-                UkawaEntry.CONTENT_URI,  // Table to Query
-                columnUkawa, // leaving "columns" null just returns all the columns.
-                null, // cols for "where" clause
-                null, // values for "where" clause
-                null
+            // A cursor is your primary interface to the query results.
 
-                // columns to group by
+            // Data's inserted.  IN THEORY.  Now pull some out to stare at it and verify it made
+            // the round trip.
 
-        );
+            // Specify which columns you want.
+            String[] columnUkawa = {
+
+                    UkawaEntry.COLUMN_DATETEXT,
+                    UkawaEntry.COLUMN_TITLE,
+                    UkawaEntry.COLUMN_DESC,
+                    UkawaEntry.COLUMN_COMMENTS,
+                    UkawaEntry.COLUMN_LIKE_VIEW,
+                    UkawaEntry.COLUMN_IMAGE,
+                    UkawaEntry.COLUMN_LOC_KEY,
+                    UkawaEntry.COLUMN_NEWS_REPORTER
+            };
+
+            // Cursor ukawaCursor = mContext.getContentResolver().query(
+            Cursor ukawaCursor = mContext.getContentResolver().query(
+                    UkawaEntry.CONTENT_URI,  // Table to Query
+                    columnUkawa, // leaving "columns" null just returns all the columns.
+                    null, // cols for "where" clause
+                    null, // values for "where" clause
+                    null
+
+                    // columns to group by
+
+            );
+
+            if(ukawaCursor.moveToFirst()) {
+                validateCursor(ukawaCursor, ukawaNewValues);
+            } else {
+                fail("No ukawa News returned!");
+            }
+
+            //its good practice to close your cursor
+            ukawaCursor.close();
+
+
+            //A Cursor is your primary interface to the query result
+            // Add the location values in with the weather data so that we can make
+            // sure that the join worked and we actually get all the values back
+// Get the joined Weather and Location data
+            ukawaCursor = mContext.getContentResolver().query(
+                    UkawaEntry.buildUkawaLocationWithDate(TestDb.testCityName, TestDb.ukawaDateText),
+                    null,
+                    null,
+                    null,
+                    null
+            );
+
+            if(ukawaCursor.moveToFirst()) {
+                validateCursor(ukawaCursor, ukawaNewValues);
+            } else {
+                fail("No ukawa News returned!");
+            }
+        } else {
+            //this one is for the cursor upper
+            fail("No ukawa News returned!");
+        }
+
 
 //ukawaSimplified value
+
+
+
+        // Add the location values in with the weather data so that we can make
+        // sure that the join worked and we actually get all the values back
+//        addAllContentValues(ukawaNewValues, testLocationValues);
+
+
+
+        //Use for future testing
+        /*
+        // Get the joined Weather and Location data with a start date
+        weatherCursor = mContext.getContentResolver().query(
+                WeatherEntry.buildWeatherLocationWithStartDate(
+                        TestDb.TEST_LOCATION, TestDb.TEST_DATE),
+                null, // leaving "columns" null just returns all the columns.
+                null, // cols for "where" clause
+                null, // values for "where" clause
+                null  // sort order
+        );
+        TestDb.validateCursor(weatherCursor, weatherValues);
+
+
+
+        // Get the joined Weather data for a specific date
+        ukawaCursor = mContext.getContentResolver().query(
+                UkawaEntry.buildUkawaLocationWithDate(TestDb.testCityName, TestDb.ukawaDateText),
+                null,
+                null,
+                null,
+                null
+        );
         validateCursor(ukawaCursor, ukawaNewValues);
 
-           dbHelper.close();
+          ukawaCursor = mContext.getContentResolver().query(
+                    UkawaEntry.buildUkawaLocation("Dodoma"),
+                    columnUkawa, // leaving "columns" null just returns all the columns.
+                    null, // cols for "where" clause
+                    null, // values for "where" clause
+                    null  // sort order
+            );
+    */
+
+
+
+        dbHelper.close();
     }
 
     static ContentValues createNorthPoleLocationValues() {
@@ -171,7 +269,7 @@ public class TestProvider extends AndroidTestCase {
         assertEquals(UkawaEntry.CONTENT_TYPE, type);
 
 
-        String testLocation = "dodoma";
+        String testLocation = "Dodoma";
         // content://sokohuru.muchbeer.king.sokohuruhidescrollbar/dodoma
         type = mContext.getContentResolver().getType(
                 UkawaEntry.buildUkawaLocation(testLocation));
@@ -179,14 +277,14 @@ public class TestProvider extends AndroidTestCase {
         assertEquals(UkawaEntry.CONTENT_TYPE, type);
 
 
-        /*
+
         String testDate = "20140612";
-        // content://com.example.android.sunshine.app/ukawa/94074/20140612
+        // content://com.example.android.sunshine.app/ukawa/Dodoma/20140612
         type = mContext.getContentResolver().getType(
-                ukawaEntry.buildukawaLocationWithDate(testLocation, testDate));
+                UkawaEntry.buildUkawaLocationWithDate(testLocation, testDate));
         // vnd.android.cursor.item/com.example.android.sunshine.app/ukawa
-        assertEquals(ukawaEntry.CONTENT_ITEM_TYPE, type);
-        */
+        assertEquals(UkawaEntry.CONTENT_ITEM_TYPE, type);
+
 
         // content://sokohuru.muchbeer.king.sokohuruhidescrollbar/location/
         type = mContext.getContentResolver().getType(LocationEntry.CONTENT_URI);
@@ -197,5 +295,14 @@ public class TestProvider extends AndroidTestCase {
         type = mContext.getContentResolver().getType(LocationEntry.buildLocationUri(1L));
         // vnd.android.cursor.item/sokohuru.muchbeer.king.sokohuruhidescrollbar/location
         assertEquals(LocationEntry.CONTENT_ITEM_TYPE, type);
+    }
+
+    // The target api annotation is needed for the call to keySet -- we wouldn't want
+    // to use this in our app, but in a test it's fine to assume a higher target.
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    void addAllContentValues(ContentValues destination, ContentValues source) {
+        for (String key : source.keySet()) {
+            destination.put(key, source.getAsString(key));
+        }
     }
 }

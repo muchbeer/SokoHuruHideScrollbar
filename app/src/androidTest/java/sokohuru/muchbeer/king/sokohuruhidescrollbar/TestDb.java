@@ -27,13 +27,13 @@ public class TestDb extends AndroidTestCase {
     public static final String LOG_TAG = TestDb.class.getSimpleName();
     // Test data we're going to insert into the DB to see if it works.
     int locationId = 2;
-   public static final String testLocationSetting = "dodoma";
+   public static final String testLocationSetting = "Dodoma";
     public static final String testCityName = "Dodoma";
     public static final String testMbunge = "John Mnyika";
     public static final String testDiwani = "Katala";
 
     //Ukawa News
-    public static final String ukawaDateText = "20141212";
+    public static final String ukawaDateText = "20140612";
     public static final String ukawaTitleText = "Mnyika";
     public static final String ukawaDescText = "Uyu mbunge ni msumbufu sana";
     public static final String ukawaCommentsText = "Anfaa kufanya ivo";

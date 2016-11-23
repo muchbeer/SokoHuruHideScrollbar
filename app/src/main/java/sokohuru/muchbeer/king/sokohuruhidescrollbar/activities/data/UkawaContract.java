@@ -74,7 +74,7 @@ public class UkawaContract {
                 "vnd.android.cursor.item/" + CONTENT_AUTHORITY + "/" + PATH_UKAWA;
 
 
-        public static final String TABLE_NAME = "ukawa";
+        public static String TABLE_NAME = "ukawa";
 
         // Column with the foreign key into the location table.
         public static final String COLUMN_LOC_KEY = "location_id";

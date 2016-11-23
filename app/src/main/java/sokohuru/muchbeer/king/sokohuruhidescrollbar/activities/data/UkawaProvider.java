@@ -5,6 +5,7 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.support.annotation.Nullable;
 
@@ -16,9 +17,86 @@ import static sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.R.drawable
 
 public class UkawaProvider extends ContentProvider {
 
-    // The URI Matcher used by this content provider.
-    private static final UriMatcher sUriMatcher = buildUriMatcher();
     private UkawaDbHelper ukawaOpenHelper;
+    // first we have to create a join method to join two method
+    private static final SQLiteQueryBuilder sUkawaByLocationSettingQueryBuilder = new SQLiteQueryBuilder();
+
+    static {
+       // sUkawaByLocationSettingQueryBuilder = new SQLiteQueryBuilder;
+        sUkawaByLocationSettingQueryBuilder.setTables(
+                UkawaContract.UkawaEntry.TABLE_NAME + " INNER JOIN " +
+                        UkawaContract.LocationEntry.TABLE_NAME +
+                        " ON " + UkawaContract.UkawaEntry.TABLE_NAME +
+                        "." + UkawaContract.UkawaEntry.COLUMN_LOC_KEY +
+                        " = " + UkawaContract.LocationEntry.TABLE_NAME +
+                        "." + UkawaContract.LocationEntry._ID
+        );
+    }
+
+    //This is where people will be able to set their city
+    //the ? will be replaced by the QUERY PARAMETER
+    private static final String sLocationSettingSelection =
+            UkawaContract.LocationEntry.TABLE_NAME+
+                    "." + UkawaContract.LocationEntry.COLUMN_LOCATION_SETTING + " = ? ";
+
+    //This method will have to check wether the date will be greater or equal to parameter
+    private static final String sLocationSettingWithStartDateSelection =
+            UkawaContract.LocationEntry.TABLE_NAME+
+                    "." + UkawaContract.LocationEntry.COLUMN_LOCATION_SETTING + " = ? AND " +
+                    UkawaContract.UkawaEntry.COLUMN_DATETEXT + " >= ? ";
+
+    private static final String sLocationSettingAndDaySelection =
+            UkawaContract.LocationEntry.TABLE_NAME +
+                    "." + UkawaContract.LocationEntry.COLUMN_LOCATION_SETTING + " = ? AND " +
+                    UkawaContract.UkawaEntry.COLUMN_DATETEXT + " = ? ";
+
+    //Next will add the method to get ukawa by location entry using the same query Builder
+    //Note, we fetch our parameter from our uri
+
+    // The URI Matcher used by this content provider.
+    private Cursor getUkawaByLocationSetting(Uri uri, String[] projection, String sortOrder) {
+
+        String locationSetting = UkawaContract.UkawaEntry.getLocationSettingFromUri(uri);
+        String startDate = UkawaContract.UkawaEntry.getStartDateFromUri(uri);
+
+        //and build string array that will be substituted from our query
+        String[] selectionArgs;
+        String selection;
+
+        if (startDate == null) {
+            selection = sLocationSettingSelection;
+            selectionArgs = new String[]{locationSetting};
+        } else {
+            selectionArgs = new String[]{locationSetting, startDate};
+            selection = sLocationSettingWithStartDateSelection;
+        }
+
+        return sUkawaByLocationSettingQueryBuilder.query(ukawaOpenHelper.getReadableDatabase(),
+                projection,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                sortOrder
+        );
+    }
+
+    private Cursor getUkawaByLocationSettingAndDate(
+            Uri uri, String[] projection, String sortOrder) {
+        String locationSetting = UkawaContract.UkawaEntry.getLocationSettingFromUri(uri);
+        String date = UkawaContract.UkawaEntry.getDateFromUri(uri);
+
+        return sUkawaByLocationSettingQueryBuilder.query(ukawaOpenHelper.getReadableDatabase(),
+                projection,
+                sLocationSettingAndDaySelection,
+                new String[]{locationSetting, date},
+                null,
+                null,
+                sortOrder
+        );
+    }
+    private static final UriMatcher sUriMatcher = buildUriMatcher();
+
 
 
     private static final int UKAWA = 100;
@@ -69,12 +147,16 @@ public class UkawaProvider extends ContentProvider {
         switch (sUriMatcher.match(uri)) {
             // "ukawa/*/*"
             case UKAWA_WITH_LOCATION_AND_DATE: {
-                retCursor = null;
+
+                //This is under investigation
+                retCursor = getUkawaByLocationSettingAndDate(uri, projection, sortOrder);
+
                 break;
             }
             // "ukawa/*"
             case UKAWA_WITH_LOCATION: {
-                retCursor = null;
+                retCursor = getUkawaByLocationSetting(uri, projection, sortOrder);
+
                 break;
             }
             // "ukawa"
