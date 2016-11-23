@@ -5,6 +5,7 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.support.annotation.Nullable;
@@ -236,17 +237,112 @@ public class UkawaProvider extends ContentProvider {
 
     @Nullable
     @Override
-    public Uri insert(Uri uri, ContentValues values) {
-        return null;
+    public Uri insert(Uri uri, ContentValues values)
+
+    {
+
+
+        final SQLiteDatabase db = ukawaOpenHelper.getWritableDatabase();
+        final int match = sUriMatcher.match(uri);
+        Uri returnUri;
+
+        switch (match) {
+            case UKAWA: {
+                long _id = db.insert(UkawaContract.UkawaEntry.TABLE_NAME, null, values);
+                if ( _id > 0 )
+                    returnUri = UkawaContract.UkawaEntry.buildWeatherUri(_id);
+                else
+                    throw new android.database.SQLException("Failed to insert row into " + uri);
+                break;
+            }
+            case LOCATION: {
+                long _id = db.insert(UkawaContract.LocationEntry.TABLE_NAME, null, values);
+                if ( _id > 0 )
+                    returnUri = UkawaContract.LocationEntry.buildLocationUri(_id);
+                else
+                    throw new android.database.SQLException("Failed to insert row into " + uri);
+                break;
+            }
+            default:
+                throw new UnsupportedOperationException("Unknown uri: " + uri);
+        }
+        getContext().getContentResolver().notifyChange(uri, null);
+        return returnUri;
     }
 
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
-        return 0;
+        final SQLiteDatabase db = ukawaOpenHelper.getWritableDatabase();
+        final int match = sUriMatcher.match(uri);
+        int rowsDeleted;
+        switch (match) {
+            case UKAWA:
+                rowsDeleted = db.delete(
+                        UkawaContract.UkawaEntry.TABLE_NAME, selection, selectionArgs);
+                break;
+            case LOCATION:
+                rowsDeleted = db.delete(
+                        UkawaContract.LocationEntry.TABLE_NAME, selection, selectionArgs);
+                break;
+            default:
+                throw new UnsupportedOperationException("Unknown uri: " + uri);
+        }
+        // Because a null deletes all rows
+        if (selection == null || rowsDeleted != 0) {
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+        return rowsDeleted;
     }
 
     @Override
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
-        return 0;
+        final SQLiteDatabase db = ukawaOpenHelper.getWritableDatabase();
+        final int match = sUriMatcher.match(uri);
+        int rowsUpdated;
+
+        switch (match) {
+            case UKAWA:
+                rowsUpdated = db.update(UkawaContract.UkawaEntry.TABLE_NAME, values, selection,
+                        selectionArgs);
+                break;
+            case LOCATION:
+                rowsUpdated = db.update(UkawaContract.LocationEntry.TABLE_NAME, values, selection,
+                        selectionArgs);
+                break;
+            default:
+                throw new UnsupportedOperationException("Unknown uri: " + uri);
+        }
+        if (rowsUpdated != 0) {
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+        return rowsUpdated;
+    }
+
+    @Override
+    public int bulkInsert(Uri uri, ContentValues[] values) {
+
+        final SQLiteDatabase db = ukawaOpenHelper.getWritableDatabase();
+        final int match = sUriMatcher.match(uri);
+        switch (match) {
+            case UKAWA:
+                db.beginTransaction();
+                int returnCount = 0;
+                try {
+                    for (ContentValues value : values) {
+                        long _id = db.insert(UkawaContract.UkawaEntry.TABLE_NAME, null, value);
+                        if (_id != -1) {
+                            returnCount++;
+                        }
+                    }
+                    db.setTransactionSuccessful();
+                } finally {
+                    db.endTransaction();
+                }
+                getContext().getContentResolver().notifyChange(uri, null);
+                return returnCount;
+            default:
+
+                return super.bulkInsert(uri, values);
+        }
     }
 }
