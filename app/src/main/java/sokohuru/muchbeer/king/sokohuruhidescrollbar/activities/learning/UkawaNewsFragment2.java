@@ -1,7 +1,11 @@
 package sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.learning;
 
+import android.content.ContentUris;
+import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -24,19 +28,9 @@ import android.widget.Toast;
 import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -44,6 +38,7 @@ import java.util.List;
 import java.util.Map;
 
 import sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.R;
+import sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.data.UkawaContract;
 
 import static android.R.attr.data;
 
@@ -55,8 +50,9 @@ public class UkawaNewsFragment2 extends Fragment {
 
     private static final String LOG_TAG = "CONNECT URL";
     TextView txtDisplay;
-    private Firebase displayData;
-    String value, name, age, location, mkoa;
+
+
+
     private ListView displayListView;
     private ArrayList<String> ukawaNews = new ArrayList<>();
 
@@ -64,11 +60,20 @@ public class UkawaNewsFragment2 extends Fragment {
     String[] valueToResult, taketoMainThread;
 
     private ArrayAdapter<String> ukawaAdapter;
+    private Context mContext;
+
+/*   public UkawaNewsFragment2(Context context, ArrayAdapter<String> forecastAdapter) {
+        mContext = context;
+       ukawaAdapter = forecastAdapter;
+    }*/
+
+
 
     final String UKAWA_BASE_URL =
             "https://ukawa-b0f1e.firebaseio.com/?location=date/";
 //   "https://ukawa-b0f1e.firebaseio.com/?location=date/News";
     public UkawaNewsFragment2(){
+        //mContext = context;
 
     }
 
@@ -99,20 +104,24 @@ public class UkawaNewsFragment2 extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-    private void updateNews() {
-        UkawaNewsFragment2.FetchUkawaTask weatherTask = new UkawaNewsFragment2.FetchUkawaTask();
 
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        String location = prefs.getString(getString(R.string.pref_location_key),
-                getString(R.string.pref_location_default));
+
+    private void updateNews() {
+
+        String location = Utility.getPreferredLocation(getActivity());
+      //  new FetchWeatherTask(getActivity(), mForecastAdapter).execute(location);
+
+        FetchUkawaTask weatherTask = new FetchUkawaTask(getActivity(), ukawaAdapter);
         weatherTask.execute(location);
     }
+
 
     @Override
     public void onStart() {
         super.onStart();
-        updateNews();
+      //  updateNews();
     }
+
 
     @Nullable
     @Override
@@ -157,120 +166,7 @@ public class UkawaNewsFragment2 extends Fragment {
         return rootView;
     }
 
-    private class FetchUkawaTask extends AsyncTask<String, Void, String[]> {
 
-        private final String LOG_TAG = UkawaNewsFragment2.FetchUkawaTask.class.getSimpleName();
-
-  private String getUkawaDataFromJson(String[] path_url_location)
-                {
-
-      final String QUERY_LOCATION_PARAM = "kinyerezi";
-
-
-      Uri builtUri = Uri.parse(UKAWA_BASE_URL).buildUpon()
-              .appendQueryParameter(QUERY_LOCATION_PARAM, path_url_location[0])
-              .build();
-
-      try {
-          URL url = new URL(builtUri.toString());
-      } catch (MalformedURLException e) {
-          e.printStackTrace();
-      }
-
-      String changeUrlToString = builtUri.toString();
-
-      Log.v(LOG_TAG, "Built URI " + builtUri.toString());
-
-      // Create the request to OpenWeatherMap, and open the connection
-                    /*
-      for (String s : resultStrs) {
-          Log.v(LOG_TAG, "Ukawa New entry: " + s);
-      }
-      */
-
-      return changeUrlToString;
-
-         //   return resultStrs;
-
-        }
-        @Override
-        protected String[] doInBackground(String... params) {
-             displayData = new Firebase(getUkawaDataFromJson(params));
-          //  params = getUkawaDataFromJson(params);
-
-            displayData.addChildEventListener(new ChildEventListener() {
-                @Override
-                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-
-                    //  Map<String, String> map = dataSnapshot.getValue(Map.class);
-                    // value = map.get("name");
-                    Map<String, Object> newPost = (Map<String, Object>) dataSnapshot.getValue();
-
-                    // String name = map.get("Name");
-                    //  value = dataSnapshot.child("News").getKey();
-                    //   value = dataSnapshot.getValue(String.class);
-
-                    value = newPost.get("title").toString();
-                    age = newPost.get("location").toString();
-                  //  ukawaNews.add("Name:>  " + value+ "  age:> " +age);
-                  //  newsAdapter.notifyDataSetChanged();
-                    Log.v("SUCCESS", "This is to show I know things: " + value);
-
-                    addValueToArray.add(value);
-                  valueToResult = new String[addValueToArray.size()];
-
-                    addValueToArray.toArray(valueToResult);
-                //    a.toArray(myArray);
-
-
-                    for(String addValue : addValueToArray) {
-                        Log.v("ON_BACKGROUND: ", addValue);
-                       // valueToResult = addValue;
-                    }
-
-                }
-
-                @Override
-                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-                }
-
-                @Override
-                public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-                }
-
-                @Override
-                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-                }
-
-                @Override
-                public void onCancelled(FirebaseError firebaseError) {
-
-                }
-            });
-
-
-            return valueToResult;
-        }
-
-
-        @Override
-        protected void onPostExecute(String[] result) {
-
-            if (result != null) {
-               // Toast.makeText(getActivity(), "You have pass onPostExecute: ", Toast.LENGTH_LONG).show();
-
-                Log.v("onPostExecute", result[0]);
-                ukawaAdapter.clear();
-                for(String displayNew : result) {
-                    ukawaAdapter.add(displayNew);
-                }
-                // New data is back from the server.  Hooray!
-            }
-        }
 
 
     }
-}
