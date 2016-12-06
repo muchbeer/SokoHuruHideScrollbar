@@ -7,8 +7,16 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.firebase.client.ChildEventListener;
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.ui.database.FirebaseListAdapter;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -18,7 +26,12 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Map;
 
+import sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.R;
 import sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.data.UkawaContract;
+import sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.model.UkawaList;
+
+import static android.R.attr.description;
+import static android.R.attr.value;
 
 /**
  * Created by muchbeer on 11/25/2016.
@@ -32,7 +45,7 @@ public class FetchUkawaTask extends AsyncTask<String, Void, String[]> {
 
     private final Context mContext;
 
-    String locationFirebase, mbungeFirebase, diwanFirebase, cdnmFirebase;
+    String locationFirebase, mbungeFirebase, diwanFirebase, cdnmFirebase, descFirebase;
 
     String[] valueToResult, taketoMainThread;
 
@@ -40,6 +53,7 @@ public class FetchUkawaTask extends AsyncTask<String, Void, String[]> {
 
     private ArrayAdapter<String> ukawaAdapter;
     private DatabaseReference databaseReference;
+    private Firebase displayFirebase;
 
     public FetchUkawaTask(Context context, ArrayAdapter<String> mukawaAdapter) {
         mContext = context;
@@ -89,103 +103,57 @@ public class FetchUkawaTask extends AsyncTask<String, Void, String[]> {
         }
         final String locationQuery = params[0];
 
-        //      displayData = new Firebase(getUkawaDataFromJson(params));
+              displayFirebase = new Firebase(getUkawaDataFromJson(params));
+
+      //  displayFirebase = new Firebase(getUkawaDataFromJson(params)).child("gd001/" +"alist");
+
+
         //  params = getUkawaDataFromJson(params);
-        databaseReference = FirebaseDatabase.getInstance().getReferenceFromUrl(getUkawaDataFromJson(params));
 
-
-
-        /*
-            FirebaseListAdapter<String> firebaseListAdapter = new FirebaseListAdapter<String>(
-                        getActivity(),
-                        String.class,
-                        R.layout.list_item_ukawa,
-                       //  R.id.list_item_ukawa_textview,
-                    databaseReference
-                     ) {
-                @Override
-                protected void populateView(View v, String model, int position) {
-                        TextView displayText = (TextView) v.findViewById(R.id.list_item_ukawa_textview);
-                        displayText.setText(model);
-                }
-            };
-
-            databaseReference.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(com.google.firebase.database.DataSnapshot dataSnapshot) {
-                   *//* Post post = dataSnapshot.getValue(Post.class);
-                    System.out.println(post);*//*
-                    //  Map<String, String> map = dataSnapshot.getValue(Map.class);
-                    // value = map.get("name");
-                    Map<String, Object> newPost = (Map<String, Object>) dataSnapshot.getValue();
-
-                    // String name = map.get("Name");
-                    //  value = dataSnapshot.child("News").getKey();
-                    //   value = dataSnapshot.getValue(String.class);
-
-                    cdnmFirebase = newPost.get("cdnm").toString();
-                    locationFirebase = newPost.get("location").toString();
-                    mbungeFirebase = newPost.get("mbunge").toString();
-                    diwanFirebase = newPost.get("diwan").toString();
-                    //  ukawaNews.add("Name:>  " + value+ "  age:> " +age);
-                    //  newsAdapter.notifyDataSetChanged();
-                    Log.v("SUCCESS", "This is to show I know things: " + locationFirebase);
-
-                    addValueToArray.add(mbungeFirebase);
-                    addValueToArray.add(diwanFirebase);
-                    addValueToArray.add(cdnmFirebase);
-                    addValueToArray.add(locationFirebase);
-                    valueToResult = new String[addValueToArray.size()];
-
-                    addValueToArray.toArray(valueToResult);
-                    //    a.toArray(myArray);
-                    // Insert the location into the database.
-                    // long locationID = addLocation(locationQuery, locationFirebase, mbungeFirebase, diwanFirebase);
-
-
-                    Log.v("LOCATION_SETTING", locationQuery);
-
-                    for(String addValue : addValueToArray) {
-                        Log.v("ON_BACKGROUND: ", addValue);
-                        // valueToResult = addValue;
-                    }
-       }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-                    System.out.println("The read failed: " + databaseError.getCode());
-                        Toast.makeText(getActivity(), "The read faile because: " + databaseError.getCode(), Toast.LENGTH_LONG).show();
-                }
-            });*/
-
-
-        databaseReference.addChildEventListener(new com.google.firebase.database.ChildEventListener() {
+        displayFirebase.addChildEventListener(new ChildEventListener() {
             @Override
-            public void onChildAdded(com.google.firebase.database.DataSnapshot dataSnapshot, String s) {
-                Map<String, Object> newPost = (Map<String, Object>) dataSnapshot.getValue();
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
+                // You can use getValue to deserialize the data at dataSnapshot
+                // into a UkawaList.
+                UkawaList ukawaList = dataSnapshot.getValue(UkawaList.class);
+
+             //   Map<String, Object> newPost = (Map<String, Object>) dataSnapshot.getValue();
+
 
                 // String name = map.get("Name");
                 //  value = dataSnapshot.child("News").getKey();
-                //   value = dataSnapshot.getValue(String.class);
+              //  String  value = dataSnapshot.getValue(String.class);
+            if(ukawaList !=null) {
+                cdnmFirebase = ukawaList.getCdnm();
+                locationFirebase = ukawaList.getLocation();
+                mbungeFirebase = ukawaList.getMbunge();
+                diwanFirebase = ukawaList.getDiwan();
+            }
 
-                cdnmFirebase = newPost.get("cdnm").toString();
-                locationFirebase = newPost.get("location").toString();
-                mbungeFirebase = newPost.get("mbunge").toString();
-                diwanFirebase = newPost.get("diwan").toString();
-                //  ukawaNews.add("Name:>  " + value+ "  age:> " +age);
-                //  newsAdapter.notifyDataSetChanged();
-                Log.v("SUCCESS", "This is to show I know things: " + locationFirebase);
+                if (ukawaList.getAlist() != null) {
+
+                    descFirebase = ukawaList.getAlistString();
+    } else {
+                    Log.v("ERROR ON UKAWA NEWS", "Try check the logs: ");
+
+                }
+
+                Log.v("SUCCESS PART 1", "This is to show I know things: " + locationFirebase);
+
+                Log.v("SUCCESS PART 2", "This is to show am under Ukawa New: " + descFirebase);
 
                 addValueToArray.add(mbungeFirebase);
                 addValueToArray.add(diwanFirebase);
                 addValueToArray.add(cdnmFirebase);
                 addValueToArray.add(locationFirebase);
+              //  addValueToArray.add(value);
                 valueToResult = new String[addValueToArray.size()];
 
                 addValueToArray.toArray(valueToResult);
                 //    a.toArray(myArray);
                 // Insert the location into the database.
-                long locationID = addLocation(locationQuery, locationFirebase, mbungeFirebase, diwanFirebase);
+              long locationID = addLocation(locationQuery, locationFirebase, mbungeFirebase, diwanFirebase);
 
 
                 Log.v("LOCATION_SETTING", locationQuery);
@@ -194,92 +162,31 @@ public class FetchUkawaTask extends AsyncTask<String, Void, String[]> {
                     Log.v("ON_BACKGROUND: ", addValue);
                     // valueToResult = addValue;
                 }
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
 
             }
 
             @Override
-            public void onChildChanged(com.google.firebase.database.DataSnapshot dataSnapshot, String s) {
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
 
             }
 
             @Override
-            public void onChildRemoved(com.google.firebase.database.DataSnapshot dataSnapshot) {
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
 
             }
 
             @Override
-            public void onChildMoved(com.google.firebase.database.DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(FirebaseError firebaseError) {
 
             }
         });
-           /* displayData.addChildEventListener(new ChildEventListener() {
-                @Override
-                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-
-                    //  Map<String, String> map = dataSnapshot.getValue(Map.class);
-                    // value = map.get("name");
-                    Map<String, Object> newPost = (Map<String, Object>) dataSnapshot.getValue();
-
-                    // String name = map.get("Name");
-                    //  value = dataSnapshot.child("News").getKey();
-                    //   value = dataSnapshot.getValue(String.class);
-
-                    cdnmFirebase = newPost.get("cdnm").toString();
-                    locationFirebase = newPost.get("location").toString();
-                    mbungeFirebase = newPost.get("mbunge").toString();
-                   diwanFirebase = newPost.get("diwan").toString();
-                  //  ukawaNews.add("Name:>  " + value+ "  age:> " +age);
-                  //  newsAdapter.notifyDataSetChanged();
-                    Log.v("SUCCESS", "This is to show I know things: " + locationFirebase);
-
-                    addValueToArray.add(mbungeFirebase);
-                    addValueToArray.add(diwanFirebase);
-                    addValueToArray.add(cdnmFirebase);
-                    addValueToArray.add(locationFirebase);
-                  valueToResult = new String[addValueToArray.size()];
-
-                    addValueToArray.toArray(valueToResult);
-                //    a.toArray(myArray);
-                    // Insert the location into the database.
-                  // long locationID = addLocation(locationQuery, locationFirebase, mbungeFirebase, diwanFirebase);
 
 
-                    Log.v("LOCATION_SETTING", locationQuery);
 
-                    for(String addValue : addValueToArray) {
-                        Log.v("ON_BACKGROUND: ", addValue);
-                       // valueToResult = addValue;
-                    }
-
-                }
-
-                @Override
-                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-                }
-
-                @Override
-                public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-                }
-
-                @Override
-                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-                }
-
-                @Override
-                public void onCancelled(FirebaseError firebaseError) {
-
-                }
-            });
-
-*/
         return valueToResult;
     }
 

@@ -4,6 +4,11 @@ import android.content.ContentUris;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import static com.fasterxml.jackson.databind.util.ISO8601Utils.format;
+
 /**
  * Created by muchbeer on 11/18/2016.
  */
@@ -133,5 +138,14 @@ public class UkawaContract {
         public static String getStartDateFromUri(Uri uri) {
             return uri.getQueryParameter(COLUMN_DATETEXT);
         }
+    }
+
+    public static final String DATE_FORMAT = "yyyyMMdd";
+
+    public static String getDbDateString(Date date) {
+//Because the API returns a unix timestamp (measured in seconds)
+//it must be converted to milliseconds in order to be converted to valid date
+        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
+        return sdf.format(date);
     }
 }

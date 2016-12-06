@@ -52,14 +52,14 @@ public class UkawaDbHelper extends SQLiteOpenHelper {
 
                 // the ID of the location entry associated with this weather data
                 COLUMN_LOC_KEY + " INTERGER NOT NULL, " +
-                UkawaEntry.COLUMN_DATETEXT + " TEXT NOT NULL, " +
-                UkawaEntry.COLUMN_DESC + " TEXT NOT NULL, " +
+                UkawaEntry.COLUMN_DATETEXT + " TEXT NULL, " +
+                UkawaEntry.COLUMN_DESC + " TEXT NULL, " +
                 UkawaEntry.COLUMN_UKAWA_ID + " TEXT NULL," +
-                UkawaEntry.COLUMN_TITLE + " TEXT NOT NULL, " +
-                UkawaEntry.COLUMN_NEWS_REPORTER + " TEXT NOT NULL, " +
-                UkawaEntry.COLUMN_COMMENTS + " TEXT NOT NULL, " +
-                UkawaEntry.COLUMN_LIKE_VIEW + " TEXT NOT NULL, " +
-                UkawaEntry.COLUMN_IMAGE +" TEXT NOT NULL, " +
+                UkawaEntry.COLUMN_TITLE + " TEXT NULL, " +
+                UkawaEntry.COLUMN_NEWS_REPORTER + " TEXT NULL, " +
+                UkawaEntry.COLUMN_COMMENTS + " TEXT NULL, " +
+                UkawaEntry.COLUMN_LIKE_VIEW + " TEXT NULL, " +
+                UkawaEntry.COLUMN_IMAGE +" TEXT NULL, " +
 
 
                 // Set up the location column as a foreign key to location table.

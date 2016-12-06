@@ -15,7 +15,7 @@
         android:label="@string/app_name"
         android:theme="@style/MyMaterialTheme">
         <activity
-            android:name=".learning.MainLearningActivity"
+            android:name=".testing.MainActivityTesting"
             android:label="@string/app_name"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -29,28 +29,29 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".learning.DetailActivity"
+        <activity
+            android:name=".learning.DetailActivity"
             android:label="Taarifa"
-            android:parentActivityName=".learning.MainLearningActivity" >
+            android:parentActivityName=".learning.MainLearningActivity">
             >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".learning.MainLearningActivity" />
         </activity>
-
         <activity
             android:name=".learning.SettingsActivity"
             android:label="@string/select_location"
-            android:parentActivityName=".learning.MainLearningActivity" >
+            android:parentActivityName=".learning.MainLearningActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".learning.MainLearningActivity" />
         </activity>
 
         <provider
-            android:authorities="sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.data.UkawaProvider"
-            android:name=".data.UkawaProvider" />
-    </application>
+            android:name=".data.UkawaProvider"
+            android:authorities="sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.data.UkawaProvider" />
 
+        <activity android:name=".testing.TestActivity"></activity>
+    </application>
 
 </manifest>
