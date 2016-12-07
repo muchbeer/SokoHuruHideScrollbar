@@ -45,7 +45,7 @@ public class FetchUkawaTask extends AsyncTask<String, Void, String[]> {
 
     private final Context mContext;
 
-    String locationFirebase, mbungeFirebase, diwanFirebase, cdnmFirebase, descFirebase;
+    String locationFirebase, mbungeFirebase, diwanFirebase, cdnmFirebase, authorFirebase;
 
     String[] valueToResult, taketoMainThread;
 
@@ -131,17 +131,18 @@ public class FetchUkawaTask extends AsyncTask<String, Void, String[]> {
                 diwanFirebase = ukawaList.getDiwan();
             }
 
-                if (ukawaList.getAlist() != null) {
+                if (ukawaList.getAuthor() != null) {
 
-                    descFirebase = ukawaList.getAlistString();
-    } else {
+                    authorFirebase = ukawaList.getAuthorLong();
+                    Log.v("SUCCESS PART 2", "This is to show am under Nested Ukawa New: " + authorFirebase);
+
+                } else {
                     Log.v("ERROR ON UKAWA NEWS", "Try check the logs: ");
 
                 }
 
                 Log.v("SUCCESS PART 1", "This is to show I know things: " + locationFirebase);
 
-                Log.v("SUCCESS PART 2", "This is to show am under Ukawa New: " + descFirebase);
 
                 addValueToArray.add(mbungeFirebase);
                 addValueToArray.add(diwanFirebase);

@@ -14,7 +14,7 @@ public class UkawaList  {
     private String mbunge;
     private String diwan;
     private String testing1;
-    private HashMap<String, Object> alist;
+    private HashMap<String, Object> author;
     private HashMap<String, Object> testing2;
 
     /**
@@ -32,37 +32,18 @@ public class UkawaList  {
      * @param location
      *
      */
-    public UkawaList(String cdnm, String location, String mbunge, String diwan) {
+    public UkawaList(String cdnm, String location, String mbunge, String diwan, HashMap<String, Object> author) {
         this.cdnm = cdnm;
         this.location = location;
         this.mbunge = mbunge;
         this.diwan=diwan;
         this.testing1= testing1;
 
-
-        HashMap<String, Object> alistObject = new HashMap<String, Object>();
-     //alistObject.put("") timestampLastChangedObj.put(Constants.FIREBASE_PROPERTY_TIMESTAMP, ServerValue.TIMESTAMP);
-        alistObject.put("description", "namad");
-        alistObject.put("Gadiel", "My son");
-       // this.testing2 = alistObject;
-        this.alist = alistObject;
+        this.author = author;
 
     }
 
 
-    public UkawaList(String testing1) {
-
-        this.testing1= testing1;
-
-
-        HashMap<String, Object> alistObject = new HashMap<String, Object>();
-        //alistObject.put("") timestampLastChangedObj.put(Constants.FIREBASE_PROPERTY_TIMESTAMP, ServerValue.TIMESTAMP);
-      //  alistObject.put("description", "namad");
-        alistObject.put("Gadiel", "My son");
-        // this.testing2 = alistObject;
-        this.testing2 = alistObject;
-
-    }
 
     public String getCdnm() {
         return cdnm;
@@ -80,25 +61,17 @@ public class UkawaList  {
         return diwan;
     }
 
-    public String getTesting1() {
-        return testing1;
+
+    public HashMap<String, Object> getAuthor() {
+        return author;
     }
 
-    public String setTesting1(String testing1) {
-        return testing1;
-    }
-    public HashMap<String, Object> getAlist() {
-        return alist;
-    }
 
-    public HashMap<String, Object> getAllTest() {
-        return testing2;
-    }
 
     @JsonIgnore
-    public String getAlistString() {
+    public String getAuthorLong() {
 
-        return (String) alist.get("description");
+        return (String) author.get("gd001");
     }
 
 

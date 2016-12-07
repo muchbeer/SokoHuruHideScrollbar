@@ -27,4 +27,10 @@
   <color name="secondary_text">#757575</color>
   <color name="icons">#FFFFFF</color>
   <color name="divider">#BDBDBD</color>
+
+
+
+<color name="grey">#9E9E9E</color>
+<color name="black">#000000</color>
+<color name="dark_grey">#424242</color>
 </resources>

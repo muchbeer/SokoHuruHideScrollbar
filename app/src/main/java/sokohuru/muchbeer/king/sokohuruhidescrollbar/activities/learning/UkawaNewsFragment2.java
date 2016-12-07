@@ -168,33 +168,12 @@ public class UkawaNewsFragment2 extends Fragment {
             }
         });
 
-        addUkawaNewList();
+       // addUkawaNewList();
         return rootView;
     }
 
 
-    /**
-     * Add new active list
-     */
-    public void addUkawaNewList() {
-        // Get the reference to the root node in Firebase
-        Firebase ref = new Firebase(UKAWA_BASE_URL2);
-        // Get the string that the user entered into the EditText and make an object with it
-        // We'll use "Anonymous Owner" for the owner because we don't have user accounts yet
-     //   String userEnteredName = mEditTextListName.getText().toString();
-        String owner = "Anonymous Owner";
-        UkawaList currentList = new UkawaList();
 
-
-//Adding values
-       currentList.setTesting1("Doto");
-
-        // Go to the "activeList" child node of the root node.
-        // This will create the node for you if it doesn't already exist.
-        // Then using the setValue menu it will serialize the ShoppingList POJO
-        ref.child("activeNews").setValue(currentList);
-
-}
 
 
     }
