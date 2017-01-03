@@ -45,7 +45,7 @@ public class ForecastFragment extends Fragment {
 
     private ArrayAdapter<String> mForecastAdapter;
     private TextView display_result_textview;
-    String resultStrs;
+    String[] resultStrs = new String[4];
 
     public ForecastFragment() {
     }
@@ -70,7 +70,7 @@ public class ForecastFragment extends Fragment {
         int id = item.getItemId();
         if (id == R.id.action_refresh) {
             FetchWeatherTask weatherTask = new FetchWeatherTask();
-            weatherTask.execute();
+            weatherTask.execute("breaknews");
 
                         return true;
         }
@@ -113,7 +113,7 @@ public class ForecastFragment extends Fragment {
 
     }
 
-    public class FetchWeatherTask extends AsyncTask<Void, Void, String> {
+    public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
 
         private final String LOG_TAG = FetchWeatherTask.class.getSimpleName();
 
@@ -124,7 +124,7 @@ public class ForecastFragment extends Fragment {
             // Because the API returns a unix timestamp (measured in seconds),
             // it must be converted to milliseconds in order to be converted to valid date.
             Date date = new Date(time * 1000);
-            SimpleDateFormat format = new SimpleDateFormat("E, MMM d");
+            SimpleDateFormat format = new SimpleDateFormat("E, MMM d yyyy");
             return format.format(date).toString();
         }
 
@@ -137,14 +137,14 @@ public class ForecastFragment extends Fragment {
          * Fortunately parsing is easy:  constructor takes the JSON string and converts it
          * into an Object hierarchy for us.
          */
-        private String getWeatherDataFromJson(String forecastJsonStr)
+        private String[] getWeatherDataFromJson(String forecastJsonStr)
                 throws JSONException {
 
             // These are the names of the JSON objects that need to be extracted.
             final String OWM_LIST = "list";
             final String UKAWA_MAIN_NEW = "main";
             final String UKAWA_BLOGS = "blogs";
-            final String UKAWA_UBUNGE = "ubunge";
+            final String UKAWA_UBUNGE = "mbunge";
             final String UKAWA_TTTLE = "title";
             final String UKAWA_AUTHOR = "author";
             final String UKAWA_COMMENTS = "ukawa_comments";
@@ -191,7 +191,7 @@ public class ForecastFragment extends Fragment {
 
 
               //  highAndLow = formatHighLows(high, low);
-                resultStrs = day + " - " + majimbo + " - " + ukawa_author;
+                resultStrs[i] = day + " - " + majimbo + " - " + ukawa_author;
 
                 Log.v("The value is: ", ukawa_author);
             }
@@ -199,13 +199,13 @@ public class ForecastFragment extends Fragment {
 
         }
         @Override
-        protected String doInBackground(Void... params) {
+        protected String[] doInBackground(String... params) {
 
 
             // If there's no zip code, there's nothing to look up.  Verify size of params.
-          /*  if (params.length == 0) {
+           if (params.length == 0) {
                 return null;
-            }*/
+            }
 
             // These two need to be declared outside the try/catch
             // so that they can be closed in the finally block.
@@ -223,12 +223,12 @@ public class ForecastFragment extends Fragment {
                 // Construct the URL for the OpenWeatherMap query
                 // Possible parameters are avaiable at OWM's forecast API page, at
                 // http://openweathermap.org/API#forecast
+                //"http://gdgexpertz.000webhostapp.com/data.json";
                 final String FORECAST_BASE_URL =
-                        "http://gdgexpertz.000webhostapp.com/data.json";
-                final String QUERY_PARAM = "q";
-                final String FORMAT_PARAM = "mode";
-                final String UNITS_PARAM = "units";
-                final String DAYS_PARAM = "cnt";
+                        "http://gdgexpertz.000webhostapp.com";
+
+                final String QUERY_PARAM = "ukawa";
+
 
              /*   Uri builtUri = Uri.parse(FORECAST_BASE_URL).buildUpon()
                         .appendQueryParameter(QUERY_PARAM, params[0])
@@ -240,7 +240,11 @@ public class ForecastFragment extends Fragment {
 
                // URL url = new URL(builtUri.toString());
 
-                URL url = new URL(FORECAST_BASE_URL);
+                Uri builtUri = Uri.parse(FORECAST_BASE_URL)
+                        .buildUpon()
+                        .appendPath(params[0]).build();
+                Log.d("link is", builtUri.toString());
+                URL url = new URL(builtUri.toString());
 
                 // Create the request to OpenWeatherMap, and open the connection
                 urlConnection = (HttpURLConnection) url.openConnection();
@@ -300,19 +304,20 @@ public class ForecastFragment extends Fragment {
         }
 
         @Override
-        protected void onPostExecute(String result) {
+        protected void onPostExecute(String[] result) {
+            mForecastAdapter.clear();
             if (result != null) {
-                mForecastAdapter.clear();
+
                 Toast.makeText(getActivity(), "PostExecute: " + result, Toast.LENGTH_LONG).show();
-                mForecastAdapter.add(result);
+             //   mForecastAdapter.add(result);
               //  Log.v("The answer is: ", dayForecastStr);
 
                 //str.toCharArray()
-               /* for(String dayForecastStr : result) {
+               for(String dayForecastStr : result) {
                     mForecastAdapter.add(dayForecastStr);
-                    display_result_textview.setText(dayForecastStr);
+                   // display_result_textview.setText(dayForecastStr);
                 //   Toast.makeText(getActivity(), "I am trying my best in background", Toast.LENGTH_LONG).show();
-                }*/
+                }
                 // New data is back from the server.  Hooray!
             }
         }
