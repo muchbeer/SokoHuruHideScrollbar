@@ -1,4 +1,4 @@
-package sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.testing;
+package sokohuru.muchbeer.king.sokohuruhidescrollbar.activities;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -13,8 +13,6 @@ import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-
-import sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.R;
 
 /**
  * Created by muchbeer on 12/7/2016.

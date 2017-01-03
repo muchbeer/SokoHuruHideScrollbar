@@ -1,19 +1,32 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/container"
-    android:orientation="vertical"
     tools:ignore="MergeRootFrame"
-    tools:context="sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.main.UkawaNewsFragment">
+    android:orientation="vertical"
+    tools:context="sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.learning.ForecastFragment">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="sample output"
+        android:id="@+id/view_data"/>
 
     <ListView
-        android:id="@+id/listview_ukawa"
+        android:id="@+id/listview_forecast"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
+
 
     <include
         android:id="@+id/toolbar"
         layout="@layout/toolbar" />
 
+
+
+
 </LinearLayout>
+

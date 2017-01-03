@@ -15,7 +15,7 @@
         android:label="@string/app_name"
         android:theme="@style/MyMaterialTheme">
         <activity
-            android:name=".testing.MainActivity"
+            android:name=".learning.MainJsonActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -51,7 +51,6 @@
             android:name=".data.UkawaProvider"
             android:authorities="sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.data.UkawaProvider" />
 
-        <activity android:name=".testing.TestActivity" />
 
     </application>
 

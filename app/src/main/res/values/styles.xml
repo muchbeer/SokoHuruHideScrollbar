@@ -1,4 +1,7 @@
 <resources>
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    </style>
 
     <!-- Base application theme. -->
     <style name="Theme" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -59,7 +62,8 @@
         <item name="android:textColorPrimary">@android:color/white</item>
     </style>
 
-    <style name="CustomTheme.Dialog" parent="Theme.AppCompat.Light.Dialog">    </style>
+    <style name="CustomTheme.Dialog" parent="Theme.AppCompat.Light.Dialog"></style>
+
     <style name="MyMaterialTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="MyMaterialTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
@@ -101,7 +105,6 @@
         <item name="rippleColor">@android:color/white</item>
         <item name="backgroundTint">@color/colorPrimary</item>
     </style>
-
 
 
     <style name="PrefScreenTheme">
