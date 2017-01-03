@@ -1,9 +1,11 @@
 package sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.learning;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,6 +14,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -34,9 +37,6 @@ import java.util.Date;
 import java.util.List;
 
 import sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.R;
-
-import static android.R.attr.description;
-import static android.R.attr.logo;
 
 /**
  * Created by muchbeer on 1/1/2017.
@@ -69,14 +69,28 @@ public class ForecastFragment extends Fragment {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_refresh) {
-            FetchWeatherTask weatherTask = new FetchWeatherTask();
-            weatherTask.execute("breaknews");
+            refreshNewz();
 
                         return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
+    private void refreshNewz() {
+        FetchWeatherTask weatherTask = new FetchWeatherTask();
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String location = prefs.getString(getString(R.string.pref_location_key),
+                getString(R.string.pref_location_default));
+
+        weatherTask.execute(location);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        refreshNewz();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -109,6 +123,16 @@ public class ForecastFragment extends Fragment {
         display_result_textview = (TextView) rootView.findViewById(R.id.view_data);
         listView.setAdapter(mForecastAdapter);
 
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                String ukawaData = mForecastAdapter.getItem(position);
+
+                Intent sendData = new Intent(getActivity(), DetailActivity.class)
+                        .putExtra(Intent.EXTRA_TEXT, ukawaData);
+                startActivity(sendData);
+            }
+        });
         return rootView;
 
     }

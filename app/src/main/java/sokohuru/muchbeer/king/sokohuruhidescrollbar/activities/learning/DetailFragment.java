@@ -34,7 +34,14 @@ public class DetailFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Add this line in order for this fragment to handle menu events.
+        setHasOptionsMenu(true);
     }
+
+
+
+
+
 
     @Nullable
     @Override
@@ -71,6 +78,20 @@ public class DetailFragment extends Fragment {
         } else {
             Log.d(LOG_TAG, "Share Action Provider is null?");
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+        if (id == R.id.action_settings) {
+
+
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private Intent createShareForecastIntent() {

@@ -6,4 +6,9 @@
         app:showAsAction="always"
         app:actionProviderClass="android.support.v7.widget.ShareActionProvider" />
 
+    <item android:id="@+id/action_settings"
+        android:title="Settings"
+        app:showAsAction="never"
+         />
+
 </menu>

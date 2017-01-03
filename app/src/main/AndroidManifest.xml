@@ -18,6 +18,9 @@
             android:name=".learning.MainJsonActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".learning.DetailActivity" />
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -32,11 +35,11 @@
         <activity
             android:name=".learning.DetailActivity"
             android:label="Taarifa"
-            android:parentActivityName=".learning.MainLearningActivity">
+            android:parentActivityName=".learning.MainJsonActivity">
             >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".learning.MainLearningActivity" />
+                android:value=".learning.MainJsonActivity" />
         </activity>
         <activity
             android:name=".learning.SettingsActivity"

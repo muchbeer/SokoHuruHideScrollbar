@@ -23,13 +23,27 @@
     <string name="action_refresh">Refresh</string>
     <string name="pref_location_title">Habari za mikoa</string>
     <string name="pref_location_key">location</string>
-    <string name="pref_location_default">mwanza</string>
+    <string name="pref_location_default">breaknews</string>
     <string name="select_location">Chagua Mkoa</string>
     <string name="share_news">Share</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="pager_title_shopping_lists">list of duka</string>
     <string name="pager_title_meals">title</string>
     <string name="positive_button_create">Create</string>
+
+    <!-- Label for genral news option in temperature unit preference [CHAR LIMIT=25] -->
+    <string name="pref_label_general">general</string>
+
+    <!-- Label for specific option in temperature unit preference [CHAR LIMIT=25] -->
+    <string name="pref_label_specific">specific</string>
+    <string name="pref_label_breaking">breaking</string>
+
+    <!-- Value in SharedPreferences for metric temperature unit option [CHAR LIMIT=NONE] -->
+    <string name="pref_units_general" translatable="false">general</string>
+
+    <!-- Value in SharedPreferences for imperial temperature unit option [CHAR LIMIT=NONE] -->
+    <string name="pref_units_specific" translatable="false">specific</string>
+    <string name="pref_units_breaking" translatable="false">breaking</string>
 
 
     <!-- Base Error Strings-->
@@ -224,6 +238,9 @@
     <string name="pref_sort_list_label_most_recently_changed_entry">Most Recently Changed</string>
     <string name="remove_item_option">remove item</string>
     <string name="title_activity_main_json">MainJsonActivity</string>
+    <string name="pref_ukawa_title">General News</string>
+    <string name="pref_ukawa_keys">news</string>
+    <string name="pref_ukawa_dafault">general</string>
 
 
     <!-- Values -->
