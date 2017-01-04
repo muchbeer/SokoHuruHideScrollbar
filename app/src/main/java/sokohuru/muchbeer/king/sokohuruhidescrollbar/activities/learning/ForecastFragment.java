@@ -30,6 +30,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -141,15 +143,29 @@ public class ForecastFragment extends Fragment {
 
         private final String LOG_TAG = FetchWeatherTask.class.getSimpleName();
 
+
         /* The date/time conversion code is going to be moved outside the asynctask later,
          * so for convenience we're breaking it out into its own method now.
          */
-        private String getReadableDateString(long time){
+        private String getReadableDateString(String time){
             // Because the API returns a unix timestamp (measured in seconds),
             // it must be converted to milliseconds in order to be converted to valid date.
-            Date date = new Date(time * 1000);
-            SimpleDateFormat format = new SimpleDateFormat("E, MMM d yyyy");
-            return format.format(date).toString();
+            Date date = new Date();
+             String real_date = null;
+            DateFormat format = new SimpleDateFormat("E, MMM dd yyyy");
+           //convertedDate = dateFormat.parse(dateString);
+            try {
+
+               /* Date date = formatter.parse(dateInString);
+                System.out.println(date);
+                System.out.println(formatter.format(date));
+                date = format.parse(time);*/
+                date = format.parse(time);
+                real_date=format.format(date);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            return real_date.toString();
         }
 
 
@@ -169,10 +185,10 @@ public class ForecastFragment extends Fragment {
             final String UKAWA_MAIN_NEW = "main";
             final String UKAWA_BLOGS = "blogs";
             final String UKAWA_UBUNGE = "mbunge";
-            final String UKAWA_TTTLE = "title";
-            final String UKAWA_AUTHOR = "author";
+            final String UKAWA_TTTLE = "ukawa_title";
+            final String UKAWA_AUTHOR = "ukawa_author";
             final String UKAWA_COMMENTS = "ukawa_comments";
-            final String UKAWA_DATETIME = "dt";
+            final String UKAWA_DATETIME = "ukawa_date";
             final String BLOGS_NAME = "blogs_name";
             final String UBUNGE_MAJIMBO = "majimbo";
 
@@ -193,7 +209,7 @@ public class ForecastFragment extends Fragment {
                 // The date/time is returned as a long.  We need to convert that
                 // into something human-readable, since most people won't read "1400356800" as
                 // "this saturday".
-                long dateTime = dayForecast.getLong(UKAWA_DATETIME);
+                String dateTime = dayForecast.getString(UKAWA_DATETIME);
                 day = getReadableDateString(dateTime);
 
                 // Temperatures are in a child object called "temp".  Try not to name variables
