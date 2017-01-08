@@ -34,8 +34,8 @@ public class UkawaDbHelper extends SQLiteOpenHelper {
         // Create a table to hold locations.  A location consists of the string supplied in the
         // location setting, the city name, and the latitude and longitude
         final String SQL_CREATE_LOCATION_TABLE = "CREATE TABLE " + LocationEntry.TABLE_NAME + " (" +
-                LocationEntry._ID + " INTEGER PRIMARY KEY," +
-                LocationEntry.COLUMN_LOCATION_SETTING + " TEXT UNIQUE NOT NULL, " +
+                LocationEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                LocationEntry.COLUMN_LOCATION_SETTING + " TEXT NOT NULL, " +
                 LocationEntry.COLUMN_CITY_NAME + " TEXT NOT NULL, " +
                 LocationEntry.COLUMN_MBUNGE + " TEXT NOT NULL, " +
                 LocationEntry.COLUMN_DIWANI + " TEXT NOT NULL, " +

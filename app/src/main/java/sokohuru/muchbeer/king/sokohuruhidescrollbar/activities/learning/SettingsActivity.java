@@ -46,6 +46,7 @@ public class SettingsActivity extends PreferenceActivity
                         .getString(preference.getKey(), ""));
     }
 
+
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
 

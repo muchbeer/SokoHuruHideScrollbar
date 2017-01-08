@@ -12,8 +12,9 @@
 
     <ListPreference
         android:title="@string/pref_ukawa_title"
+        android:summary="Select type of news"
         android:key="@string/pref_ukawa_keys"
-        android:defaultValue="@string/pref_ukawa_dafault"
+        android:defaultValue="@string/pref_location_default"
         android:entryValues="@array/pref_units_values"
         android:entries="@array/pref_units_options" />
 

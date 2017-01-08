@@ -4,6 +4,7 @@ import android.content.ContentUris;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -55,12 +56,12 @@ public class UkawaContract {
 
         // Human readable location string, provided by the API.  Because for styling,
         // "Mountain View" is more recognizable than 94043.
-        public static final String COLUMN_CITY_NAME = "city_name";
+        public static final String COLUMN_CITY_NAME = "habari";
 
         // In order to uniquely pinpoint the location on the map when we launch the
         // map intent, we store the latitude and longitude as returned by openweathermap.
-        public static final String COLUMN_MBUNGE = "ukawa_mbunge";
-        public static final String COLUMN_DIWANI = "ukawa_diwani";
+        public static final String COLUMN_MBUNGE = "moto";
+        public static final String COLUMN_DIWANI = "current";
 
         public static Uri buildLocationUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
@@ -148,4 +149,21 @@ public class UkawaContract {
         SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
         return sdf.format(date);
     }
+
+    /**
+     * Converts a dateText to a long Unix time representation
+     * @param dateText the input date string
+     * @return the Date object
+     */
+    public static Date getDateFromDb(String dateText) {
+        SimpleDateFormat dbDateFormat = new SimpleDateFormat(DATE_FORMAT);
+        try {
+            return dbDateFormat.parse(dateText);
+        } catch ( ParseException e ) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
 }
