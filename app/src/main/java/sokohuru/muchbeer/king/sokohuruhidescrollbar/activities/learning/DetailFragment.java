@@ -59,7 +59,8 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
             UkawaContract.UkawaEntry.COLUMN_NEWS_REPORTER,
             UkawaContract.UkawaEntry.COLUMN_IMAGE,
             UkawaContract.UkawaEntry.COLUMN_COMMENTS,
-            UkawaContract.UkawaEntry.COLUMN_UKAWA_ID
+            UkawaContract.UkawaEntry.COLUMN_UKAWA_ID,
+            UkawaContract.UkawaEntry.COLUMN_LIKE_VIEW
     };
 
 
@@ -219,6 +220,11 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
                 data.getString(data.getColumnIndex(UkawaContract.UkawaEntry.COLUMN_COMMENTS));
         ((TextView) getView().findViewById(R.id.detail_comments_textview))
                 .setText(ukawaComments);
+
+        String ukawaLikes =
+                data.getString(data.getColumnIndex(UkawaContract.UkawaEntry.COLUMN_LIKE_VIEW));
+        ((TextView) getView().findViewById(R.id.detail_likes_textview))
+                .setText(ukawaLikes);
 
         // We still need this for the share intent
         mForecast = String.format("%s - %s - %s/%s", dateString, weatherDescription, ukawaAuthor, ukawaComments);
