@@ -31,6 +31,7 @@ import sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.data.UkawaContrac
 import sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.data.UkawaContract.LocationEntry;
 
 import static android.R.attr.description;
+import static android.icu.lang.UCharacter.GraphemeClusterBreak.L;
 import static com.google.android.gms.auth.api.credentials.PasswordSpecification.da;
 import static sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.R.drawable.ukawa;
 
@@ -152,6 +153,7 @@ public class FetchNewsTask extends AsyncTask<String, Void, Void> {
         final String UKAWA_IMAGE = "ukawa_image";
         final String UKAWA_ID  = "ukawa_id";
         final String UKAWA_LIKE = "ukawa_likes";
+        final String UKAWA_ID_UI_PANEL = "flip_id";
         JSONObject forecastJson = new JSONObject(forecastJsonStr);
         JSONArray weatherArray = forecastJson.getJSONArray(OWM_LIST);
 
@@ -183,7 +185,10 @@ public class FetchNewsTask extends AsyncTask<String, Void, Void> {
             // "this saturday".
 
             Long dateTime = dayForecast.getLong(UKAWA_DATETIME);
-           // day = getReadableDateString(dateTime);
+            String ukawa_id_ui_pane = dayForecast.getString(UKAWA_ID_UI_PANEL);
+
+
+            // day = getReadableDateString(dateTime);
 
             // Temperatures are in a child object called "temp".  Try not to name variables
             // "temp" when working with temperature.  It confuses everybody.
@@ -212,13 +217,14 @@ public class FetchNewsTask extends AsyncTask<String, Void, Void> {
 
             weatherValues.put(UkawaContract.UkawaEntry.COLUMN_LOC_KEY, locationID);
             weatherValues.put(UkawaContract.UkawaEntry.COLUMN_DATETEXT,
-                    UkawaContract.getDbDateString(new Date(dateTime * 1000L)));
+                    UkawaContract.getDbDateString(new Date(dateTime*1L)));
             weatherValues.put(UkawaContract.UkawaEntry.COLUMN_DESC, ukawa_desc);
             weatherValues.put(UkawaContract.UkawaEntry.COLUMN_TITLE, ukawa_title);
             weatherValues.put(UkawaContract.UkawaEntry.COLUMN_NEWS_REPORTER, ukawa_author);
             weatherValues.put(UkawaContract.UkawaEntry.COLUMN_IMAGE, ukawa_image);
             weatherValues.put(UkawaContract.UkawaEntry.COLUMN_LIKE_VIEW, ukawa_likes);
             weatherValues.put(UkawaContract.UkawaEntry.COLUMN_UKAWA_ID, ukawa_id);
+            weatherValues.put(UkawaContract.UkawaEntry.COLUMN_UKAWA_ID_UI, ukawa_id_ui_pane);
            // weatherValues.put(WeatherEntry.COLUMN_SHORT_DESC, description);
           //  weatherValues.put(WeatherEntry.COLUMN_WEATHER_ID, weatherId);
 

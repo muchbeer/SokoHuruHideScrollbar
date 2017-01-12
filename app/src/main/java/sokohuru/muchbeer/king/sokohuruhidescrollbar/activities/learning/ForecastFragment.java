@@ -67,19 +67,26 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
             UkawaContract.UkawaEntry.TABLE_NAME + "." + UkawaContract.UkawaEntry._ID,
             UkawaContract.UkawaEntry.COLUMN_DATETEXT,
             UkawaContract.UkawaEntry.COLUMN_DESC,
+            UkawaContract.UkawaEntry.COLUMN_UKAWA_ID,
             UkawaContract.UkawaEntry.COLUMN_TITLE,
             UkawaContract.UkawaEntry.COLUMN_NEWS_REPORTER,
-            UkawaContract.LocationEntry.COLUMN_LOCATION_SETTING
+            UkawaContract.LocationEntry.COLUMN_LOCATION_SETTING,
+            UkawaContract.UkawaEntry.COLUMN_LIKE_VIEW,
+            UkawaContract.UkawaEntry.COLUMN_UKAWA_ID_UI
     };
 
     // These indices are tied to FORECAST_COLUMNS.  If FORECAST_COLUMNS changes, these
     // must change.
-    public static final int COL_UKAWA_ID = 0;
+    public static final int COL_UKAWA_ID_AUTO = 0;
     public static final int COL_UKAWA_DATE = 1;
+
     public static final int COL_UKAWA_DESC = 2;
-    public static final int COL_UKAWA_TITLE = 3;
-    public static final int COL_UKAWA_NEWS_REPORTER = 4;
-    public static final int COL_UKAWA_LOCATION_SETTING = 5;
+    public static final int COL_UKAWA_ID = 3;
+    public static final int COL_UKAWA_TITLE = 4;
+    public static final int COL_UKAWA_NEWS_REPORTER = 5;
+    public static final int COL_UKAWA_LOCATION_SETTING = 6;
+    public static final int COL_UKAWA_LIKE_VIEW = 7;
+    public static final int COL_UKAWA_ID_UI = 8;
 
     public ForecastFragment() {
     }
@@ -132,7 +139,15 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     @Override
     public void onStart() {
         super.onStart();
-        refreshNewz();
+     //   refreshNewz();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mLocation != null && !mLocation.equals(Utility.getPreferredLocation(getActivity()))) {
+            getLoaderManager().restartLoader(FORECAST_LOADER, null, this);
+        }
     }
 
     @Override
@@ -159,17 +174,18 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
                         null,
                         new String[] {
                                 UkawaContract.UkawaEntry.COLUMN_DATETEXT,
-                                UkawaContract.UkawaEntry.COLUMN_DESC,
+                                UkawaContract.UkawaEntry.COLUMN_TITLE,
                                 UkawaContract.UkawaEntry.COLUMN_NEWS_REPORTER,
-                                UkawaContract.UkawaEntry.COLUMN_TITLE
+                                UkawaContract.UkawaEntry.COLUMN_LIKE_VIEW
 
 
                         },
                         new int[]{
                                 R.id.list_item_date_textview,
                                 R.id.list_item_forecast_textview,
-                                R.id.list_item_habari_textview,
-                                R.id.list_item_ukawa_textview
+                                R.id.list_item_id_textview,
+                                R.id.list_item_ukawa_likes_textview
+
                         },
                         0 // The ID of the textview to populate.
                       );
@@ -186,6 +202,12 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
                         TextView dateView = (TextView) view;
                         dateView.setText(Utility.formatDate(dateString));
                         return true;
+                    }
+
+                    case COL_UKAWA_NEWS_REPORTER: {
+                        String ukawaAuthor = cursor.getString(columnIndex);
+                        TextView ukawaAuthorView = (TextView) view;
+                        ukawaAuthorView.setText(ukawaAuthor);
                     }
 
                 }
@@ -206,6 +228,13 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
                 Intent sendData = new Intent(getActivity(), DetailActivity.class)
                         .putExtra(Intent.EXTRA_TEXT, ukawaData);
                 startActivity(sendData);*/
+
+                Cursor cursor = mForecastAdapter.getCursor();
+                if (cursor != null && cursor.moveToPosition(position)) {
+                    Intent intent = new Intent(getActivity(), DetailActivity.class)
+                            .putExtra(DetailFragment.DATE_KEY, cursor.getString(COL_UKAWA_DATE));
+                    startActivity(intent);
+                }
             }
         });
         return rootView;

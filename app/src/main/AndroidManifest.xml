@@ -52,7 +52,9 @@
 
         <provider
             android:name=".data.UkawaProvider"
-            android:authorities="sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.data.UkawaProvider" />
+            android:authorities="sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.data.UkawaProvider"
+            android:enabled="true"
+            android:exported="false"/>
 
 
     </application>

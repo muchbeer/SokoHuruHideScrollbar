@@ -7,6 +7,7 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 
 import sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.R;
+import sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.data.UkawaContract;
 
 import static android.R.attr.value;
 
@@ -17,6 +18,12 @@ import static android.R.attr.value;
 public class SettingsActivity extends PreferenceActivity
         implements Preference.OnPreferenceChangeListener{
 
+    // since we use the preference change initially to populate the summary
+    // field, we'll ignore that change at start of the activity
+    boolean mBindingPreference;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,6 +33,7 @@ public class SettingsActivity extends PreferenceActivity
         // For all preferences, attach an OnPreferenceChangeListener so the UI summary can be
         // updated when the preference changes.
         bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_location_key)));
+        bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_units_key)));
 
     }
 
@@ -35,6 +43,7 @@ public class SettingsActivity extends PreferenceActivity
      * is changed.)
      */
     private void bindPreferenceSummaryToValue(Preference preference) {
+        mBindingPreference = true;
         // Set the listener to watch for value changes.
         preference.setOnPreferenceChangeListener(this);
 
@@ -44,6 +53,8 @@ public class SettingsActivity extends PreferenceActivity
                 PreferenceManager
                         .getDefaultSharedPreferences(preference.getContext())
                         .getString(preference.getKey(), ""));
+
+        mBindingPreference = false;
     }
 
 
@@ -52,19 +63,32 @@ public class SettingsActivity extends PreferenceActivity
 
         String stringValue = newValue.toString();
 
-        if (preference instanceof ListPreference) {
-            // For list preferences, look up the correct display value in
-            // the preference's 'entries' list (since they have separate labels/values).
-            ListPreference listPreference = (ListPreference) preference;
-            int prefIndex = listPreference.findIndexOfValue(stringValue);
-            if (prefIndex >= 0) {
-                preference.setSummary(listPreference.getEntries()[prefIndex]);
+        // are we starting the preference activity?
+        if (!mBindingPreference) {
+            if (preference.getKey().equals(getString(R.string.pref_location_key))) {
+                FetchNewsTask weatherTask = new FetchNewsTask(this);
+                String location = newValue.toString();
+                weatherTask.execute(location);
+            } else {
+                // notify code that weather may be impacted
+                getContentResolver().notifyChange(UkawaContract.UkawaEntry.CONTENT_URI, null);
             }
-        } else {
-            // For other preferences, set the summary to the value's simple string representation.
-            preference.setSummary(stringValue);
-        }
-        return true;
-    }
+            if (preference instanceof ListPreference) {
+                // For list preferences, look up the correct display value in
+                // the preference's 'entries' list (since they have separate labels/values).
+                ListPreference listPreference = (ListPreference) preference;
+                int prefIndex = listPreference.findIndexOfValue(stringValue);
+                if (prefIndex >= 0) {
+                    preference.setSummary(listPreference.getEntries()[prefIndex]);
+                }
+            } else {
+                // For other preferences, set the summary to the value's simple string representation.
+                preference.setSummary(stringValue);
+            }
 
+        }
+
+        return true;
+
+        }
 }

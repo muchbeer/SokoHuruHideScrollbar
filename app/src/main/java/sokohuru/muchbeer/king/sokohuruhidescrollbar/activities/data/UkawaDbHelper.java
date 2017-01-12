@@ -60,6 +60,7 @@ public class UkawaDbHelper extends SQLiteOpenHelper {
                 UkawaEntry.COLUMN_COMMENTS + " TEXT NULL, " +
                 UkawaEntry.COLUMN_LIKE_VIEW + " TEXT NULL, " +
                 UkawaEntry.COLUMN_IMAGE +" TEXT NULL, " +
+                UkawaEntry.COLUMN_UKAWA_ID_UI + " TEXT NULL, " +
 
 
                 // Set up the location column as a foreign key to location table.

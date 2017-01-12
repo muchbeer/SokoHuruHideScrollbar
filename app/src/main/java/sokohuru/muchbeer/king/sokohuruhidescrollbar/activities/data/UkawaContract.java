@@ -6,6 +6,7 @@ import android.provider.BaseColumns;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import static com.fasterxml.jackson.databind.util.ISO8601Utils.format;
@@ -89,6 +90,9 @@ public class UkawaContract {
         // Weather id as returned by API, to identify the icon to be used
         public static final String COLUMN_UKAWA_ID = "ukawa_id";
 
+        //set user inter id separate ui
+        public static final String COLUMN_UKAWA_ID_UI = "flip_id";
+
         // Short description and long description of the weather, as provided by API.
         // e.g "clear" vs "sky is clear".
         public static final String COLUMN_DESC = "ukawa_desc";
@@ -128,6 +132,11 @@ public class UkawaContract {
             return CONTENT_URI.buildUpon().appendPath(locationSetting).appendPath(date).build();
         }
 
+        public static Uri buildUkawaLocationWithUiPanel(String locationSetting, String flip_id) {
+
+            return CONTENT_URI.buildUpon().appendPath(locationSetting).appendPath(flip_id).build();
+        }
+
         public static String getLocationSettingFromUri(Uri uri) {
             return uri.getPathSegments().get(1);
         }
@@ -141,12 +150,16 @@ public class UkawaContract {
         }
     }
 
-    public static final String DATE_FORMAT = "yyyyMMdd";
+    public static final String DATE_FORMAT = "MMddyyyy";
 
     public static String getDbDateString(Date date) {
 //Because the API returns a unix timestamp (measured in seconds)
 //it must be converted to milliseconds in order to be converted to valid date
         SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
+
+        // Create a calendar object that will convert the date and time value in milliseconds to date.
+        Calendar calendar = Calendar.getInstance();
+      //  calendar.setTimeInMillis(date);
         return sdf.format(date);
     }
 

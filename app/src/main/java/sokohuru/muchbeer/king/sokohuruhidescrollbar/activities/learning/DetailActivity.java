@@ -12,6 +12,9 @@ import sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.R;
 
 public class DetailActivity extends AppCompatActivity {
 
+    public static final String UKAWA_UI_PANE_KEY = "flip_id";
+    private static final String LOCATION_KEY = "location";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,6 +30,7 @@ public class DetailActivity extends AppCompatActivity {
                     .commit();
         }
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
