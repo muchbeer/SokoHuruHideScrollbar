@@ -48,7 +48,9 @@ import static sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.R.string.p
  */
 public class ForecastFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    private SimpleCursorAdapter mForecastAdapter;
+  //  private SimpleCursorAdapter mForecastAdapter;
+    //this help to get two split larger and small
+  private UkawaAdapter mForecastAdapter;
     private TextView display_result_textview;
 
     private static final int FORECAST_LOADER = 0;
@@ -152,68 +154,12 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Create some dummy data for the ListView.  Here's a sample weekly forecast
-        String[] data = {
-                "Mon 6/23?- Sunny - 31/17",
-                "Tue 6/24 - Foggy - 21/8",
-                "Wed 6/25 - Cloudy - 22/17",
-                "Thurs 6/26 - Rainy - 18/11",
-                "Fri 6/27 - Foggy - 21/10",
-                "Sat 6/28 - TRAPPED IN WEATHERSTATION - 23/18",
-                "Sun 6/29 - Sunny - 20/7"
-        };
-        List<String> weekForecast = new ArrayList<String>(Arrays.asList(data));
-
-        // Now that we have some dummy forecast data, create an ArrayAdapter.
-        // The ArrayAdapter will take data from a source (like our dummy forecast) and
+        // The ArrayAdapter will take data from a source and
         // use it to populate the ListView it's attached to.
-        mForecastAdapter =
-                new SimpleCursorAdapter(
-                        getActivity(), // The current context (this activity)
-                        R.layout.list_item_forecast_json, // The name of the layout ID.
-                        null,
-                        new String[] {
-                                UkawaContract.UkawaEntry.COLUMN_DATETEXT,
-                                UkawaContract.UkawaEntry.COLUMN_TITLE,
-                                UkawaContract.UkawaEntry.COLUMN_NEWS_REPORTER,
-                                UkawaContract.UkawaEntry.COLUMN_LIKE_VIEW
+        mForecastAdapter = new UkawaAdapter(getActivity(), null, 0);
 
 
-                        },
-                        new int[]{
-                                R.id.list_item_date_textview,
-                                R.id.list_item_forecast_textview,
-                                R.id.list_item_id_textview,
-                                R.id.list_item_ukawa_likes_textview
 
-                        },
-                        0 // The ID of the textview to populate.
-                      );
-
-        mForecastAdapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
-            @Override
-            public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
-             //  boolean isMetric = Utility.isMetric(getActivity());
-                switch (columnIndex) {
-
-                    case COL_UKAWA_DATE: {
-                        // we have to do some formatting and possibly a conversion
-                        String dateString = cursor.getString(columnIndex);
-                        TextView dateView = (TextView) view;
-                        dateView.setText(Utility.formatDate(dateString));
-                        return true;
-                    }
-
-                    case COL_UKAWA_NEWS_REPORTER: {
-                        String ukawaAuthor = cursor.getString(columnIndex);
-                        TextView ukawaAuthorView = (TextView) view;
-                        ukawaAuthorView.setText(ukawaAuthor);
-                    }
-
-                }
-                return false;
-            }
-        });
         View rootView = inflater.inflate(R.layout.fragment_main_json, container, false);
 
         // Get a reference to the ListView, and attach this adapter to it.
