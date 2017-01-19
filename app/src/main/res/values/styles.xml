@@ -127,4 +127,9 @@
         <item name="android:layout_width">@dimen/logo_image_size</item>
     </style>
 
+    <style name="UkawaListStyle">
+        <!-- Here it's a stub.  In screens of sufficient width, this style includes modifications
+        for two-pane layout -->
+    </style>
+
 </resources>

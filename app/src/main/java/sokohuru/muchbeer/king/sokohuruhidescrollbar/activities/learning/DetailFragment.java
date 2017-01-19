@@ -5,12 +5,15 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.ShareActionProvider;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -34,7 +37,9 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     public static final String UKAWA_UI_PANE_KEY = "flip_id";
     public static final String DATE_KEY = "ukawa_date";
     private static final String LOCATION_KEY = "location";
+    private String mDateStr;
 
+    CollapsingToolbarLayout collapsingToolbar;
      private static final int DETAIL_LOADER = 0;
 
     private ShareActionProvider mShareActionProvider;
@@ -81,6 +86,24 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
 
+        ((AppCompatActivity) getActivity()).setSupportActionBar((Toolbar) rootView.findViewById(R.id.toolbar));
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        // Set Collapsing Toolbar layout to the screen
+        // Set Collapsing Toolbar layout to the screen
+        collapsingToolbar =
+                (CollapsingToolbarLayout) rootView.findViewById(R.id.collapsing_toolbar);
+
+        Bundle arguments = getArguments();
+        if (arguments != null) {
+            mDateStr = arguments.getString(DetailActivity.UKAWA_UI_PANE_DATE_KEY);
+        }
+
+        if (savedInstanceState != null) {
+            mLocation = savedInstanceState.getString(LOCATION_KEY);
+        }
+
+
+
      /*   // The detail Activity called via intent.  Inspect the intent for forecast data.
         Intent intent = getActivity().getIntent();
         if (intent != null && intent.hasExtra(Intent.EXTRA_TEXT)) {
@@ -95,10 +118,15 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        getLoaderManager().initLoader(DETAIL_LOADER, null, this);
+       // getLoaderManager().initLoader(DETAIL_LOADER, null, this);
 
         if (savedInstanceState != null) {
             mLocation = savedInstanceState.getString(LOCATION_KEY);
+        }
+
+        Bundle arguments = getArguments();
+        if (arguments != null && arguments.containsKey(DetailActivity.UKAWA_UI_PANE_DATE_KEY)) {
+            getLoaderManager().initLoader(DETAIL_LOADER, null, this);
         }
         super.onActivityCreated(savedInstanceState);
     }
@@ -114,10 +142,17 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     @Override
     public void onResume() {
         super.onResume();
-        if (mLocation != null &&
+        Bundle arguments = getArguments();
+
+        if (arguments != null && arguments.containsKey(DetailActivity.UKAWA_UI_PANE_DATE_KEY) &&
+                mLocation != null &&
                 !mLocation.equals(Utility.getPreferredLocation(getActivity()))) {
             getLoaderManager().restartLoader(DETAIL_LOADER, null, this);
         }
+     /*   if (mLocation != null &&
+                !mLocation.equals(Utility.getPreferredLocation(getActivity()))) {
+            getLoaderManager().restartLoader(DETAIL_LOADER, null, this);
+        }*/
     }
 
     @Override
@@ -222,9 +257,11 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
                 .setText(ukawaComments);
 
         String ukawaLikes =
-                data.getString(data.getColumnIndex(UkawaContract.UkawaEntry.COLUMN_LIKE_VIEW));
-        ((TextView) getView().findViewById(R.id.detail_likes_textview))
-                .setText(ukawaLikes);
+                data.getString(data.getColumnIndex(UkawaContract.UkawaEntry.COLUMN_TITLE));
+       /* ((TextView) getView().findViewById(R.id.detail_likes_textview))
+                .setText(ukawaLikes);*/
+
+        collapsingToolbar.setTitle(ukawaLikes);
 
         // We still need this for the share intent
         mForecast = String.format("%s - %s - %s/%s", dateString, weatherDescription, ukawaAuthor, ukawaComments);

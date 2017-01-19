@@ -24,6 +24,7 @@ public class UkawaAdapter extends CursorAdapter {
     private static final int VIEW_TYPE_COUNT = 2;
     private static final int VIEW_TYPE_TODAY_BREAKNEWS = 0;
     private static final int VIEW_TYPE_FUTURE_DAY = 1;
+    private boolean mUseTodayLayout;
 
 
     /**
@@ -48,6 +49,13 @@ public class UkawaAdapter extends CursorAdapter {
         super(context, c, flags);
     }
 
+    public void setUseTodayLayout(boolean useTodayLayout) {
+        mUseTodayLayout = useTodayLayout;
+    }
+
+   /* public int getItemViewType(int position) {
+        return (position == 0 && mUseTodayLayout) ? VIEW_TYPE_TODAY_BREAKNEWS : VIEW_TYPE_FUTURE_DAY;
+    }*/
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup viewGroup) {
@@ -109,7 +117,9 @@ public class UkawaAdapter extends CursorAdapter {
 
     @Override
     public int getItemViewType(int position) {
-        return position == 0 ? VIEW_TYPE_TODAY_BREAKNEWS : VIEW_TYPE_FUTURE_DAY;
+      //  return position == 0 ? VIEW_TYPE_TODAY_BREAKNEWS : VIEW_TYPE_FUTURE_DAY;
+        return (position ==0 && mUseTodayLayout) ? VIEW_TYPE_TODAY_BREAKNEWS : VIEW_TYPE_FUTURE_DAY;
+
     }
 
     @Override

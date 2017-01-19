@@ -10,15 +10,38 @@ import android.view.MenuItem;
 
 import sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.R;
 
+import static sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.learning.DetailFragment.DATE_KEY;
+
 public class DetailActivity extends AppCompatActivity {
 
-    public static final String UKAWA_UI_PANE_KEY = "flip_id";
+    public static final String UKAWA_UI_PANE_DATE_KEY = "ukawa_date";
     private static final String LOCATION_KEY = "location";
+
+    private boolean mTwoPane;
+    private String mLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
+
+        if (savedInstanceState == null) {
+            // Create the detail fragment and add it to the activity
+            // using a fragment transaction.
+            String date = getIntent().getStringExtra(UKAWA_UI_PANE_DATE_KEY);
+
+            Bundle arguments = new Bundle();
+            arguments.putString(DetailActivity.UKAWA_UI_PANE_DATE_KEY, date);
+
+            DetailFragment fragment = new DetailFragment();
+            fragment.setArguments(arguments);
+
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.ukawa_detail_container, fragment)
+                    .commit();
+        }
+
+/*
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -26,9 +49,9 @@ public class DetailActivity extends AppCompatActivity {
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new DetailFragment())
+                    .add(R.id.ukawa_detail_container, new DetailFragment())
                     .commit();
-        }
+        }*/
     }
 
 
