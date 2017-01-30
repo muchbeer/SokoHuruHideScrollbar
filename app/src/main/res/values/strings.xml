@@ -7,6 +7,15 @@
     <string name="title_activity_home">HomeActivity</string>
     <string name="title_activity_add_main">AddMainActivity</string>
 
+    <!-- Strings related to Notification preference -->
+    <string name="pref_last_notification">last_notification</string>
+
+
+    <string name="pref_last_sync">last_sync</string>
+    <string name="sync_account_type">muchbeer.ukawa.news</string>
+    <string name="content_authority">sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.data.UkawaProvider</string>
+
+
     <string name="error_timeout">Oops! Tatizo la mtandao, vuta chini</string>
     <string name="error_auth_failure">Oops! Tatizo la kimtandao </string>
     <string name="error_network">Oops! Mitambo ya soko huru kun tatizo</string>

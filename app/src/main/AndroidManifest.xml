@@ -8,6 +8,10 @@
         android:name="sokohuru.muchbeer.king.sokohuruhidescrollbar.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
     />
+    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
+    <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
+    <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
+
     <application
         android:name=".main.FireApp"
         android:allowBackup="true"
@@ -54,8 +58,43 @@
             android:name=".data.UkawaProvider"
             android:authorities="sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.data.UkawaProvider"
             android:enabled="true"
+            android:syncable="true"
             android:exported="false"/>
 
+        <!-- SyncAdapter's dummy authentication service -->
+        <service android:name=".sync.UkawaAuthenticatorService">
+            <intent-filter>
+                <action android:name="android.accounts.AccountAuthenticator" />
+            </intent-filter>
+            <meta-data
+                android:name="android.accounts.AccountAuthenticator"
+                android:resource="@xml/authenticator" />
+        </service>
+
+        <!-- The SyncAdapter service -->
+        <service
+            android:name=".sync.UkawaSyncService"
+            android:exported="true"
+            >
+            <intent-filter>
+                <action android:name="android.content.SyncAdapter" />
+            </intent-filter>
+            <meta-data
+                android:name="android.content.SyncAdapter"
+                android:resource="@xml/syncadapter" />
+        </service>
+
+        <!-- SyncAdapter's dummy authentication service -->
+        <service android:name=".sync.UkawaAuthenticatorService">
+            <intent-filter>
+                <action android:name="android.accounts.AccountAuthenticator" />
+            </intent-filter>
+            <meta-data
+                android:name="android.accounts.AccountAuthenticator"
+                android:resource="@xml/authenticator" />
+        </service>
+        <receiver
+            android:name=".services.UkawaServices$AlarmReceiver"/>
 
     </application>
 

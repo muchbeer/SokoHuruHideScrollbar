@@ -27,9 +27,9 @@ public class MainJsonActivity extends AppCompatActivity implements ForecastFragm
         setContentView(R.layout.activity_main_json);
 
 
-      /*  Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-*/
+
         if (findViewById(R.id.ukawa_detail_container) != null) {
             // The detail container view will be present only in the large-screen layouts
             // (res/layout-sw600dp). If this view is present, then the activity should be
@@ -51,7 +51,7 @@ public class MainJsonActivity extends AppCompatActivity implements ForecastFragm
         ForecastFragment forecsastFragment = ((ForecastFragment) getSupportFragmentManager().
                 findFragmentById(R.id.container));
         forecsastFragment.setUseTodayLayout(!mTwoPane);
-      //  getSupportActionBar().setDisplayShowHomeEnabled(true);
+       getSupportActionBar().setDisplayShowHomeEnabled(true);
 
        /* if(savedInstanceState ==null) {
             getSupportFragmentManager().beginTransaction()

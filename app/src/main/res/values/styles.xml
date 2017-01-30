@@ -1,7 +1,20 @@
 <resources>
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+
+        <!--<item name="actionBarStyle">@style/ActionBar.Solid.Ukawa</item>-->
     </style>
+
+
+    <!--<style name="ForecastTheme" parent="AppTheme">
+        <item name = "actionBarStyle">@style/ActionBar.Solid.Sunshine.NoTitle</item>
+    </style>
+
+    <style name="ActionBar.Solid.Sunshine.NoTitle"
+        parent="@style/ActionBar.Solid.Ukawa">
+        <item name="displayOptions">useLogo|showHome</item>
+        <item name="logo">@drawable/ic_launcher</item>
+    </style>-->
 
     <!-- Base application theme. -->
     <style name="Theme" parent="Theme.AppCompat.Light.DarkActionBar">

@@ -4,4 +4,8 @@
         <item name="android:choiceMode">singleChoice</item>
     </style>
 
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+
+        <!--<item name="actionBarStyle">@style/ActionBar.Solid.Ukawa</item>-->
+    </style>
 </resources>

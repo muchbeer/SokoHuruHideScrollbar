@@ -1,5 +1,8 @@
 package sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.learning;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -41,9 +44,8 @@ import java.util.List;
 import sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.R;
 import sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.data.UkawaContract;
 
-import static android.R.attr.format;
-import static sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.R.id.container;
-import static sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.R.string.pref_units_specific;
+import sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.services.*;
+import sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.sync.UkawaSyncAdapter;
 
 /**
  * Created by muchbeer on 1/1/2017.
@@ -140,8 +142,20 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 
     private void refreshNewz() {
 
+/*
+//Using IntentServices Intent alarmIntent = new Intent(getActivity(), SunshineService.AlarmReceiver.class);
+        Intent alarmIntent = new Intent(getActivity(), UkawaServices.AlarmReceiver.class);
+        alarmIntent.putExtra(UkawaServices.LOCATION_QUERY_EXTRA, Utility.getPreferredLocation(getActivity()));
+        //Wrap in a pending intent which only fires once.
+        PendingIntent pi = PendingIntent.getBroadcast(getActivity(), 0,alarmIntent,PendingIntent.FLAG_ONE_SHOT);//getBroadcast(context, 0, i, 0);
+        AlarmManager am=(AlarmManager)getActivity().getSystemService(Context.ALARM_SERVICE);
+        //Set the AlarmManager to wake up the system.
+        am.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 5000, pi);
+*/
 
-      //  FetchNewsTask weatherTask = new FetchNewsTask();
+
+
+        //  FetchNewsTask weatherTask = new FetchNewsTask();
 
        /* SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         String location = prefs.getString(getString(R.string.pref_location_key),
@@ -151,10 +165,11 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
                 PreferenceManager.getDefaultSharedPreferences(getActivity());
         String location = sharedPrefs.getString(getString(R.string.pref_units_key), getString(pref_units_specific));*/
 
-        String location = Utility.getPreferredLocation(getActivity());
+       /* String location = Utility.getPreferredLocation(getActivity());
 
-        new FetchNewsTask(getActivity()).execute(location);
-     //   weatherTask.execute(location);
+        new FetchNewsTask(getActivity()).execute(location);*/
+
+        UkawaSyncAdapter.syncImmediately(getActivity());
     }
 
     @Override

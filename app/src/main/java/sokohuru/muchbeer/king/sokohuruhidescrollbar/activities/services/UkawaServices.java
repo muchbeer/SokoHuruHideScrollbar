@@ -1,16 +1,15 @@
-package sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.learning;
+package sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.services;
 
+import android.app.IntentService;
+import android.content.BroadcastReceiver;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.ArrayAdapter;
-import android.widget.Toast;
-
-import com.google.firebase.auth.api.model.StringList;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -22,100 +21,51 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Vector;
 
 import sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.data.UkawaContract;
-import sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.data.UkawaContract.LocationEntry;
-
-import static android.R.attr.description;
-import static android.icu.lang.UCharacter.GraphemeClusterBreak.L;
-import static com.google.android.gms.auth.api.credentials.PasswordSpecification.da;
-import static sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.R.drawable.ukawa;
+import sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.learning.FetchNewsTask;
 
 /**
- * Created by muchbeer on 1/7/2017.
+ * Created by muchbeer on 1/20/2017.
  */
-public class FetchNewsTask extends AsyncTask<String, Void, Void> {
 
-    String[] resultStrs = new String[4];
+public class UkawaServices extends IntentService {
+
+    public final String LOG_TAG = UkawaServices.class.getSimpleName();
+    static public final String LOCATION_QUERY_EXTRA = "lqe";
     private ArrayAdapter<String> mForecastAdapter;
-
-    private final Context mContext;
-
-    public FetchNewsTask(Context context) {
-        mContext = context;
-    }
-    private final String LOG_TAG = FetchNewsTask.class.getSimpleName();
+    private Context mContext;
 
 
-    /* The date/time conversion code is going to be moved outside the asynctask later,
-     * so for convenience we're breaking it out into its own method now.
-     */
-    private String getReadableDateString(String time){
-        // Because the API returns a unix timestamp (measured in seconds),
-        // it must be converted to milliseconds in order to be converted to valid date.
-
-
-
-
-          /*  Date date = new Date();
-             String real_date = null;
-            DateFormat format = new SimpleDateFormat("E, MMM dd yyyy");
-           //convertedDate = dateFormat.parse(dateString);
-            try {
-
-               *//* Date date = formatter.parse(dateInString);
-                System.out.println(date);
-                System.out.println(formatter.format(date));
-                date = format.parse(time);*//*
-                date = format.parse(time);
-                real_date=format.format(date);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            return real_date.toString();*/
-
-        Date date = new Date();
-        DateFormat format = new SimpleDateFormat("E, MMM dd yyyy");
-        //convertedDate = dateFormat.parse(dateString);
-
-        return format.format(date).toString();
+    public FetchNewsTask ukawaCollectdata= new FetchNewsTask(this);
+    public UkawaServices(String name) {
+        super(name);
     }
 
-    /**
-     * Helper method to handle insertion of a new location in the weather database.
-     *
-     * @param locationSetting The location string used to request updates from the server.
-     * @param habari A human-readable city name, e.g "Mountain View"
-     * @param moto the latitude of the city
-     * @param current the longitude of the city
-     * @return the row ID of the added location.
-     */
     private long addLocation(String locationSetting, String habari, String moto, String current) {
 
         // First, check if the location with this city name exists in the db
-        Cursor cursor = mContext.getContentResolver().query(
-                LocationEntry.CONTENT_URI,
-                new String[]{LocationEntry._ID},
-                LocationEntry.COLUMN_LOCATION_SETTING + " = ?",
+        Cursor cursor = getContentResolver().query(
+                UkawaContract.LocationEntry.CONTENT_URI,
+                new String[]{UkawaContract.LocationEntry._ID},
+                UkawaContract.LocationEntry.COLUMN_LOCATION_SETTING + " = ?",
                 new String[]{locationSetting},
                 null);
 
         if (cursor.moveToFirst()) {
-            int locationIdIndex = cursor.getColumnIndex(LocationEntry._ID);
+            int locationIdIndex = cursor.getColumnIndex(UkawaContract.LocationEntry._ID);
             return cursor.getLong(locationIdIndex);
         } else {
             ContentValues locationValues = new ContentValues();
-            locationValues.put(LocationEntry.COLUMN_LOCATION_SETTING, locationSetting);
-            locationValues.put(LocationEntry.COLUMN_CITY_NAME, habari);
-            locationValues.put(LocationEntry.COLUMN_MBUNGE, moto);
-            locationValues.put(LocationEntry.COLUMN_DIWANI, current);
+            locationValues.put(UkawaContract.LocationEntry.COLUMN_LOCATION_SETTING, locationSetting);
+            locationValues.put(UkawaContract.LocationEntry.COLUMN_CITY_NAME, habari);
+            locationValues.put(UkawaContract.LocationEntry.COLUMN_MBUNGE, moto);
+            locationValues.put(UkawaContract.LocationEntry.COLUMN_DIWANI, current);
 
-            Uri locationInsertUri = mContext.getContentResolver()
-                    .insert(LocationEntry.CONTENT_URI, locationValues);
+            Uri locationInsertUri = getContentResolver()
+                    .insert(UkawaContract.LocationEntry.CONTENT_URI, locationValues);
 
             return ContentUris.parseId(locationInsertUri);
         }
@@ -225,13 +175,13 @@ public class FetchNewsTask extends AsyncTask<String, Void, Void> {
             weatherValues.put(UkawaContract.UkawaEntry.COLUMN_LIKE_VIEW, ukawa_likes);
             weatherValues.put(UkawaContract.UkawaEntry.COLUMN_UKAWA_ID, ukawa_id);
             weatherValues.put(UkawaContract.UkawaEntry.COLUMN_UKAWA_ID_UI, ukawa_id_ui_pane);
-           // weatherValues.put(WeatherEntry.COLUMN_SHORT_DESC, description);
-          //  weatherValues.put(WeatherEntry.COLUMN_WEATHER_ID, weatherId);
+            // weatherValues.put(WeatherEntry.COLUMN_SHORT_DESC, description);
+            //  weatherValues.put(WeatherEntry.COLUMN_WEATHER_ID, weatherId);
 
 
             cVVector.add(weatherValues);
             //  highAndLow = formatHighLows(high, low);
-            resultStrs[i] = ukawa_title + " - " + majimbo + " - " + ukawa_author;
+           // resultStrs[i] = ukawa_title + " - " + majimbo + " - " + ukawa_author;
 
             Log.v("The value is: ", ukawa_author);
         }
@@ -239,21 +189,21 @@ public class FetchNewsTask extends AsyncTask<String, Void, Void> {
         if (cVVector.size() > 0) {
             ContentValues[] cvArray = new ContentValues[cVVector.size()];
             cVVector.toArray(cvArray);
-            mContext.getContentResolver().bulkInsert(UkawaContract.UkawaEntry.CONTENT_URI, cvArray);
+            getContentResolver().bulkInsert(UkawaContract.UkawaEntry.CONTENT_URI, cvArray);
         }
         return null;
 
     }
     @Override
-    protected Void doInBackground(String... params) {
+    protected void onHandleIntent(Intent intent) {
 
 
         // If there's no zip code, there's nothing to look up.  Verify size of params.
-        if (params.length == 0) {
+   /*     if (params.length == 0) {
             return null;
         }
-
-        String locationQuery = params[0];
+*/
+        String locationQuery = intent.getStringExtra(LOCATION_QUERY_EXTRA);
 
         // These two need to be declared outside the try/catch
         // so that they can be closed in the finally block.
@@ -290,7 +240,7 @@ public class FetchNewsTask extends AsyncTask<String, Void, Void> {
 
             Uri builtUri = Uri.parse(FORECAST_BASE_URL)
                     .buildUpon()
-                    .appendPath(params[0]).build();
+                    .appendPath(locationQuery).build();
             Log.d("link is", builtUri.toString());
             URL url = new URL(builtUri.toString());
 
@@ -304,7 +254,7 @@ public class FetchNewsTask extends AsyncTask<String, Void, Void> {
             StringBuffer buffer = new StringBuffer();
             if (inputStream == null) {
                 // Nothing to do.
-                return null;
+
             }
             reader = new BufferedReader(new InputStreamReader(inputStream));
 
@@ -318,7 +268,7 @@ public class FetchNewsTask extends AsyncTask<String, Void, Void> {
 
             if (buffer.length() == 0) {
                 // Stream was empty.  No point in parsing.
-                return null;
+
             }
             forecastJsonStr = buffer.toString();
             // return new String[]{forecastJsonStr};
@@ -326,7 +276,7 @@ public class FetchNewsTask extends AsyncTask<String, Void, Void> {
             Log.e(LOG_TAG, "Error ", e);
             // If the code didn't successfully get the weather data, there's no point in attemping
             // to parse it.
-            return null;
+
         } finally {
             if (urlConnection != null) {
                 urlConnection.disconnect();
@@ -341,15 +291,26 @@ public class FetchNewsTask extends AsyncTask<String, Void, Void> {
         }
 
         try {
-            return getWeatherDataFromJson(forecastJsonStr, locationQuery);
+             getWeatherDataFromJson(forecastJsonStr, locationQuery);
         } catch (JSONException e) {
             Log.e(LOG_TAG, e.getMessage(), e);
             e.printStackTrace();
         }
 
         // This will only happen if there was an error getting or parsing the forecast.
-        return null;
+
+
+
     }
 
+    static public class AlarmReceiver extends BroadcastReceiver {
 
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Intent sendIntent = new Intent(context, UkawaServices.class);
+            sendIntent.putExtra(UkawaServices.LOCATION_QUERY_EXTRA, intent.getStringExtra(UkawaServices.LOCATION_QUERY_EXTRA));
+            context.startService(sendIntent);
+
+        }
+    }
 }
