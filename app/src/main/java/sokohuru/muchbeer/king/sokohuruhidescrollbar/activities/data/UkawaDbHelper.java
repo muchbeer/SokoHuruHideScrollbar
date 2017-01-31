@@ -65,13 +65,18 @@ public class UkawaDbHelper extends SQLiteOpenHelper {
 
                 // Set up the location column as a foreign key to location table.
                 " FOREIGN KEY (" + UkawaEntry.COLUMN_LOC_KEY + ") REFERENCES " +
-                LocationEntry.TABLE_NAME + " (" + LocationEntry._ID + ") " + ");";
-
+                LocationEntry.TABLE_NAME + " (" + LocationEntry._ID + ") " +
 
                 // To assure the application have just one weather entry per day
                 // per location, it's created a UNIQUE constraint with REPLACE strategy
-              //  " UNIQUE (" + WeatherEntry.COLUMN_DATETEXT + ", " +
-           //     WeatherEntry.COLUMN_LOC_KEY + ") ON CONFLICT REPLACE);";
+                " UNIQUE (" + UkawaEntry.COLUMN_DATETEXT + ", " +
+                UkawaEntry.COLUMN_LOC_KEY + ") ON CONFLICT REPLACE);";
+
+
+
+
+
+
 
 
         db.execSQL(SQL_CREATE_LOCATION_TABLE);

@@ -34,6 +34,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Vector;
 
@@ -221,6 +222,15 @@ public class UkawaSyncAdapter  extends AbstractThreadedSyncAdapter {
             ContentValues[] cvArray = new ContentValues[cVVector.size()];
             cVVector.toArray(cvArray);
             getContext().getContentResolver().bulkInsert(UkawaContract.UkawaEntry.CONTENT_URI, cvArray);
+
+           /* Calendar cal = Calendar.getInstance(); //Get's a calendar object with the current time.
+            cal.add(Calendar.DATE, -1); //Signifies yesterday's date
+            String yesterdayDate = UkawaContract.getDbDateString(cal.getTime());
+            getContext().getContentResolver().delete(UkawaContract.UkawaEntry.CONTENT_URI,
+                    UkawaContract.UkawaEntry.COLUMN_DATETEXT + " <= ?",
+                    new String[] {yesterdayDate});*/
+
+            notifyUkawa();
         }
         return null;
 
@@ -335,79 +345,87 @@ public class UkawaSyncAdapter  extends AbstractThreadedSyncAdapter {
     }
 
 
-    private void notifyWeather() {
+    private void notifyUkawa() {
         Context context = getContext();
         //checking the last update and notify if it' the first of the day
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        String lastNotificationKey = context.getString(R.string.pref_last_notification);
-        long lastSync = prefs.getLong(lastNotificationKey, 0);
-
-        if (System.currentTimeMillis() - lastSync >= DAY_IN_MILLIS) {
-            // Last sync was more than 1 day ago, let's send a notification with the weather.
-            String locationQuery = Utility.getPreferredLocation(context);
-
-            Uri ukawaUri = UkawaContract.UkawaEntry.buildUkawaLocationWithDate(locationQuery, UkawaContract.getDbDateString(new Date()));
-
-            // we'll query our contentProvider, as always
-            Cursor cursor = context.getContentResolver().query(ukawaUri, NOTIFY_UKAWA_PROJECTION, null, null, null);
-
-            if (cursor.moveToFirst()) {
-                int weatherId = cursor.getInt(INDEX_WEATHER_ID);
-              //  String ukawa_desc = cursor.getString(INDEX_SHORT_DESC);
-                String ukawa_author = cursor.getString(INDEX_AUTHOR);
-                String ukawa_title = cursor.getString(INDEX_TITLE);
 
 
-              //  Drawable drawable  = getContext().getResources().getDrawable(R.drawable.ic_launcher);
-              //  imgView.setImageDrawable(drawable);
-                int iconId = R.drawable.ic_launcher;
-                String title2 = context.getString(R.string.app_name);
-
-                // Define the text of the forecast.
-                String contentText = String.format(context.getString(R.string.format_notification),
-                        ukawa_author,
-                        ukawa_title);
-
-               // String contentText =  "hotnews";
-
-                // NotificationCompatBuilder is a very convenient way to build backward-compatible
-                // notifications.  Just throw in some data.
-                NotificationCompat.Builder mBuilder =
-                        new NotificationCompat.Builder(getContext())
-                                .setSmallIcon(iconId)
-                                .setContentTitle(title2)
-                                .setContentText(contentText);
-
-                // Make something interesting happen when the user clicks on the notification.
-                // In this case, opening the app is sufficient.
-                Intent resultIntent = new Intent(context, MainLearningActivity.class);
-
-                // The stack builder object will contain an artificial back stack for the
-                // started Activity.
-                // This ensures that navigating backward from the Activity leads out of
-                // your application to the Home screen.
-                TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
-                stackBuilder.addNextIntent(resultIntent);
-                PendingIntent resultPendingIntent =
-                        stackBuilder.getPendingIntent(
-                                0,
-                                PendingIntent.FLAG_UPDATE_CURRENT
-                        );
-                mBuilder.setContentIntent(resultPendingIntent);
-
-                NotificationManager mNotificationManager =
-                        (NotificationManager) getContext().getSystemService(Context.NOTIFICATION_SERVICE);
-                // WEATHER_NOTIFICATION_ID allows you to update the notification later on.
-                mNotificationManager.notify(WEATHER_NOTIFICATION_ID, mBuilder.build());
+        String displayNotificationsKey = context.getString(R.string.pref_enable_notifications_key);
+        boolean displayNotifications = prefs.getBoolean(displayNotificationsKey,
+                Boolean.parseBoolean(context.getString(R.string.pref_enable_notifications_default)));
 
 
-                //refreshing last sync
-                SharedPreferences.Editor editor = prefs.edit();
-                editor.putLong(lastNotificationKey, System.currentTimeMillis());
-                editor.commit();
+        if ( displayNotifications ) {
+            String lastNotificationKey = context.getString(R.string.pref_last_notification);
+            long lastSync = prefs.getLong(lastNotificationKey, 0);
+
+            if (System.currentTimeMillis() - lastSync >= DAY_IN_MILLIS) {
+                // Last sync was more than 1 day ago, let's send a notification with the weather.
+                String locationQuery = Utility.getPreferredLocation(context);
+
+                Uri ukawaUri = UkawaContract.UkawaEntry.buildUkawaLocationWithDate(locationQuery, UkawaContract.getDbDateString(new Date()));
+
+                // we'll query our contentProvider, as always
+                Cursor cursor = context.getContentResolver().query(ukawaUri, NOTIFY_UKAWA_PROJECTION, null, null, null);
+
+                if (cursor.moveToFirst()) {
+                    int weatherId = cursor.getInt(INDEX_WEATHER_ID);
+                    //  String ukawa_desc = cursor.getString(INDEX_SHORT_DESC);
+                    String ukawa_author = cursor.getString(INDEX_AUTHOR);
+                    String ukawa_title = cursor.getString(INDEX_TITLE);
+
+
+                    //  Drawable drawable  = getContext().getResources().getDrawable(R.drawable.ic_launcher);
+                    //  imgView.setImageDrawable(drawable);
+                    int iconId = R.drawable.ic_launcher;
+                    String title2 = context.getString(R.string.app_name);
+
+                    // Define the text of the forecast.
+                    String contentText = String.format(context.getString(R.string.format_notification),
+                            ukawa_author,
+                            ukawa_title);
+
+                    // String contentText =  "hotnews";
+
+                    // NotificationCompatBuilder is a very convenient way to build backward-compatible
+                    // notifications.  Just throw in some data.
+                    NotificationCompat.Builder mBuilder =
+                            new NotificationCompat.Builder(getContext())
+                                    .setSmallIcon(iconId)
+                                    .setContentTitle(title2)
+                                    .setContentText(contentText);
+
+                    // Make something interesting happen when the user clicks on the notification.
+                    // In this case, opening the app is sufficient.
+                    Intent resultIntent = new Intent(context, MainLearningActivity.class);
+
+                    // The stack builder object will contain an artificial back stack for the
+                    // started Activity.
+                    // This ensures that navigating backward from the Activity leads out of
+                    // your application to the Home screen.
+                    TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+                    stackBuilder.addNextIntent(resultIntent);
+                    PendingIntent resultPendingIntent =
+                            stackBuilder.getPendingIntent(
+                                    0,
+                                    PendingIntent.FLAG_UPDATE_CURRENT
+                            );
+                    mBuilder.setContentIntent(resultPendingIntent);
+
+                    NotificationManager mNotificationManager =
+                            (NotificationManager) getContext().getSystemService(Context.NOTIFICATION_SERVICE);
+                    // WEATHER_NOTIFICATION_ID allows you to update the notification later on.
+                    mNotificationManager.notify(WEATHER_NOTIFICATION_ID, mBuilder.build());
+
+
+                    //refreshing last sync
+                    SharedPreferences.Editor editor = prefs.edit();
+                    editor.putLong(lastNotificationKey, System.currentTimeMillis());
+                    editor.commit();
+                }
             }
         }
-
     }
 
 
@@ -423,7 +441,9 @@ public class UkawaSyncAdapter  extends AbstractThreadedSyncAdapter {
             // we can enable inexact timers in our periodic sync
             SyncRequest request = new SyncRequest.Builder().
                     syncPeriodic(syncInterval, flexTime).
-                    setSyncAdapter(account, authority).build();
+                    setSyncAdapter(account, authority)
+                    .setExtras(new Bundle())
+                    .build();
             ContentResolver.requestSync(request);
         } else {
             ContentResolver.addPeriodicSync(account,

@@ -66,6 +66,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 
     // For the forecast view we're showing only a small subset of the stored data.
     // Specify the columns we need.
+    //thhis is a join of the two tables
     private static final String[] FORECAST_COLUMNS_NEWS = {
             // In this case the id needs to be fully qualified with a table name, since
             // the content provider joins the location & weather tables in the background
@@ -140,60 +141,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         return super.onOptionsItemSelected(item);
     }
 
-    private void refreshNewz() {
 
-/*
-//Using IntentServices Intent alarmIntent = new Intent(getActivity(), SunshineService.AlarmReceiver.class);
-        Intent alarmIntent = new Intent(getActivity(), UkawaServices.AlarmReceiver.class);
-        alarmIntent.putExtra(UkawaServices.LOCATION_QUERY_EXTRA, Utility.getPreferredLocation(getActivity()));
-        //Wrap in a pending intent which only fires once.
-        PendingIntent pi = PendingIntent.getBroadcast(getActivity(), 0,alarmIntent,PendingIntent.FLAG_ONE_SHOT);//getBroadcast(context, 0, i, 0);
-        AlarmManager am=(AlarmManager)getActivity().getSystemService(Context.ALARM_SERVICE);
-        //Set the AlarmManager to wake up the system.
-        am.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 5000, pi);
-*/
-
-
-
-        //  FetchNewsTask weatherTask = new FetchNewsTask();
-
-       /* SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        String location = prefs.getString(getString(R.string.pref_location_key),
-                getString(R.string.pref_location_default));*/
-/*
-        SharedPreferences sharedPrefs =
-                PreferenceManager.getDefaultSharedPreferences(getActivity());
-        String location = sharedPrefs.getString(getString(R.string.pref_units_key), getString(pref_units_specific));*/
-
-       /* String location = Utility.getPreferredLocation(getActivity());
-
-        new FetchNewsTask(getActivity()).execute(location);*/
-
-        UkawaSyncAdapter.syncImmediately(getActivity());
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-     //   refreshNewz();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (mLocation != null && !mLocation.equals(Utility.getPreferredLocation(getActivity()))) {
-            getLoaderManager().restartLoader(FORECAST_LOADER, null, this);
-        }
-    }
-
-    public void setUseTodayLayout(boolean useTodayLayout) {
-
-        mUseTodayLayout = useTodayLayout;
-        if(mForecastAdapter !=null) {
-            mForecastAdapter.setUseTodayLayout(mUseTodayLayout);
-        }
-
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -203,7 +151,6 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
        // Set Collapsing Toolbar layout to the screen
         mForecastAdapter = new UkawaAdapter(getActivity(), null, 0);
 
-       mForecastAdapter.setUseTodayLayout(mUseTodayLayout);
 
 
         View rootView = inflater.inflate(R.layout.fragment_main_json, container, false);
@@ -247,10 +194,26 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
             // swapout in onLoadFinished.
             mPosition = savedInstanceState.getInt(SELECTED_KEY);
         }
+
+        mForecastAdapter.setUseTodayLayout(mUseTodayLayout);
+
         return rootView;
 
     }
 
+    private void refreshNewz() {
+
+/*
+        SharedPreferences sharedPrefs =
+                PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String location = sharedPrefs.getString(getString(R.string.pref_units_key), getString(pref_units_specific));*/
+
+       /* String location = Utility.getPreferredLocation(getActivity());
+
+        new FetchNewsTask(getActivity()).execute(location);*/
+
+        UkawaSyncAdapter.syncImmediately(getActivity());
+    }
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -266,6 +229,30 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
             outState.putInt(SELECTED_KEY, mPosition);
         }
         super.onSaveInstanceState(outState);
+    }
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        //   refreshNewz();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mLocation != null && !mLocation.equals(Utility.getPreferredLocation(getActivity()))) {
+            getLoaderManager().restartLoader(FORECAST_LOADER, null, this);
+        }
+    }
+
+    public void setUseTodayLayout(boolean useTodayLayout) {
+
+        mUseTodayLayout = useTodayLayout;
+        if(mForecastAdapter !=null) {
+            mForecastAdapter.setUseTodayLayout(mUseTodayLayout);
+        }
+
     }
 
     @Override
