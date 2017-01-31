@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.R;
+import sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.sync.UkawaSyncAdapter;
 
 
 public class MainJsonActivity extends AppCompatActivity implements ForecastFragment.Callback {
@@ -64,6 +65,9 @@ public class MainJsonActivity extends AppCompatActivity implements ForecastFragm
                     .add(R.id.container, new sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.learning.ForecastFragment())
                     .commit();
         }*/
+
+        //initialize the sync adapter to setup automaticall
+        UkawaSyncAdapter.initializeSyncAdapter(this);
     }
 
     //implement get coo rdinate and display on the map

@@ -58,7 +58,7 @@ public class UkawaSyncAdapter  extends AbstractThreadedSyncAdapter {
     private static final int WEATHER_NOTIFICATION_ID = 3004;
 
 
-    private static final String[] NOTIFY_WEATHER_PROJECTION = new String[] {
+    private static final String[] NOTIFY_UKAWA_PROJECTION = new String[] {
             UkawaContract.UkawaEntry.COLUMN_UKAWA_ID,
             UkawaContract.UkawaEntry.COLUMN_NEWS_REPORTER,
             UkawaContract.UkawaEntry.COLUMN_TITLE,
@@ -349,33 +349,33 @@ public class UkawaSyncAdapter  extends AbstractThreadedSyncAdapter {
             Uri ukawaUri = UkawaContract.UkawaEntry.buildUkawaLocationWithDate(locationQuery, UkawaContract.getDbDateString(new Date()));
 
             // we'll query our contentProvider, as always
-            Cursor cursor = context.getContentResolver().query(ukawaUri, NOTIFY_WEATHER_PROJECTION, null, null, null);
+            Cursor cursor = context.getContentResolver().query(ukawaUri, NOTIFY_UKAWA_PROJECTION, null, null, null);
 
             if (cursor.moveToFirst()) {
                 int weatherId = cursor.getInt(INDEX_WEATHER_ID);
-                String high = cursor.getString(INDEX_AUTHOR);
-                String low = cursor.getString(INDEX_TITLE);
-                String desc = cursor.getString(INDEX_SHORT_DESC);
+              //  String ukawa_desc = cursor.getString(INDEX_SHORT_DESC);
+                String ukawa_author = cursor.getString(INDEX_AUTHOR);
+                String ukawa_title = cursor.getString(INDEX_TITLE);
+
 
               //  Drawable drawable  = getContext().getResources().getDrawable(R.drawable.ic_launcher);
               //  imgView.setImageDrawable(drawable);
                 int iconId = R.drawable.ic_launcher;
-                String title = context.getString(R.string.app_name);
+                String title2 = context.getString(R.string.app_name);
 
                 // Define the text of the forecast.
-              /*  String contentText = String.format(context.getString(R.string.format_notification),
-                        desc,
-                        Utility.formatTemperature(context, high),
-                        Utility.formatTemperature(context, low));*/
+                String contentText = String.format(context.getString(R.string.format_notification),
+                        ukawa_author,
+                        ukawa_title);
 
-                String contentText =  "hotnews";
+               // String contentText =  "hotnews";
 
                 // NotificationCompatBuilder is a very convenient way to build backward-compatible
                 // notifications.  Just throw in some data.
                 NotificationCompat.Builder mBuilder =
                         new NotificationCompat.Builder(getContext())
                                 .setSmallIcon(iconId)
-                                .setContentTitle(title)
+                                .setContentTitle(title2)
                                 .setContentText(contentText);
 
                 // Make something interesting happen when the user clicks on the notification.

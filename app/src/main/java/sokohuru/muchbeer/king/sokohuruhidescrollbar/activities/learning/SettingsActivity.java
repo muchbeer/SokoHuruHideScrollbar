@@ -11,6 +11,7 @@ import android.preference.PreferenceManager;
 
 import sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.R;
 import sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.data.UkawaContract;
+import sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.sync.UkawaSyncAdapter;
 
 import static android.R.attr.value;
 
@@ -69,9 +70,11 @@ public class SettingsActivity extends PreferenceActivity
         // are we starting the preference activity?
         if (!mBindingPreference) {
             if (preference.getKey().equals(getString(R.string.pref_location_key))) {
-                FetchNewsTask weatherTask = new FetchNewsTask(this);
+                /*FetchNewsTask weatherTask = new FetchNewsTask(this);
                 String location = newValue.toString();
-                weatherTask.execute(location);
+                weatherTask.execute(location);*/
+                UkawaSyncAdapter.syncImmediately(this);
+
             } else {
                 // notify code that weather may be impacted
                 getContentResolver().notifyChange(UkawaContract.UkawaEntry.CONTENT_URI, null);
