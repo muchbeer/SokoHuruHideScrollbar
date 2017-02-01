@@ -8,6 +8,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 import static com.fasterxml.jackson.databind.util.ISO8601Utils.format;
 
@@ -55,6 +56,7 @@ public class UkawaContract {
         // as the location query.
         public static final String COLUMN_LOCATION_SETTING = "location_setting";
 
+        public static final String COLUMN_LOCATION_SETTING_REPLACE_ID = "location_setting_id";
         // Human readable location string, provided by the API.  Because for styling,
         // "Mountain View" is more recognizable than 94043.
         public static final String COLUMN_CITY_NAME = "habari";
@@ -150,15 +152,15 @@ public class UkawaContract {
         }
     }
 
-    public static final String DATE_FORMAT = "MMddyyyy";
+    public static final String DATE_FORMAT = "MM dd, yyyy hh:mm";
 
     public static String getDbDateString(Date date) {
 //Because the API returns a unix timestamp (measured in seconds)
 //it must be converted to milliseconds in order to be converted to valid date
         SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
 
-        // Create a calendar object that will convert the date and time value in milliseconds to date.
-        Calendar calendar = Calendar.getInstance();
+        sdf.setTimeZone(TimeZone.getTimeZone("GMT+03:00"));
+
       //  calendar.setTimeInMillis(date);
         return sdf.format(date);
     }

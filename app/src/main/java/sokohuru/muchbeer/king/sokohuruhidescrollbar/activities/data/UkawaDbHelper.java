@@ -36,6 +36,7 @@ public class UkawaDbHelper extends SQLiteOpenHelper {
         final String SQL_CREATE_LOCATION_TABLE = "CREATE TABLE " + LocationEntry.TABLE_NAME + " (" +
                 LocationEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                 LocationEntry.COLUMN_LOCATION_SETTING + " TEXT NOT NULL, " +
+                LocationEntry.COLUMN_LOCATION_SETTING_REPLACE_ID + " TEXT NOT NULL, " +
                 LocationEntry.COLUMN_CITY_NAME + " TEXT NOT NULL, " +
                 LocationEntry.COLUMN_MBUNGE + " TEXT NOT NULL, " +
                 LocationEntry.COLUMN_DIWANI + " TEXT NOT NULL, " +
