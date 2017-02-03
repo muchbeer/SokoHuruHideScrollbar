@@ -50,6 +50,8 @@ import static sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.services.U
  */
 
 public class UkawaSyncAdapter  extends AbstractThreadedSyncAdapter {
+
+    String[] resultStrs = new String[3];
     public final String LOG_TAG = UkawaSyncAdapter.class.getSimpleName();
     // Interval at which to sync with the weather, in milliseconds.
     // 60 seconds (1 minute) * 180 = 3 hours
@@ -123,13 +125,13 @@ public class UkawaSyncAdapter  extends AbstractThreadedSyncAdapter {
         final String OWM_LIST = "list";
         final String OWM_MAIN_CITY = "city";
         final String UKAWA_MAIN_NEW = "main";
-        final String UKAWA_BLOGS = "blogs";
-        final String UKAWA_UBUNGE = "mbunge";
+
+        final String UKAWA_MAIN_TAARIFA = "main";
         final String UKAWA_TTTLE = "ukawa_title";
         final String UKAWA_AUTHOR = "ukawa_author";
         final String UKAWA_COMMENTS = "ukawa_comments";
         final String UKAWA_DATETIME = "ukawa_date";
-        final String BLOGS_NAME = "blogs_name";
+
         final String UBUNGE_MAJIMBO = "majimbo";
         final String UKAWA_DESC = "ukawa_desc";
         final String UKAWA_IMAGE = "ukawa_image";
@@ -146,6 +148,7 @@ public class UkawaSyncAdapter  extends AbstractThreadedSyncAdapter {
         String moto = ukawahabari.getString(UKAWA_MOTO);
 
         String current = ukawahabari.getString(UKAWA_CURRENT);
+        Log.v("Jaribu now", "Jaribu now now");
 
         // Insert the location into the database.
         long locationID = addLocation(locationSetting, habari, moto, current);
@@ -174,32 +177,29 @@ public class UkawaSyncAdapter  extends AbstractThreadedSyncAdapter {
 
             // Temperatures are in a child object called "temp".  Try not to name variables
             // "temp" when working with temperature.  It confuses everybody.
-            JSONObject mainObject = dayForecast.getJSONObject(UKAWA_MAIN_NEW);
-            String ukawa_title = mainObject.getString(UKAWA_TTTLE);
+       //     JSONObject mainObject = dayForecast.getJSONObject(UKAWA_MAIN_NEW);
 
-            String ukawa_author = mainObject.getString(UKAWA_AUTHOR);
-            String ukawa_comments = mainObject.getString(UKAWA_COMMENTS);
-            String ukawa_desc = mainObject.getString(UKAWA_DESC);
-            String ukawa_image = mainObject.getString(UKAWA_IMAGE);
-            Double ukawa_id = mainObject.getDouble(UKAWA_ID);
-            String ukawa_likes = mainObject.getString(UKAWA_LIKE);
+            //Tapping in the real data
+            // geting to the main array again.
+            JSONObject weatherObject = dayForecast.getJSONArray(UKAWA_MAIN_TAARIFA).getJSONObject(0);
+//            majimbo = weatherObject.getDouble(UBUNGE_MAJIMBO);
 
-            // blogs_name is in a child array called "blogs", which is 1 element long.
-            JSONObject weatherObject = dayForecast.getJSONArray(UKAWA_UBUNGE).getJSONObject(0);
-            majimbo = weatherObject.getDouble(UBUNGE_MAJIMBO);
+            String ukawa_title = weatherObject.getString(UKAWA_TTTLE);
+            String ukawa_author = weatherObject.getString(UKAWA_AUTHOR);
+            String ukawa_comments = weatherObject.getString(UKAWA_COMMENTS);
+            String ukawa_desc = weatherObject.getString(UKAWA_DESC);
+            String ukawa_image = weatherObject.getString(UKAWA_IMAGE);
+            Double ukawa_id = weatherObject.getDouble(UKAWA_ID);
+            String ukawa_likes = weatherObject.getString(UKAWA_LIKE);
 
-            // Temperatures are in a child object called "temp".  Try not to name variables
-            // "temp" when working with temperature.  It confuses everybody.
-            JSONObject temperatureObject = dayForecast.getJSONObject(UKAWA_BLOGS);
-            String blogs_news = temperatureObject.getString(BLOGS_NAME);
 
 
 
             ContentValues weatherValues = new ContentValues();
 
             weatherValues.put(UkawaContract.UkawaEntry.COLUMN_LOC_KEY, locationID);
-            weatherValues.put(UkawaContract.UkawaEntry.COLUMN_DATETEXT,
-                    UkawaContract.getDbDateString(new Date(dateTime*1L)));
+            weatherValues.put(UkawaContract.UkawaEntry.COLUMN_DATETEXT, dateTime);
+                 //   UkawaContract.getDbDateString(new Date(dateTime*1L)));
             weatherValues.put(UkawaContract.UkawaEntry.COLUMN_DESC, ukawa_desc);
             weatherValues.put(UkawaContract.UkawaEntry.COLUMN_TITLE, ukawa_title);
             weatherValues.put(UkawaContract.UkawaEntry.COLUMN_NEWS_REPORTER, ukawa_author);
@@ -213,9 +213,10 @@ public class UkawaSyncAdapter  extends AbstractThreadedSyncAdapter {
 
             cVVector.add(weatherValues);
             //  highAndLow = formatHighLows(high, low);
-            // resultStrs[i] = ukawa_title + " - " + majimbo + " - " + ukawa_author;
+            // resultStrs[i] = ukawa_title + " - " + ukawa_image + " - " + ukawa_author;
 
             Log.v("The value is: ", ukawa_author);
+
         }
 
         if (cVVector.size() > 0) {

@@ -92,8 +92,10 @@ public class UkawaAdapter extends CursorAdapter {
         // Read date from cursor
         String dateString = cursor.getString(ForecastFragment.COL_UKAWA_DATE);
         // Find TextView and set formatted date on it
-        viewHolder.dateView.setText(Utility.getFriendlyDayString(context, dateString));
-      //  viewHolder.dateView.setText("dateString");
+        viewHolder.dateView.setText(dateString);
+       // viewHolder.dateView.setText(Utility.getFriendlyDayString(context, dateString));
+
+        //  viewHolder.dateView.setText("dateString");
      //   Log.v("Check date", dateString);
 
 

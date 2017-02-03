@@ -56,7 +56,7 @@ public class UkawaContract {
         // as the location query.
         public static final String COLUMN_LOCATION_SETTING = "location_setting";
 
-        public static final String COLUMN_LOCATION_SETTING_REPLACE_ID = "location_setting_id";
+
         // Human readable location string, provided by the API.  Because for styling,
         // "Mountain View" is more recognizable than 94043.
         public static final String COLUMN_CITY_NAME = "habari";
@@ -89,6 +89,9 @@ public class UkawaContract {
         public static final String COLUMN_LOC_KEY = "location_id";
         // Date, stored as Text with format yyyy-MM-dd
         public static final String COLUMN_DATETEXT = "ukawa_date";
+
+        // Date, stored as Text with format yyyy-MM-dd
+        public static final String COLUMN_DATETEXT_ID = "ukawa_date";
         // Weather id as returned by API, to identify the icon to be used
         public static final String COLUMN_UKAWA_ID = "ukawa_id";
 
@@ -149,6 +152,10 @@ public class UkawaContract {
 
         public static String getStartDateFromUri(Uri uri) {
             return uri.getQueryParameter(COLUMN_DATETEXT);
+        }
+
+        public static String getStartKeyFromUri(Uri uri) {
+            return uri.getQueryParameter(COLUMN_UKAWA_ID);
         }
     }
 

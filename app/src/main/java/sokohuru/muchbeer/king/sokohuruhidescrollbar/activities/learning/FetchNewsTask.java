@@ -216,8 +216,8 @@ public class FetchNewsTask extends AsyncTask<String, Void, Void> {
             ContentValues weatherValues = new ContentValues();
 
             weatherValues.put(UkawaContract.UkawaEntry.COLUMN_LOC_KEY, locationID);
-            weatherValues.put(UkawaContract.UkawaEntry.COLUMN_DATETEXT,
-                    UkawaContract.getDbDateString(new Date(dateTime*1L)));
+            weatherValues.put(UkawaContract.UkawaEntry.COLUMN_DATETEXT, dateTime);
+                //    UkawaContract.getDbDateString(new Date(dateTime*1L)));
             weatherValues.put(UkawaContract.UkawaEntry.COLUMN_DESC, ukawa_desc);
             weatherValues.put(UkawaContract.UkawaEntry.COLUMN_TITLE, ukawa_title);
             weatherValues.put(UkawaContract.UkawaEntry.COLUMN_NEWS_REPORTER, ukawa_author);

@@ -265,6 +265,8 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         // Only return data after today.
         String startDate = UkawaContract.getDbDateString(new Date());
 
+          String startKeyID = UkawaContract.UkawaEntry.COLUMN_UKAWA_ID;
+
         // Sort order:  Ascending, by date.
         String sortOrder = UkawaContract.UkawaEntry.COLUMN_DATETEXT + " ASC";
 

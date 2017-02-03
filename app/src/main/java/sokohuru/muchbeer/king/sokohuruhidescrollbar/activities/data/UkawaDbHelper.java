@@ -36,7 +36,7 @@ public class UkawaDbHelper extends SQLiteOpenHelper {
         final String SQL_CREATE_LOCATION_TABLE = "CREATE TABLE " + LocationEntry.TABLE_NAME + " (" +
                 LocationEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                 LocationEntry.COLUMN_LOCATION_SETTING + " TEXT NOT NULL, " +
-                LocationEntry.COLUMN_LOCATION_SETTING_REPLACE_ID + " TEXT NOT NULL, " +
+
                 LocationEntry.COLUMN_CITY_NAME + " TEXT NOT NULL, " +
                 LocationEntry.COLUMN_MBUNGE + " TEXT NOT NULL, " +
                 LocationEntry.COLUMN_DIWANI + " TEXT NOT NULL, " +
@@ -54,6 +54,7 @@ public class UkawaDbHelper extends SQLiteOpenHelper {
                 // the ID of the location entry associated with this weather data
                 COLUMN_LOC_KEY + " INTERGER NOT NULL, " +
                 UkawaEntry.COLUMN_DATETEXT + " TEXT NULL, " +
+
                 UkawaEntry.COLUMN_DESC + " TEXT NULL, " +
                 UkawaEntry.COLUMN_UKAWA_ID + " TEXT NULL," +
                 UkawaEntry.COLUMN_TITLE + " TEXT NULL, " +
@@ -70,17 +71,10 @@ public class UkawaDbHelper extends SQLiteOpenHelper {
 
                 // To assure the application have just one weather entry per day
                 // per location, it's created a UNIQUE constraint with REPLACE strategy
-                " UNIQUE (" + UkawaEntry.COLUMN_DATETEXT + ", " +
+                " UNIQUE (" + UkawaEntry.COLUMN_UKAWA_ID + ", " +
                 UkawaEntry.COLUMN_LOC_KEY + ") ON CONFLICT REPLACE);";
 
-
-
-
-
-
-
-
-        db.execSQL(SQL_CREATE_LOCATION_TABLE);
+       db.execSQL(SQL_CREATE_LOCATION_TABLE);
         db.execSQL(SQL_CREATE_UKAWA_TABLE);
     }
 
