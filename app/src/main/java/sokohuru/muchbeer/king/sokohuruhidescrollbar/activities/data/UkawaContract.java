@@ -159,14 +159,14 @@ public class UkawaContract {
         }
     }
 
-    public static final String DATE_FORMAT = "MM dd, yyyy hh:mm";
+    public static final String DATE_FORMAT = "MMM dd, yyyy hh:mm";
 
     public static String getDbDateString(Date date) {
 //Because the API returns a unix timestamp (measured in seconds)
 //it must be converted to milliseconds in order to be converted to valid date
         SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
 
-        sdf.setTimeZone(TimeZone.getTimeZone("GMT+03:00"));
+       // sdf.setTimeZone(TimeZone.getTimeZone("GMT+03:00"));
 
       //  calendar.setTimeInMillis(date);
         return sdf.format(date);

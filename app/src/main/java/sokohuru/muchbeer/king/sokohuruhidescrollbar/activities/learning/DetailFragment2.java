@@ -27,12 +27,10 @@ import android.widget.Toast;
 import sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.R;
 import sokohuru.muchbeer.king.sokohuruhidescrollbar.activities.data.UkawaContract;
 
-import static android.util.Log.e;
-
 /**
- * Created by muchbeer on 11/17/2016.
+ * Created by muchbeer on 2/6/2017.
  */
-public class DetailFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class DetailFragment2  extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     public static final String UKAWA_UI_PANE_KEY = "flip_id";
     public static final String DATE_KEY = "ukawa_date";
@@ -40,18 +38,18 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     private String mDateStr;
 
     CollapsingToolbarLayout collapsingToolbar;
-     private static final int DETAIL_LOADER = 0;
+    private static final int DETAIL_LOADER = 0;
 
     private ShareActionProvider mShareActionProvider;
     private String mLocation;
     private String mForecast;
 
- private static final String LOG_TAG = DetailFragment.class.getSimpleName();
+    private static final String LOG_TAG = DetailFragment.class.getSimpleName();
 
     private static final String UKAWA_SHARE_HASHTAG = " #ukawa";
     private String ukawaShare;
 
-    public DetailFragment() {
+    public DetailFragment2() {
         setHasOptionsMenu(true);
     }
 
@@ -84,7 +82,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_detail_material, container, false);
 
         ((AppCompatActivity) getActivity()).setSupportActionBar((Toolbar) rootView.findViewById(R.id.toolbar));
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -118,7 +116,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-       // getLoaderManager().initLoader(DETAIL_LOADER, null, this);
+        // getLoaderManager().initLoader(DETAIL_LOADER, null, this);
 
         if (savedInstanceState != null) {
             mLocation = savedInstanceState.getString(LOCATION_KEY);
@@ -210,7 +208,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         String forecastDate = intent.getStringExtra(DATE_KEY);
 
         // Sort order:  Ascending, by date.
-      //  String sortOrder = UkawaContract.UkawaEntry.COLUMN_UKAWA_ID + " ASC";
+        //  String sortOrder = UkawaContract.UkawaEntry.COLUMN_UKAWA_ID + " ASC";
 
         mLocation = Utility.getPreferredLocation(getActivity());
         Uri weatherForLocationUri = UkawaContract.UkawaEntry.buildUkawaLocationWithUiPanel(
@@ -245,8 +243,8 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         ((TextView) getView().findViewById(R.id.detail_desc_textview))
                 .setText(weatherDescription);
 
-      String ukawaAuthor =
-              data.getString(data.getColumnIndex(UkawaContract.UkawaEntry.COLUMN_NEWS_REPORTER));
+        String ukawaAuthor =
+                data.getString(data.getColumnIndex(UkawaContract.UkawaEntry.COLUMN_NEWS_REPORTER));
 
         ((TextView) getView().findViewById(R.id.detail_author_textview))
                 .setText(ukawaAuthor);

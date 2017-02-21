@@ -43,6 +43,8 @@ public class Utility {
     // back into date objects for comparison/processing.
     public static final String DATE_FORMAT = "MM dd, yyyy hh:mm";
 
+   // public static final String DATE_FORMAT = "EEE MMM dd HH:mm yyyy";
+
     /**
      * Helper method to convert the database representation of the date into something to display
      * to users.  As classy and polished a user experience as "20140102" is, we can do better.

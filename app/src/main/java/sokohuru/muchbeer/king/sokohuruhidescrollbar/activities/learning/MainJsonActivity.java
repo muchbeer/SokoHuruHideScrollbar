@@ -42,7 +42,8 @@ public class MainJsonActivity extends AppCompatActivity implements ForecastFragm
             // fragment transaction.
             if (savedInstanceState == null) {
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.ukawa_detail_container, new DetailFragment())
+                        .replace(R.id.ukawa_detail_container, new DetailFragment2())
+
                         .commit();
             }
         } else {
